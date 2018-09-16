@@ -1,0 +1,3822 @@
+﻿Version     0.0
+Platform    uLCD-35DT-L
+PlatRes     320x480
+Depends
+end
+Options
+    Visualizer
+    Speed                        9600
+    Checksum                     No
+    ResponseSize                 2
+    Multidrop                    No
+    Destination                  1
+    MainForm                     0
+    SndBuf                       0
+    ButtonDisable                No
+    SignedDigits                 No
+end
+Form
+    Name                         Form1
+    Alias                        LoadingScreen
+    Bgtype                       Color
+    Color                        WHITE
+    Image                        (None)
+    Source.Height                0
+    Source.Left                  0
+    Source.Top                   0
+    Source.Width                 0
+    OnActivate                   ''
+    OnCreate                     ''
+    OnRepeat                     ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+Image
+    Name                         LoadingBG
+    Alias                        LoadingBG
+    Height                       320
+    Image                        LoadingScreen.jpg
+    Left                         0
+    Source.Height                320
+    Source.Left                  0
+    Source.Top                   0
+    Source.Width                 480
+    Top                          0
+    Width                        480
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+StaticText
+    Name                         LoadingText
+    Alias                        LoadingText
+    AutoSize                     Yes
+    Caption                      Loading...
+    Color                        0x977765
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    14
+    Font.Style                   [Bold]
+    Height                       28
+    Left                         196
+    Top                          284
+    Transparent                  No
+    Width                        95
+    WordWrap                     Yes
+end
+StaticText
+    Name                         validatePinText
+    Alias                        validatePinText
+    AutoSize                     Yes
+    Caption                      'Please wait while we validate your pin...'
+    Color                        0x977765
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    14
+    Font.Style                   [Bold]
+    Height                       56
+    Left                         57
+    Top                          286
+    Transparent                  No
+    Width                        418
+    WordWrap                     Yes
+end
+StaticText
+    Name                         cellSearchText
+    Alias                        cellSearchText
+    AutoSize                     Yes
+    Caption                      'Please wait while we search for a cell signal...'
+    Color                        0x977765
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    14
+    Font.Style                   [Bold]
+    Height                       56
+    Left                         60
+    Top                          284
+    Transparent                  No
+    Width                        418
+    WordWrap                     Yes
+end
+Form
+    Name                         Form2
+    Alias                        welcomeScreen
+    Bgtype                       Image
+    Color                        WHITE
+    Image                        background.jpg
+    Source.Height                320
+    Source.Left                  0
+    Source.Top                   0
+    Source.Width                 480
+    OnActivate                   ''
+    OnCreate                     ''
+    OnRepeat                     ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+StaticText
+    Name                         welcome_header
+    Alias                        welcome_header
+    AutoSize                     Yes
+    Caption                      Welcome!
+    Color                        WHITE
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Heavy'
+    Font.Size                    44
+    Font.Style                   [Bold]
+    Height                       88
+    Left                         107
+    Top                          32
+    Transparent                  Yes
+    Width                        266
+    WordWrap                     Yes
+end
+StaticText
+    Name                         welcome_subHead
+    Alias                        welcome_subHead
+    AutoSize                     Yes
+    Caption                      'Would you like to start your treatment setup?'
+    Color                        WHITE
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    12
+    Font.Style                   [Bold]
+    Height                       37
+    Left                         76
+    Top                          112
+    Transparent                  Yes
+    Width                        328
+    WordWrap                     Yes
+end
+UserButton
+    Name                         yesBtn_welcome
+    Alias                        yesBtn_welcome
+    Height                       100
+    Images                       yesBtn.png\nyesBtnPressed.png
+    Left                         126
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          164
+    Width                        228
+    OnChanged                    ''
+end
+Form
+    Name                         Form3
+    Alias                        Circuits
+    Bgtype                       Image
+    Color                        WHITE
+    Image                        background.jpg
+    Source.Height                320
+    Source.Left                  0
+    Source.Top                   0
+    Source.Width                 480
+    OnActivate                   ''
+    OnCreate                     ''
+    OnRepeat                     ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+UserButton
+    Name                         blank01
+    Alias                        blank01_circuits
+    Height                       54
+    Images                       blankBtn.png
+    Left                         18
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          265
+    Width                        101
+    OnChanged                    ''
+end
+UserButton
+    Name                         menuBtn_circuits
+    Alias                        menuBtn_circuits
+    Height                       54
+    Images                       UtilitiesMiniBtn.png\nUtilitiesMiniBtnPressed.png
+    Left                         132
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          265
+    Width                        101
+    OnChanged                    ''
+end
+UserButton
+    Name                         blank02
+    Alias                        blank02_circuits
+    Height                       54
+    Images                       blankBtn.png
+    Left                         248
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          265
+    Width                        101
+    OnChanged                    ''
+end
+UserButton
+    Name                         nextBtn_circuits
+    Alias                        nextBtn_circuits
+    Height                       54
+    Images                       nextBtn.png\nnextBtnPressed.png
+    Left                         362
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          265
+    Width                        101
+    OnChanged                    ''
+end
+UserButton
+    Name                         2circuitsBtn
+    Alias                        2circuitsBtn
+    Height                       154
+    Images                       circuit2Btn.png\ncircuit2BtnPressed.png
+    Left                         82
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          86
+    Width                        128
+    OnChanged                    ''
+end
+UserButton
+    Name                         3circuitsBtn
+    Alias                        3circuitsBtn
+    Height                       154
+    Images                       circuit3Btn.png\ncircuit3BtnPressed.png
+    Left                         270
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          86
+    Width                        128
+    OnChanged                    ''
+end
+StaticText
+    Name                         circuitsTexts
+    Alias                        circuitsTexts_Form3
+    AutoSize                     Yes
+    Caption                      'How many circuits are you using?'
+    Color                        WHITE
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    16
+    Font.Style                   [Bold]
+    Height                       43
+    Left                         83
+    Top                          40
+    Transparent                  Yes
+    Width                        314
+    WordWrap                     Yes
+end
+Rectangle
+    Name                         Rectangle2
+    Alias                        Rectangle2
+    Color                        0xDDD6D2
+    Filled                       Yes
+    Height                       24
+    Left                         0
+    Outlined                     Yes
+    OutlineColor                 WHITE
+    Pattern                      Fine
+    Top                          0
+    Width                        480
+end
+StaticText
+    Name                         titleCircuits
+    Alias                        titleCircuits
+    AutoSize                     Yes
+    Caption                      Circuits
+    Color                        0xDDD6D2
+    Font.Color                   0x53311D
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    10
+    Font.Style                   [Bold]
+    Height                       21
+    Left                         8
+    Top                          3
+    Transparent                  No
+    Width                        56
+    WordWrap                     Yes
+end
+Form
+    Name                         Form4
+    Alias                        Amps
+    Bgtype                       Image
+    Color                        WHITE
+    Image                        background.jpg
+    Source.Height                320
+    Source.Left                  0
+    Source.Top                   0
+    Source.Width                 480
+    OnActivate                   ''
+    OnCreate                     ''
+    OnRepeat                     ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+UserButton
+    Name                         15ampsBtn
+    Alias                        15ampsBtn
+    Height                       158
+    Images                       amp15Btn.png\namp15BtnPressed.png
+    Left                         84
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          86
+    Width                        123
+    OnChanged                    ''
+end
+UserButton
+    Name                         20ampsBtn
+    Alias                        20ampsBtn
+    Height                       158
+    Images                       amp20Btn.png\namp20BtnPressed.png
+    Left                         272
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          86
+    Width                        123
+    OnChanged                    ''
+end
+UserButton
+    Name                         backBtn_amps
+    Alias                        backBtn_amps
+    Height                       54
+    Images                       backBtn.png\nbackBtnPressed.png
+    Left                         18
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          265
+    Width                        101
+    OnChanged                    ''
+end
+UserButton
+    Name                         menuBtn_amps
+    Alias                        ' '
+    Height                       54
+    Images                       UtilitiesMiniBtn.png\nUtilitiesMiniBtnPressed.png
+    Left                         132
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          265
+    Width                        101
+    OnChanged                    ''
+end
+UserButton
+    Name                         blank03
+    Alias                        blank03_amps
+    Height                       54
+    Images                       blankBtn.png
+    Left                         248
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          265
+    Width                        101
+    OnChanged                    ''
+end
+UserButton
+    Name                         nextBtn_amps
+    Alias                        nextBtn_amps
+    Height                       54
+    Images                       nextBtn.png\nnextBtnPressed.png
+    Left                         362
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          265
+    Width                        101
+    OnChanged                    ''
+end
+StaticText
+    Name                         AmpsTexts
+    Alias                        AmpsTexts_Form4
+    AutoSize                     Yes
+    Caption                      'Using 15A or 20A circuit breakers?'
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    16
+    Font.Style                   [Bold]
+    Height                       66
+    Left                         79
+    Top                          40
+    Transparent                  Yes
+    Width                        321
+    WordWrap                     Yes
+end
+Rectangle
+    Name                         Rectangle3
+    Alias                        Rectangle3
+    Color                        0xDDD6D2
+    Filled                       Yes
+    Height                       24
+    Left                         0
+    Outlined                     Yes
+    OutlineColor                 WHITE
+    Pattern                      Fine
+    Top                          3
+    Width                        480
+end
+StaticText
+    Name                         titleBreakers
+    Alias                        titleBreakers
+    AutoSize                     Yes
+    Caption                      Breakers
+    Color                        0xDDD6D2
+    Font.Color                   0x53311D
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    10
+    Font.Style                   [Bold]
+    Height                       21
+    Left                         8
+    Top                          3
+    Transparent                  No
+    Width                        66
+    WordWrap                     Yes
+end
+Form
+    Name                         Form6
+    Alias                        'Enable Cell'
+    Bgtype                       Image
+    Color                        WHITE
+    Image                        background.jpg
+    Source.Height                320
+    Source.Left                  0
+    Source.Top                   0
+    Source.Width                 480
+    OnActivate                   ''
+    OnCreate                     ''
+    OnRepeat                     ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+UserButton
+    Name                         yesBtn_enableCell
+    Alias                        yesBtn_enableCell
+    Height                       100
+    Images                       yesBtn.png\nyesBtnPressed.png
+    Left                         10
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          112
+    Width                        228
+    OnChanged                    ''
+end
+UserButton
+    Name                         noBtn_enableCell
+    Alias                        noBtn_enableCell
+    Height                       100
+    Images                       noBtn.png\nnoBtnPressed.png
+    Left                         242
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          112
+    Width                        228
+    OnChanged                    ''
+end
+UserButton
+    Name                         menuBtn_enableCell
+    Alias                        menuBtn_enableCell
+    Height                       54
+    Images                       UtilitiesMiniBtn.png\nUtilitiesMiniBtnPressed.png
+    Left                         136
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          260
+    Width                        101
+    OnChanged                    ''
+end
+UserButton
+    Name                         blank05
+    Alias                        blank05
+    Height                       54
+    Images                       blankBtn.png
+    Left                         248
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          260
+    Width                        101
+    OnChanged                    ''
+end
+UserButton
+    Name                         nextBtn_enableCell
+    Alias                        nextBtn_enableCell
+    Height                       54
+    Images                       blankBtn.png
+    Left                         360
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          260
+    Width                        101
+    OnChanged                    ''
+end
+StaticText
+    Name                         enableCellText
+    Alias                        enableCellText
+    AutoSize                     Yes
+    Caption                      'Enable Cell?'
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    18
+    Font.Style                   [Bold]
+    Height                       54
+    Left                         174
+    Top                          52
+    Transparent                  Yes
+    Width                        131
+    WordWrap                     Yes
+end
+UserButton
+    Name                         backBtn_enableCell
+    Alias                        backBtn_enableCell
+    Height                       54
+    Images                       backBtn.png\nbackBtnPressed.png
+    Left                         16
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          260
+    Width                        101
+    OnChanged                    ''
+end
+Form
+    Name                         Form5
+    Alias                        Form5-tempSet
+    Bgtype                       Image
+    Color                        WHITE
+    Image                        background.jpg
+    Source.Height                320
+    Source.Left                  0
+    Source.Top                   0
+    Source.Width                 480
+    OnActivate                   ''
+    OnCreate                     ''
+    OnRepeat                     ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+UserButton
+    Name                         minusBtn_targetTemp_tempSet
+    Alias                        minusBtn_targetTemp_tempSet
+    Height                       65
+    Images                       negativeBtn.png\nnegativeBtnPressed.png
+    Left                         244
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          34
+    Width                        106
+    OnChanged                    ''
+end
+UserButton
+    Name                         addBtn_timeAtTarget_tempSet
+    Alias                        addBtn_timeAtTarget_tempSet
+    Height                       65
+    Images                       postiveBtn.png\npostiveBtnPressed.png
+    Left                         356
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          184
+    Width                        106
+    OnChanged                    ''
+end
+UserButton
+    Name                         minusBtn_maxAirTemp_tempSet
+    Alias                        minusBtn_maxAirTemp_tempSet
+    Height                       65
+    Images                       negativeBtn.png\nnegativeBtnPressed.png
+    Left                         244
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          108
+    Width                        106
+    OnChanged                    ''
+end
+UserButton
+    Name                         addBtn_targetTemp_tempSet
+    Alias                        addBtn_targetTemp_tempSet
+    Height                       65
+    Images                       postiveBtn.png\npostiveBtnPressed.png
+    Left                         356
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          35
+    Width                        106
+    OnChanged                    ''
+end
+UserButton
+    Name                         minusBtn_timeAtTarget_tempSet
+    Alias                        minusBtn_timeAtTarget_tempSet
+    Height                       65
+    Images                       negativeBtn.png\nnegativeBtnPressed.png
+    Left                         244
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          184
+    Width                        106
+    OnChanged                    ''
+end
+UserButton
+    Name                         addBtn_maxAirTemp_tempSet
+    Alias                        addBtn_maxAirTemp_tempSet
+    Height                       65
+    Images                       postiveBtn.png\npostiveBtnPressed.png
+    Left                         356
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          109
+    Width                        106
+    OnChanged                    ''
+end
+StaticText
+    Name                         targetTempText_tempSet
+    Alias                        targetTempText_tempSet
+    AutoSize                     Yes
+    Caption                      'Target Temp'
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    10
+    Font.Style                   [Bold]
+    Height                       42
+    Left                         55
+    Top                          26
+    Transparent                  Yes
+    Width                        97
+    WordWrap                     Yes
+end
+StaticText
+    Name                         maxAirTempText_tempSet
+    Alias                        maxAirTempText_tempSet
+    AutoSize                     Yes
+    Caption                      'Max Air Temp'
+    Color                        0x6B4A38
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    10
+    Font.Style                   [Bold]
+    Height                       20
+    Left                         55
+    Top                          106
+    Transparent                  No
+    Width                        118
+    WordWrap                     Yes
+end
+StaticText
+    Name                         timeAtTargetText_tempSet
+    Alias                        timeAtTargetText_tempSet
+    AutoSize                     Yes
+    Caption                      'Time at Target'
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    10
+    Font.Style                   [Bold]
+    Height                       22
+    Left                         55
+    Top                          184
+    Transparent                  Yes
+    Width                        118
+    WordWrap                     Yes
+end
+UserButton
+    Name                         backBtn__tempSet
+    Alias                        backBtn__tempSet
+    Height                       54
+    Images                       backBtn.png\nbackBtnPressed.png
+    Left                         18
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          260
+    Width                        101
+    OnChanged                    ''
+end
+UserButton
+    Name                         menuBtn__tempSet
+    Alias                        menuBtn__tempSet
+    Height                       54
+    Images                       UtilitiesMiniBtn.png\nUtilitiesMiniBtnPressed.png
+    Left                         132
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          260
+    Width                        101
+    OnChanged                    ''
+end
+UserButton
+    Name                         blank04
+    Alias                        blank04
+    Height                       54
+    Images                       blankBtn.png
+    Left                         248
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          260
+    Width                        101
+    OnChanged                    ''
+end
+UserButton
+    Name                         nextBtn__tempSet
+    Alias                        nextBtn__tempSet
+    Height                       54
+    Images                       nextBtn.png\nnextBtnPressed.png
+    Left                         362
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          260
+    Width                        101
+    OnChanged                    ''
+end
+LedDigits
+    Name                         targetTempDigits_tempSet
+    Alias                        Digits_1
+    Color                        0x5C3A27
+    Decimals                     0
+    Digits                       3
+    Height                       43
+    LeadingZero                  Yes
+    Left                         59
+    OutlineColor                 0x5C3A27
+    Palette.High                 WHITE
+    Palette.Low                  0x5C3A27
+    Top                          48
+    Width                        101
+    OnChanged                    ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+LedDigits
+    Name                         maxAirTempDigits_tempSet
+    Alias                        Digits_2
+    Color                        0x6B4A38
+    Decimals                     0
+    Digits                       3
+    Height                       43
+    LeadingZero                  Yes
+    Left                         59
+    OutlineColor                 0x6B4A38
+    Palette.High                 WHITE
+    Palette.Low                  0x6B4A38
+    Top                          129
+    Width                        101
+    OnChanged                    ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+Rectangle
+    Name                         Rectangle1
+    Alias                        Rectangle1
+    Color                        0xDDD6D2
+    Filled                       Yes
+    Height                       24
+    Left                         0
+    Outlined                     No
+    OutlineColor                 WHITE
+    Pattern                      Fine
+    Top                          0
+    Width                        480
+end
+LedDigits
+    Name                         timeAtTargetDigits_tempSet
+    Alias                        Digits_3
+    Color                        0x856452
+    Decimals                     0
+    Digits                       3
+    Height                       43
+    LeadingZero                  No
+    Left                         59
+    OutlineColor                 0x81604E
+    Palette.High                 WHITE
+    Palette.Low                  0x81604E
+    Top                          207
+    Width                        101
+    OnChanged                    ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+StaticText
+    Name                         temperatureTitle
+    Alias                        temperatureTitle
+    AutoSize                     Yes
+    Caption                      'Treatment Settings'
+    Color                        0xDDD6D2
+    Font.Color                   0x53311D
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    10
+    Font.Style                   [Bold]
+    Height                       21
+    Left                         8
+    Top                          3
+    Transparent                  No
+    Width                        141
+    WordWrap                     Yes
+end
+StaticText
+    Name                         TargetTempF_text_tempSet
+    Alias                        TargetTempF_text_tempSet
+    AutoSize                     Yes
+    Caption                      °F
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    9
+    Font.Style                   [Bold]
+    Height                       15
+    Left                         160
+    Top                          48
+    Transparent                  Yes
+    Width                        12
+    WordWrap                     Yes
+end
+StaticText
+    Name                         maxAirTempF_text_tempSet
+    Alias                        maxAirTempF_text_tempSet
+    AutoSize                     Yes
+    Caption                      °F
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    9
+    Font.Style                   [Bold]
+    Height                       15
+    Left                         160
+    Top                          129
+    Transparent                  Yes
+    Width                        12
+    WordWrap                     Yes
+end
+StaticText
+    Name                         timeAtTargerText_tempSet
+    Alias                        timeAtTargerText_tempSet
+    AutoSize                     Yes
+    Caption                      mins
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    9
+    Font.Style                   [Bold]
+    Height                       15
+    Left                         160
+    Top                          236
+    Transparent                  Yes
+    Width                        25
+    WordWrap                     Yes
+end
+Form
+    Name                         Form7
+    Alias                        currentPin
+    Bgtype                       Image
+    Color                        WHITE
+    Image                        background.jpg
+    Source.Height                320
+    Source.Left                  0
+    Source.Top                   0
+    Source.Width                 480
+    OnActivate                   ''
+    OnCreate                     ''
+    OnRepeat                     ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+UserButton
+    Name                         createPinBtn_currentPin
+    Alias                        createPinBtn_currentPin
+    Height                       100
+    Images                       modifyPinBtn.png\nmodifyPinBtnPressed.png
+    Left                         12
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          116
+    Width                        228
+    OnChanged                    ''
+end
+UserButton
+    Name                         usePinBtn_currentPin
+    Alias                        usePinBtn_currentPin
+    Height                       100
+    Images                       usePin.png\nusePinPressed.png
+    Left                         242
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          116
+    Width                        228
+    OnChanged                    ''
+end
+LedDigits
+    Name                         currentPinDigits_00
+    Alias                        Digits_4
+    Color                        0x573623
+    Decimals                     0
+    Digits                       1
+    Height                       60
+    LeadingZero                  Yes
+    Left                         113
+    OutlineColor                 0x573623
+    Palette.High                 WHITE
+    Palette.Low                  0x573623
+    Top                          42
+    Width                        50
+    OnChanged                    ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+UserButton
+    Name                         backBtn_currentPin
+    Alias                        backBtn_currentPin
+    Height                       54
+    Images                       backBtn.png\nbackBtnPressed.png
+    Left                         18
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          260
+    Width                        101
+    OnChanged                    ''
+end
+UserButton
+    Name                         menuBtn_currentPin
+    Alias                        menuBtn_currentPin
+    Height                       54
+    Images                       blankBtn.png
+    Left                         132
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          260
+    Width                        101
+    OnChanged                    ''
+end
+UserButton
+    Name                         blank_06
+    Alias                        Userbutton1
+    Height                       54
+    Images                       blankBtn.png
+    Left                         248
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          260
+    Width                        101
+    OnChanged                    ''
+end
+UserButton
+    Name                         nextBtn_currentPin
+    Alias                        nextBtn_currentPin
+    Height                       54
+    Images                       blankBtn.png
+    Left                         360
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          260
+    Width                        101
+    OnChanged                    ''
+end
+LedDigits
+    Name                         currentPinDigits_01
+    Alias                        Digits_10
+    Color                        0x573623
+    Decimals                     0
+    Digits                       1
+    Height                       60
+    LeadingZero                  Yes
+    Left                         165
+    OutlineColor                 0x573623
+    Palette.High                 WHITE
+    Palette.Low                  0x573623
+    Top                          42
+    Width                        50
+    OnChanged                    ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+LedDigits
+    Name                         currentPinDigits_02
+    Alias                        digits_11
+    Color                        0x573623
+    Decimals                     0
+    Digits                       1
+    Height                       60
+    LeadingZero                  Yes
+    Left                         217
+    OutlineColor                 0x573623
+    Palette.High                 WHITE
+    Palette.Low                  0x573623
+    Top                          42
+    Width                        50
+    OnChanged                    ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+LedDigits
+    Name                         currentPinDigits_03
+    Alias                        Digits_12
+    Color                        0x573623
+    Decimals                     0
+    Digits                       1
+    Height                       60
+    LeadingZero                  Yes
+    Left                         265
+    OutlineColor                 0x573623
+    Palette.High                 WHITE
+    Palette.Low                  0x573623
+    Top                          42
+    Width                        50
+    OnChanged                    ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+LedDigits
+    Name                         currentPinDigits_04
+    Alias                        Digits_13
+    Color                        0x573623
+    Decimals                     0
+    Digits                       1
+    Height                       60
+    LeadingZero                  Yes
+    Left                         313
+    OutlineColor                 0x573623
+    Palette.High                 WHITE
+    Palette.Low                  0x573623
+    Top                          42
+    Width                        50
+    OnChanged                    ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+Form
+    Name                         Form8
+    Alias                        setPin
+    Bgtype                       Image
+    Color                        WHITE
+    Image                        background.jpg
+    Source.Height                320
+    Source.Left                  0
+    Source.Top                   0
+    Source.Width                 480
+    OnActivate                   ''
+    OnCreate                     ''
+    OnRepeat                     ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+UserButton
+    Name                         pinBtn_1
+    Alias                        pinBtn_1
+    Height                       47
+    Images                       oneBtnPressed.png\noneBtn.png
+    Left                         17
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          71
+    Width                        150
+    OnChanged                    ''
+end
+UserButton
+    Name                         pinBtn_2
+    Alias                        pinBtn_2
+    Height                       47
+    Images                       twoBtn.png\ntwoBtnPressed.png
+    Left                         166
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          71
+    Width                        150
+    OnChanged                    ''
+end
+UserButton
+    Name                         pinBtn_3
+    Alias                        pinBtn_3
+    Height                       47
+    Images                       threeBtn.png\nthreeBtnPressed.png
+    Left                         315
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          71
+    Width                        150
+    OnChanged                    ''
+end
+UserButton
+    Name                         pinBtn_4
+    Alias                        pinBtn_4
+    Height                       47
+    Images                       fourBtn.png\nfourBtnPressed.png
+    Left                         17
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          116
+    Width                        150
+    OnChanged                    ''
+end
+UserButton
+    Name                         pinBtn_5
+    Alias                        pinBtn_5
+    Height                       47
+    Images                       fiveBtn.png\nfiveBtnPressed.png
+    Left                         166
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          116
+    Width                        150
+    OnChanged                    ''
+end
+UserButton
+    Name                         pinBtn_6
+    Alias                        pinBtn_6
+    Height                       47
+    Images                       sixBtn.png\nsixBtnPressed.png
+    Left                         315
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          116
+    Width                        150
+    OnChanged                    ''
+end
+UserButton
+    Name                         pinBtn_7
+    Alias                        pinBtn_7
+    Height                       47
+    Images                       sevenBtn.png\nsevenBtnPressed.png
+    Left                         17
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          161
+    Width                        150
+    OnChanged                    ''
+end
+UserButton
+    Name                         pinBtn_8
+    Alias                        pinBtn_8
+    Height                       47
+    Images                       eightBtn.png\neightBtnPressed.png
+    Left                         166
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          161
+    Width                        150
+    OnChanged                    ''
+end
+UserButton
+    Name                         pinBtn_9
+    Alias                        pinBtn_9
+    Height                       47
+    Images                       nineBtn.png\nnineBtnPressed.png
+    Left                         315
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          161
+    Width                        150
+    OnChanged                    ''
+end
+UserButton
+    Name                         pinBtn_0
+    Alias                        pinBtn_0
+    Height                       47
+    Images                       zeroBtn.png\nzeroBtnPressed.png
+    Left                         17
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          206
+    Width                        150
+    OnChanged                    ''
+end
+UserButton
+    Name                         clearBtn
+    Alias                        clearBtn
+    Height                       48
+    Images                       clearBtn.png\nclearBtnPressed.png
+    Left                         165
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          206
+    Width                        300
+    OnChanged                    ''
+end
+UserButton
+    Name                         backBtn_settPin
+    Alias                        backBtn_settPin
+    Height                       54
+    Images                       backBtn.png\nbackBtnPressed.png
+    Left                         18
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          259
+    Width                        101
+    OnChanged                    ''
+end
+UserButton
+    Name                         blank_07
+    Alias                        blank_07
+    Height                       54
+    Images                       blankBtn.png
+    Left                         248
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          259
+    Width                        101
+    OnChanged                    ''
+end
+UserButton
+    Name                         menuBtn_settPin
+    Alias                        menuBtn_settPin
+    Height                       54
+    Images                       blankBtn.png
+    Left                         132
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          259
+    Width                        101
+    OnChanged                    ''
+end
+UserButton
+    Name                         nextBtn_settPin
+    Alias                        nextBtn_settPin
+    Height                       54
+    Images                       nextBtn.png\nnextBtnPressed.png
+    Left                         360
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          259
+    Width                        101
+    OnChanged                    ''
+end
+LedDigits
+    Name                         setPinDigits_00
+    Alias                        digits_9
+    Color                        0x55331F
+    Decimals                     0
+    Digits                       1
+    Height                       52
+    LeadingZero                  Yes
+    Left                         98
+    OutlineColor                 0x55331F
+    Palette.High                 WHITE
+    Palette.Low                  0x55331F
+    Top                          12
+    Width                        54
+    OnChanged                    ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+LedDigits
+    Name                         setPinDigits_01
+    Alias                        setPinDigits_01
+    Color                        0x55331F
+    Decimals                     0
+    Digits                       1
+    Height                       52
+    LeadingZero                  Yes
+    Left                         150
+    OutlineColor                 0x55331F
+    Palette.High                 WHITE
+    Palette.Low                  0x55331F
+    Top                          12
+    Width                        54
+    OnChanged                    ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+LedDigits
+    Name                         setPinDigits_02
+    Alias                        setPinDigits_02
+    Color                        0x55331F
+    Decimals                     0
+    Digits                       1
+    Height                       52
+    LeadingZero                  Yes
+    Left                         202
+    OutlineColor                 0x55331F
+    Palette.High                 WHITE
+    Palette.Low                  0x55331F
+    Top                          12
+    Width                        54
+    OnChanged                    ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+LedDigits
+    Name                         setPinDigits_03
+    Alias                        setPinDigits_03
+    Color                        0x55331F
+    Decimals                     0
+    Digits                       1
+    Height                       52
+    LeadingZero                  Yes
+    Left                         254
+    OutlineColor                 0x55331F
+    Palette.High                 WHITE
+    Palette.Low                  0x55331F
+    Top                          12
+    Width                        54
+    OnChanged                    ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+LedDigits
+    Name                         setPinDigits_04
+    Alias                        digitd_14
+    Color                        0x55331F
+    Decimals                     0
+    Digits                       1
+    Height                       52
+    LeadingZero                  Yes
+    Left                         306
+    OutlineColor                 0x55331F
+    Palette.High                 WHITE
+    Palette.Low                  0x55331F
+    Top                          12
+    Width                        54
+    OnChanged                    ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+Form
+    Name                         Form9
+    Alias                        UnableToConnectToModem
+    Bgtype                       Image
+    Color                        WHITE
+    Image                        background.jpg
+    Source.Height                320
+    Source.Left                  0
+    Source.Top                   0
+    Source.Width                 480
+    OnActivate                   ''
+    OnCreate                     ''
+    OnRepeat                     ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+UserButton
+    Name                         noCellBtn_ModemCommunicationError
+    Alias                        noCellBtn_ModemCommunicationError
+    Height                       100
+    Images                       noCellBtn.png\nnoCellBtnPressed.png
+    Left                         126
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          196
+    Width                        228
+    OnChanged                    ''
+end
+StaticText
+    Name                         HeaderText_ModemCommincationError
+    Alias                        HeaderText_ModemCommincationError
+    AutoSize                     Yes
+    Caption                      'Modem communication error'
+    Color                        '(WHITE, [], Lato Semibold, 18, [Bold])'
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    18
+    Font.Style                   [Bold]
+    Height                       36
+    Left                         82
+    Top                          20
+    Transparent                  Yes
+    Width                        315
+    WordWrap                     Yes
+end
+StaticText
+    Name                         PleaseCyclePowerText
+    Alias                        TryAgainText_UnableToConnect
+    AutoSize                     Yes
+    Caption                      'Please cycle power to reset communication.'
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    12
+    Font.Style                   [Bold]
+    Height                       21
+    Left                         81
+    Top                          64
+    Transparent                  Yes
+    Width                        317
+    WordWrap                     Yes
+end
+StaticText
+    Name                         contactZBText
+    Alias                        Statictext2
+    AutoSize                     Yes
+    Caption                      'If the problem persist please contact ZappBug.'
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    10
+    Font.Style                   [Bold]
+    Height                       39
+    Left                         105
+    Top                          96
+    Transparent                  Yes
+    Width                        269
+    WordWrap                     Yes
+end
+StaticText
+    Name                         modemContWithoutCellText
+    Alias                        Statictext3
+    AutoSize                     Yes
+    Caption                      'Coninue without cell monitoring?'
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    14
+    Font.Style                   [Bold]
+    Height                       28
+    Left                         96
+    Top                          156
+    Transparent                  Yes
+    Width                        288
+    WordWrap                     Yes
+end
+Form
+    Name                         Form10
+    Alias                        StartTreatment
+    Bgtype                       Image
+    Color                        WHITE
+    Image                        background.jpg
+    Source.Height                320
+    Source.Left                  0
+    Source.Top                   0
+    Source.Width                 480
+    OnActivate                   ''
+    OnCreate                     ''
+    OnRepeat                     ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+UserButton
+    Name                         startBtn_startTreatment
+    Alias                        startBtn_startTreatment
+    Height                       175
+    Images                       startBtn.png\nstartBtnPressed.png
+    Left                         148
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          72
+    Width                        175
+    OnChanged                    ''
+end
+StaticText
+    Name                         Statictext1
+    Alias                        Statictext1
+    AutoSize                     Yes
+    Caption                      'Start Treatment?'
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    22
+    Font.Style                   [Bold]
+    Height                       45
+    Left                         124
+    Top                          28
+    Transparent                  Yes
+    Width                        275
+    WordWrap                     Yes
+end
+UserButton
+    Name                         backBtn_startTreatment
+    Alias                        backBtn_startTreatment
+    Height                       54
+    Images                       backBtn.png\nbackBtnPressed.png
+    Left                         18
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          260
+    Width                        101
+    OnChanged                    ''
+end
+UserButton
+    Name                         blank12
+    Alias                        blank12
+    Height                       54
+    Images                       blankBtn.png
+    Left                         248
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          260
+    Width                        101
+    OnChanged                    ''
+end
+UserButton
+    Name                         menuBtn_startTreatment
+    Alias                        menuBtn_startTreatment
+    Height                       54
+    Images                       blankBtn.png
+    Left                         132
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          260
+    Width                        101
+    OnChanged                    ''
+end
+UserButton
+    Name                         nextBtn_startTreatment
+    Alias                        nextBtn_startTreatment
+    Height                       54
+    Images                       blankBtn.png
+    Left                         360
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          260
+    Width                        101
+    OnChanged                    ''
+end
+Form
+    Name                         Form11
+    Alias                        CurrentResults
+    Bgtype                       Image
+    Color                        WHITE
+    Image                        background.jpg
+    Source.Height                320
+    Source.Left                  0
+    Source.Top                   0
+    Source.Width                 480
+    OnActivate                   ''
+    OnCreate                     ''
+    OnRepeat                     ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+LedDigits
+    Name                         probe1_digits_currentResults
+    Alias                        probe1_digits_currentResults
+    Color                        0x64422F
+    Decimals                     0
+    Digits                       3
+    Height                       47
+    LeadingZero                  Yes
+    Left                         13
+    OutlineColor                 0x64422F
+    Palette.High                 WHITE
+    Palette.Low                  0x64422F
+    Top                          68
+    Width                        105
+    OnChanged                    ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+StaticText
+    Name                         probe1Text_currentResults
+    Alias                        probe1Text_currentResults
+    AutoSize                     Yes
+    Caption                      'Probe 1'
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    14
+    Font.Style                   [Bold]
+    Height                       28
+    Left                         20
+    Top                          36
+    Transparent                  Yes
+    Width                        84
+    WordWrap                     Yes
+end
+StaticText
+    Name                         probe2Text_currentResults
+    Alias                        probe2Text_currentResults
+    AutoSize                     Yes
+    Caption                      'Probe 2'
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    14
+    Font.Style                   [Bold]
+    Height                       28
+    Left                         176
+    Top                          36
+    Transparent                  Yes
+    Width                        79
+    WordWrap                     Yes
+end
+StaticText
+    Name                         probe3Text_currentResults
+    Alias                        probe3Text_currentResults
+    AutoSize                     Yes
+    Caption                      'Probe 3'
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    14
+    Font.Style                   [Bold]
+    Height                       28
+    Left                         324
+    Top                          36
+    Transparent                  Yes
+    Width                        79
+    WordWrap                     Yes
+end
+LedDigits
+    Name                         probe2_digits_currentResults
+    Alias                        probe2_digits_currentResults
+    Color                        0x64422F
+    Decimals                     0
+    Digits                       3
+    Height                       47
+    LeadingZero                  Yes
+    Left                         173
+    OutlineColor                 0x64422F
+    Palette.High                 WHITE
+    Palette.Low                  0x64422F
+    Top                          68
+    Width                        105
+    OnChanged                    ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+LedDigits
+    Name                         probe3_digits_currentResults
+    Alias                        probe3_digits_currentResults
+    Color                        0x64422F
+    Decimals                     0
+    Digits                       3
+    Height                       47
+    LeadingZero                  Yes
+    Left                         321
+    OutlineColor                 0x64422F
+    Palette.High                 WHITE
+    Palette.Low                  0x64422F
+    Top                          68
+    Width                        105
+    OnChanged                    ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+StaticText
+    Name                         maxAirTempText_currentResutls
+    Alias                        maxAirTempText_currentResutls
+    AutoSize                     Yes
+    Caption                      'Air Temp'
+    Color                        WHITE
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    14
+    Font.Style                   [Bold]
+    Height                       28
+    Left                         20
+    Top                          157
+    Transparent                  Yes
+    Width                        90
+    WordWrap                     Yes
+end
+StaticText
+    Name                         elapseTimeText_currentResutls
+    Alias                        elapseTimeText_currentResutls
+    AutoSize                     Yes
+    Caption                      'Elapse Time'
+    Color                        WHITE
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    14
+    Font.Style                   [Bold]
+    Height                       28
+    Left                         176
+    Top                          157
+    Transparent                  Yes
+    Width                        122
+    WordWrap                     Yes
+end
+StaticText
+    Name                         estTimeRemaining_currentResults
+    Alias                        estTimeRemaining_currentResults
+    AutoSize                     Yes
+    Caption                      'Est. Time Remaining'
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    14
+    Font.Style                   [Bold]
+    Height                       56
+    Left                         336
+    Top                          129
+    Transparent                  Yes
+    Width                        107
+    WordWrap                     Yes
+end
+LedDigits
+    Name                         maxAirTemp_digits_currentResults
+    Alias                        digits_14
+    Color                        0x856452
+    Decimals                     0
+    Digits                       3
+    Height                       47
+    LeadingZero                  Yes
+    Left                         13
+    OutlineColor                 0x856452
+    Palette.High                 WHITE
+    Palette.Low                  0x856452
+    Top                          191
+    Width                        105
+    OnChanged                    ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+UserButton
+    Name                         backBtn_currentResults
+    Alias                        backBtn_currentResults
+    Height                       54
+    Images                       blankBtn.png
+    Left                         18
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          260
+    Width                        101
+    OnChanged                    ''
+end
+UserButton
+    Name                         menuBtn_currentResults
+    Alias                        menuBtn_currentResults
+    Height                       54
+    Images                       UtilitiesMiniBtn.png\nUtilitiesMiniBtnPressed.png
+    Left                         132
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          260
+    Width                        101
+    OnChanged                    ''
+end
+UserButton
+    Name                         stopBtn_currentResults
+    Alias                        stopBtn_currentResults
+    Height                       54
+    Images                       stopBtn.png\nstopBtnPressed.png
+    Left                         248
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          260
+    Width                        101
+    OnChanged                    ''
+end
+UserButton
+    Name                         nextBtn_currentResults
+    Alias                        nextBtn_currentResults
+    Height                       54
+    Images                       blankBtn.png
+    Left                         360
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          260
+    Width                        101
+    OnChanged                    ''
+end
+LedDigits
+    Name                         elapseTime_hours_digits_currentResults
+    Alias                        Leddigits1
+    Color                        0x856452
+    Decimals                     0
+    Digits                       1
+    Height                       47
+    LeadingZero                  Yes
+    Left                         170
+    OutlineColor                 0x856452
+    Palette.High                 WHITE
+    Palette.Low                  0x856452
+    Top                          192
+    Width                        35
+    OnChanged                    ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+LedDigits
+    Name                         elapseTime_mins_digits_currentResults
+    Alias                        elapseTime_mins_digits_currentResults
+    Color                        0x856452
+    Decimals                     0
+    Digits                       2
+    Height                       47
+    LeadingZero                  Yes
+    Left                         220
+    OutlineColor                 0x856452
+    Palette.High                 WHITE
+    Palette.Low                  0x856452
+    Top                          192
+    Width                        70
+    OnChanged                    ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+LedDigits
+    Name                         estTimeRemaining_hrs_digits_currentResults
+    Alias                        estTimeRemaining_hrs_digits_currentResults
+    Color                        0x856452
+    Decimals                     0
+    Digits                       1
+    Height                       47
+    LeadingZero                  Yes
+    Left                         334
+    OutlineColor                 0x856452
+    Palette.High                 WHITE
+    Palette.Low                  0x856452
+    Top                          193
+    Width                        35
+    OnChanged                    ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+LedDigits
+    Name                         estTimeRemaining_min_digits_currentResults
+    Alias                        estTimeRemaining_min_digits_currentResults
+    Color                        0x856452
+    Decimals                     0
+    Digits                       2
+    Height                       47
+    LeadingZero                  Yes
+    Left                         383
+    OutlineColor                 0x856452
+    Palette.High                 WHITE
+    Palette.Low                  0x856452
+    Top                          193
+    Width                        70
+    OnChanged                    ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+StaticText
+    Name                         na_estTime
+    Alias                        na_estTime
+    AutoSize                     Yes
+    Caption                      N/A
+    Color                        0x856452
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    34
+    Font.Style                   [Bold]
+    Height                       68
+    Left                         332
+    Top                          184
+    Transparent                  Yes
+    Width                        132
+    WordWrap                     Yes
+end
+StaticText
+    Name                         elapseTime_hr_text
+    Alias                        elapseTime_hr_text
+    AutoSize                     Yes
+    Caption                      hrs
+    Color                        0x856452
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    7
+    Font.Style                   [Bold]
+    Height                       15
+    Left                         202
+    Top                          224
+    Transparent                  Yes
+    Width                        16
+    WordWrap                     Yes
+end
+StaticText
+    Name                         elapseTime_min_text
+    Alias                        elapseTime_min_text
+    AutoSize                     Yes
+    Caption                      mins
+    Color                        0x856452
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    7
+    Font.Style                   [Bold]
+    Height                       15
+    Left                         286
+    Top                          224
+    Transparent                  Yes
+    Width                        25
+    WordWrap                     Yes
+end
+StaticText
+    Name                         estTimeRemaining_mins_text
+    Alias                        estTimeRemaining_mins_text
+    AutoSize                     Yes
+    Caption                      min
+    Color                        0x856452
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    7
+    Font.Style                   [Bold]
+    Height                       15
+    Left                         449
+    Top                          224
+    Transparent                  Yes
+    Width                        20
+    WordWrap                     Yes
+end
+StaticText
+    Name                         estTimeRemaining_hrs_text
+    Alias                        estTimeRemaining_hrs_text
+    AutoSize                     Yes
+    Caption                      hrs
+    Color                        0x856452
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    9
+    Font.Style                   [Bold]
+    Height                       15
+    Left                         366
+    Top                          224
+    Transparent                  Yes
+    Width                        16
+    WordWrap                     Yes
+end
+Rectangle
+    Name                         Rectangle4
+    Alias                        Rectangle4
+    Color                        0xDDD6D2
+    Filled                       Yes
+    Height                       24
+    Left                         0
+    Outlined                     Yes
+    OutlineColor                 WHITE
+    Pattern                      Fine
+    Top                          0
+    Width                        480
+end
+StaticText
+    Name                         currentResultsTitle
+    Alias                        currentResultsTitle
+    AutoSize                     Yes
+    Caption                      'Current Results'
+    Color                        0xDDD6D2
+    Font.Color                   0x53311D
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    10
+    Font.Style                   [Bold]
+    Height                       18
+    Left                         8
+    Top                          3
+    Transparent                  No
+    Width                        115
+    WordWrap                     Yes
+end
+StaticText
+    Name                         probe1F_text
+    Alias                        probe1F_text
+    AutoSize                     Yes
+    Caption                      °F
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    9
+    Font.Style                   [Bold]
+    Height                       15
+    Left                         118
+    Top                          68
+    Transparent                  Yes
+    Width                        12
+    WordWrap                     Yes
+end
+StaticText
+    Name                         probe2F_text
+    Alias                        probe2F_text
+    AutoSize                     Yes
+    Caption                      °F
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    9
+    Font.Style                   [Bold]
+    Height                       15
+    Left                         278
+    Top                          68
+    Transparent                  Yes
+    Width                        12
+    WordWrap                     Yes
+end
+StaticText
+    Name                         probe3F_text
+    Alias                        probe3F_text
+    AutoSize                     Yes
+    Caption                      °F
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    9
+    Font.Style                   [Bold]
+    Height                       15
+    Left                         426
+    Top                          68
+    Transparent                  Yes
+    Width                        12
+    WordWrap                     Yes
+end
+StaticText
+    Name                         MaxAirTempF_text
+    Alias                        MaxAirTempF_text
+    AutoSize                     Yes
+    Caption                      °F
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    9
+    Font.Style                   [Bold]
+    Height                       15
+    Left                         118
+    Top                          190
+    Transparent                  Yes
+    Width                        12
+    WordWrap                     Yes
+end
+Form
+    Name                         Form12
+    Alias                        Menu
+    Bgtype                       Image
+    Color                        WHITE
+    Image                        background.jpg
+    Source.Height                320
+    Source.Left                  0
+    Source.Top                   0
+    Source.Width                 480
+    OnActivate                   ''
+    OnCreate                     ''
+    OnRepeat                     ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+UserButton
+    Name                         utilitiesMenuBtn
+    Alias                        utilitiesMenuBtn
+    Height                       226
+    Images                       utilitiesMenuBtn.png\nutilitiesBtnPressed.png
+    Left                         0
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          41
+    Width                        120
+    OnChanged                    ''
+end
+UserButton
+    Name                         tempMenuBtn
+    Alias                        tempMenuBtn
+    Height                       226
+    Images                       tempMenuBtn.png\ntempBtnPressed.png
+    Left                         360
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          41
+    Width                        120
+    OnChanged                    ''
+end
+UserButton
+    Name                         breakerMenuBtn
+    Alias                        breakerMenuBtn
+    Height                       226
+    Images                       ampsMenuBtn.png\nampsBtnPressed.png
+    Left                         240
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          41
+    Width                        120
+    OnChanged                    ''
+end
+UserButton
+    Name                         circuitMenuBtn
+    Alias                        circuitMenuBtn
+    Height                       226
+    Images                       circuitMenuBtn.png\ncirciutBtnPressed.png
+    Left                         120
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          41
+    Width                        120
+    OnChanged                    ''
+end
+Form
+    Name                         Form13
+    Alias                        Form13
+    Bgtype                       Image
+    Color                        BLACK
+    Image                        background.jpg
+    Source.Height                320
+    Source.Left                  0
+    Source.Top                   0
+    Source.Width                 480
+    OnActivate                   ''
+    OnCreate                     ''
+    OnRepeat                     ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+StaticText
+    Name                         ampSelectText
+    Alias                        ampSelectText
+    AutoSize                     Yes
+    Caption                      'Please select how many       amps you are using'
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    20
+    Font.Style                   [Bold]
+    Height                       80
+    Left                         72
+    Top                          112
+    Transparent                  Yes
+    Width                        348
+    WordWrap                     Yes
+end
+StaticText
+    Name                         circuitsSelectText
+    Alias                        circuitsSelectText
+    AutoSize                     Yes
+    Caption                      'Please select how many     circuits you are using'
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    20
+    Font.Style                   [Bold]
+    Height                       80
+    Left                         72
+    Top                          114
+    Transparent                  Yes
+    Width                        387
+    WordWrap                     Yes
+end
+Form
+    Name                         Form14
+    Alias                        invalidPin
+    Bgtype                       Image
+    Color                        BLACK
+    Image                        background.jpg
+    Source.Height                320
+    Source.Left                  0
+    Source.Top                   0
+    Source.Width                 480
+    OnActivate                   ''
+    OnCreate                     ''
+    OnRepeat                     ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+StaticText
+    Name                         invalidPinText_Header
+    Alias                        invalidPinText_Header
+    AutoSize                     Yes
+    Caption                      'Invalid Pin'
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    20
+    Font.Style                   [Bold]
+    Height                       43
+    Left                         176
+    Top                          26
+    Transparent                  Yes
+    Width                        128
+    WordWrap                     Yes
+end
+StaticText
+    Name                         invalidPinText_body
+    Alias                        invalidPinText_body
+    AutoSize                     Yes
+    Caption                      'Your pin was invalid would you like        to try again? If not, click ''NO''      to continue without cell monitoring.'
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    12
+    Font.Style                   [Bold]
+    Height                       76
+    Left                         112
+    Top                          66
+    Transparent                  Yes
+    Width                        256
+    WordWrap                     Yes
+end
+UserButton
+    Name                         yesBtn_InvalidPin
+    Alias                        yesBtn_InvalidPin
+    Height                       100
+    Images                       yesBtn.png\nyesBtnPressed.png
+    Left                         12
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          156
+    Width                        228
+    OnChanged                    ''
+end
+UserButton
+    Name                         noBtn_InvalidPin
+    Alias                        noBtn_InvalidPin
+    Height                       100
+    Images                       noBtn.png\nnoBtnPressed.png
+    Left                         244
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          156
+    Width                        228
+    OnChanged                    ''
+end
+Form
+    Name                         Form15
+    Alias                        StopTreatment
+    Bgtype                       Image
+    Color                        BLACK
+    Image                        background.jpg
+    Source.Height                320
+    Source.Left                  0
+    Source.Top                   0
+    Source.Width                 480
+    OnActivate                   ''
+    OnCreate                     ''
+    OnRepeat                     ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+StaticText
+    Name                         stopTreatmentHeader
+    Alias                        stopTreatmentHeader
+    AutoSize                     Yes
+    Caption                      'Would you like to    stop treatment?'
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    20
+    Font.Style                   [Bold]
+    Height                       66
+    Left                         130
+    Top                          28
+    Transparent                  Yes
+    Width                        215
+    WordWrap                     Yes
+end
+UserButton
+    Name                         yesBtn_stopTreatment
+    Alias                        yesBtn_stopTreatment
+    Height                       100
+    Images                       yesBtn.png\nyesBtnPressed.png
+    Left                         10
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          123
+    Width                        228
+    OnChanged                    ''
+end
+UserButton
+    Name                         noBtn_stopTreatment
+    Alias                        noBtn_stopTreatment
+    Height                       100
+    Images                       noBtn.png\nnoBtnPressed.png
+    Left                         242
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          123
+    Width                        228
+    OnChanged                    ''
+end
+Form
+    Name                         Form16
+    Alias                        Errors
+    Bgtype                       Image
+    Color                        BLACK
+    Image                        background.jpg
+    Source.Height                320
+    Source.Left                  0
+    Source.Top                   0
+    Source.Width                 480
+    OnActivate                   ''
+    OnCreate                     ''
+    OnRepeat                     ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+StaticText
+    Name                         error_01
+    Alias                        error_01
+    AutoSize                     Yes
+    Caption                      'There has been an error:'
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    20
+    Font.Style                   [Bold]
+    Height                       67
+    Left                         64
+    Top                          44
+    Transparent                  Yes
+    Width                        364
+    WordWrap                     Yes
+end
+StaticText
+    Name                         PowerError_cord2_text
+    Alias                        PowerError_cord2_text
+    AutoSize                     Yes
+    Caption                      'Power cord two(2) has lost power. Please check the connection.'
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    14
+    Font.Style                   [Bold]
+    Height                       56
+    Left                         75
+    Top                          116
+    Transparent                  Yes
+    Width                        349
+    WordWrap                     Yes
+end
+StaticText
+    Name                         PowerError_cord3_text
+    Alias                        PowerError_cord3_text
+    AutoSize                     Yes
+    Caption                      'Power cord three(3) has lost power. Please check the connection.'
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    14
+    Font.Style                   [Bold]
+    Height                       56
+    Left                         76
+    Top                          116
+    Transparent                  Yes
+    Width                        363
+    WordWrap                     Yes
+end
+StaticText
+    Name                         PowerError_cord4_text
+    Alias                        PowerError_cord4_text
+    AutoSize                     Yes
+    Caption                      'Power cord four(4) has lost power. Please check the connection.'
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    14
+    Font.Style                   [Bold]
+    Height                       56
+    Left                         76
+    Top                          116
+    Transparent                  Yes
+    Width                        346
+    WordWrap                     Yes
+end
+StaticText
+    Name                         StatusError_ComLoss_text
+    Alias                        StatusError_ComLoss_text
+    AutoSize                     Yes
+    Caption                      'Connection with the modem has been lost. Please wait or reset device.'
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    14
+    Font.Style                   [Bold]
+    Height                       84
+    Left                         76
+    Top                          116
+    Transparent                  Yes
+    Width                        337
+    WordWrap                     Yes
+end
+StaticText
+    Name                         StatusError_UnableToHeat_text
+    Alias                        StatusError_UnableToHeat_text
+    AutoSize                     Yes
+    Caption                      'Unit is unable to get up to temperature. Please refer to your manual for troubleshooting tips. '
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    14
+    Font.Style                   [Bold]
+    Height                       84
+    Left                         72
+    Top                          116
+    Transparent                  Yes
+    Width                        340
+    WordWrap                     Yes
+end
+StaticText
+    Name                         ProbeError_text
+    Alias                        ProbeError_text
+    AutoSize                     Yes
+    Caption                      'There has been a probe connection error. Please view troubleshooting guide.'
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    14
+    Font.Style                   [Bold]
+    Height                       84
+    Left                         76
+    Top                          116
+    Transparent                  Yes
+    Width                        363
+    WordWrap                     Yes
+end
+StaticText
+    Name                         ProbeInitializationError_text
+    Alias                        ProbeInitializationError_text
+    AutoSize                     Yes
+    Caption                      'Probes were unable to initialize. Please wait while we identify the probe. '
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    14
+    Font.Style                   [Bold]
+    Height                       84
+    Left                         72
+    Top                          116
+    Transparent                  Yes
+    Width                        370
+    WordWrap                     Yes
+end
+Form
+    Name                         Form17
+    Alias                        'TreatmentSuccessful '
+    Bgtype                       Image
+    Color                        BLACK
+    Image                        background.jpg
+    Source.Height                320
+    Source.Left                  0
+    Source.Top                   0
+    Source.Width                 480
+    OnActivate                   ''
+    OnCreate                     ''
+    OnRepeat                     ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+UserButton
+    Name                         Userbutton5
+    Alias                        Userbutton5
+    Height                       184
+    Images                       SuccessfullTreatment.png
+    Left                         45
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          74
+    Width                        197
+    OnChanged                    ''
+end
+StaticText
+    Name                         treatmentSuccessfulHeader
+    Alias                        treatmentSuccessfulHeader
+    AutoSize                     Yes
+    Caption                      'Treatment was successful!'
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    20
+    Font.Style                   [Bold]
+    Height                       80
+    Left                         54
+    Top                          13
+    Transparent                  Yes
+    Width                        384
+    WordWrap                     Yes
+end
+UserButton
+    Name                         viewResultsBtn
+    Alias                        viewResultsBtn
+    Height                       100
+    Images                       viewResults.png\nviewResultsPressed.png
+    Left                         213
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          146
+    Width                        228
+    OnChanged                    ''
+end
+Form
+    Name                         Form18
+    Alias                        TreatmentResults
+    Bgtype                       Image
+    Color                        BLACK
+    Image                        background.jpg
+    Source.Height                320
+    Source.Left                  0
+    Source.Top                   0
+    Source.Width                 480
+    OnActivate                   ''
+    OnCreate                     ''
+    OnRepeat                     ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+StaticText
+    Name                         treamtmentResultsTitle
+    Alias                        treamtmentResultsTitle
+    AutoSize                     Yes
+    Caption                      'Treatment Results'
+    Color                        0xDDD6D2
+    Font.Color                   0x53311D
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    10
+    Font.Style                   [Bold]
+    Height                       18
+    Left                         8
+    Top                          4
+    Transparent                  No
+    Width                        134
+    WordWrap                     Yes
+end
+Rectangle
+    Name                         Rectangle5
+    Alias                        Rectangle5
+    Color                        0xDDD6D2
+    Filled                       Yes
+    Height                       24
+    Left                         0
+    Outlined                     Yes
+    OutlineColor                 WHITE
+    Pattern                      Fine
+    Top                          0
+    Width                        480
+end
+Form
+    Name                         Form19
+    Alias                        CountDown_toShutOff
+    Bgtype                       Image
+    Color                        BLACK
+    Image                        background.jpg
+    Source.Height                320
+    Source.Left                  0
+    Source.Top                   0
+    Source.Width                 480
+    OnActivate                   ''
+    OnCreate                     ''
+    OnRepeat                     ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+UserButton
+    Name                         EmergencyShutOff_btn
+    Alias                        EmergencyShutOff_btn
+    Height                       86
+    Images                       emergncyStopBtn_125.png
+    Left                         352
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          232
+    Width                        125
+    OnChanged                    ''
+end
+LedDigits
+    Name                         CountDown_Digits
+    Alias                        Digits_25
+    Color                        0x6F4E3B
+    Decimals                     0
+    Digits                       3
+    Height                       108
+    LeadingZero                  Yes
+    Left                         118
+    OutlineColor                 0x6F4E3B
+    Palette.High                 WHITE
+    Palette.Low                  0x6F4E3B
+    Top                          96
+    Width                        243
+    OnChanged                    ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+StaticText
+    Name                         CoolDownText
+    Alias                        CoolDownText
+    AutoSize                     Yes
+    Caption                      'Cool Down '
+    Color                        0xDDD6D2
+    Font.Color                   0x53311D
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    10
+    Font.Style                   [Bold]
+    Height                       18
+    Left                         8
+    Top                          3
+    Transparent                  No
+    Width                        90
+    WordWrap                     Yes
+end
+StaticText
+    Name                         ShuttingDownText
+    Alias                        ShuttingDownText
+    AutoSize                     Yes
+    Caption                      'Shutting Down, Please Wait'
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    16
+    Font.Style                   [Bold]
+    Height                       33
+    Left                         102
+    Top                          44
+    Transparent                  Yes
+    Width                        264
+    WordWrap                     Yes
+end
+StaticText
+    Name                         SecsText
+    Alias                        SecsText
+    AutoSize                     Yes
+    Caption                      Secs
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    14
+    Font.Style                   [Bold]
+    Height                       28
+    Left                         360
+    Top                          180
+    Transparent                  Yes
+    Width                        46
+    WordWrap                     Yes
+end
+Rectangle
+    Name                         Rectangle6
+    Alias                        Rectangle6
+    Color                        0xDDD6D2
+    Filled                       Yes
+    Height                       24
+    Left                         0
+    Outlined                     Yes
+    OutlineColor                 WHITE
+    Pattern                      Fine
+    Top                          0
+    Width                        480
+end
+Form
+    Name                         Form20
+    Alias                        EmergencyStop
+    Bgtype                       Image
+    Color                        BLACK
+    Image                        background.jpg
+    Source.Height                320
+    Source.Left                  0
+    Source.Top                   0
+    Source.Width                 480
+    OnActivate                   ''
+    OnCreate                     ''
+    OnRepeat                     ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+StaticText
+    Name                         EmergencyText
+    Alias                        EmergencyText
+    AutoSize                     Yes
+    Caption                      'Emergency shutdown initiated.      Heater shutting down now.'
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    18
+    Font.Style                   [Bold]
+    Height                       58
+    Left                         72
+    Top                          120
+    Transparent                  Yes
+    Width                        336
+    WordWrap                     Yes
+end
+Form
+    Name                         Form21
+    Alias                        UTILITIES
+    Bgtype                       Image
+    Color                        BLACK
+    Image                        background.jpg
+    Source.Height                320
+    Source.Left                  0
+    Source.Top                   0
+    Source.Width                 480
+    OnActivate                   ''
+    OnCreate                     ''
+    OnRepeat                     ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+StaticText
+    Name                         cellStrengthText
+    Alias                        cellStrengthText
+    AutoSize                     Yes
+    Caption                      'Cell Strength:'
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    14
+    Font.Style                   [Bold]
+    Height                       28
+    Left                         12
+    Top                          24
+    Transparent                  Yes
+    Width                        137
+    WordWrap                     Yes
+end
+UserButton
+    Name                         back_btn_utilites
+    Alias                        back_btn_utilites
+    Height                       54
+    Images                       backBtn.png\nbackBtnPressed.png
+    Left                         18
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          260
+    Width                        101
+    OnChanged                    ''
+end
+StaticText
+    Name                         cellVersionText
+    Alias                        cellVersionText
+    AutoSize                     Yes
+    Caption                      'Cell Version:'
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    14
+    Font.Style                   [Bold]
+    Height                       28
+    Left                         12
+    Top                          76
+    Transparent                  Yes
+    Width                        126
+    WordWrap                     Yes
+end
+StaticText
+    Name                         ArduinoVersionText
+    Alias                        ArduinoVersionText
+    AutoSize                     Yes
+    Caption                      'Arduino Version:'
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    14
+    Font.Style                   [Bold]
+    Height                       28
+    Left                         12
+    Top                          128
+    Transparent                  Yes
+    Width                        169
+    WordWrap                     Yes
+end
+StaticText
+    Name                         ScreenVersionText
+    Alias                        ScreenVersionText
+    AutoSize                     Yes
+    Caption                      'Screen Version:'
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    14
+    Font.Style                   [Bold]
+    Height                       28
+    Left                         12
+    Top                          180
+    Transparent                  Yes
+    Width                        182
+    WordWrap                     Yes
+end
+LedDigits
+    Name                         CellStrengthDigit
+    Alias                        CellStrengthDigit
+    Color                        0x5C3A27
+    Decimals                     0
+    Digits                       1
+    Height                       34
+    LeadingZero                  No
+    Left                         192
+    OutlineColor                 0x5C3A27
+    Palette.High                 WHITE
+    Palette.Low                  0x5C3A27
+    Top                          16
+    Width                        34
+    OnChanged                    ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+LedDigits
+    Name                         CellVersionMajorDigit
+    Alias                        CellVersionMajorDigit
+    Color                        0x604231
+    Decimals                     0
+    Digits                       2
+    Height                       34
+    LeadingZero                  Yes
+    Left                         192
+    OutlineColor                 0x604231
+    Palette.High                 WHITE
+    Palette.Low                  0x604231
+    Top                          68
+    Width                        68
+    OnChanged                    ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+StaticText
+    Name                         CellMajorDecimalText
+    Alias                        CellMajorDecimalText
+    AutoSize                     Yes
+    Caption                      .
+    Color                        WHITE
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    16
+    Font.Style                   [Bold]
+    Height                       33
+    Left                         258
+    Top                          74
+    Transparent                  Yes
+    Width                        6
+    WordWrap                     Yes
+end
+LedDigits
+    Name                         CellMinorlDigit
+    Alias                        CellMinorlDigit
+    Color                        0x604231
+    Decimals                     0
+    Digits                       2
+    Height                       34
+    LeadingZero                  Yes
+    Left                         268
+    OutlineColor                 0x604231
+    Palette.High                 WHITE
+    Palette.Low                  0x604231
+    Top                          68
+    Width                        68
+    OnChanged                    ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+StaticText
+    Name                         CellMinorDecimalText
+    Alias                        CellMinorDecimalText
+    AutoSize                     Yes
+    Caption                      .
+    Color                        WHITE
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    16
+    Font.Style                   [Bold]
+    Height                       33
+    Left                         334
+    Top                          74
+    Transparent                  Yes
+    Width                        6
+    WordWrap                     Yes
+end
+LedDigits
+    Name                         CellPatchDigit
+    Alias                        CellPatchDigit
+    Color                        0x604231
+    Decimals                     0
+    Digits                       2
+    Height                       34
+    LeadingZero                  Yes
+    Left                         342
+    OutlineColor                 0x604231
+    Palette.High                 WHITE
+    Palette.Low                  0x604231
+    Top                          68
+    Width                        68
+    OnChanged                    ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+LedDigits
+    Name                         ArduinoVersionMajorDigit
+    Alias                        ArduinoVersionMajorDigit
+    Color                        0x6E4C39
+    Decimals                     0
+    Digits                       2
+    Height                       34
+    LeadingZero                  Yes
+    Left                         192
+    OutlineColor                 0x6E4C39
+    Palette.High                 WHITE
+    Palette.Low                  0x6E4C39
+    Top                          120
+    Width                        68
+    OnChanged                    ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+LedDigits
+    Name                         ArduinoMinorlDigit
+    Alias                        ArduinoMinorlDigit
+    Color                        0x6E4C39
+    Decimals                     0
+    Digits                       2
+    Height                       34
+    LeadingZero                  Yes
+    Left                         268
+    OutlineColor                 0x6E4C39
+    Palette.High                 WHITE
+    Palette.Low                  0x6E4C39
+    Top                          120
+    Width                        68
+    OnChanged                    ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+StaticText
+    Name                         ArduinoMinorDecimalText
+    Alias                        ArduinoMinorDecimalText
+    AutoSize                     Yes
+    Caption                      .
+    Color                        WHITE
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    16
+    Font.Style                   [Bold]
+    Height                       33
+    Left                         334
+    Top                          126
+    Transparent                  Yes
+    Width                        6
+    WordWrap                     Yes
+end
+LedDigits
+    Name                         ArduinoPatchDigit
+    Alias                        ArduinoPatchDigit
+    Color                        0x6E4C39
+    Decimals                     0
+    Digits                       2
+    Height                       34
+    LeadingZero                  Yes
+    Left                         342
+    OutlineColor                 0x6E4C39
+    Palette.High                 WHITE
+    Palette.Low                  0x6E4C39
+    Top                          120
+    Width                        68
+    OnChanged                    ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+LedDigits
+    Name                         ScreenVersionMajorDigit
+    Alias                        ScreenVersionMajorDigit
+    Color                        0x845C44
+    Decimals                     0
+    Digits                       2
+    Height                       34
+    LeadingZero                  Yes
+    Left                         192
+    OutlineColor                 0x845C44
+    Palette.High                 WHITE
+    Palette.Low                  0x845C44
+    Top                          172
+    Width                        68
+    OnChanged                    ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+StaticText
+    Name                         ScreenMajorDecimalText
+    Alias                        ScreenMajorDecimalText
+    AutoSize                     Yes
+    Caption                      .
+    Color                        WHITE
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    16
+    Font.Style                   [Bold]
+    Height                       33
+    Left                         258
+    Top                          178
+    Transparent                  Yes
+    Width                        6
+    WordWrap                     Yes
+end
+StaticText
+    Name                         ArduinoMajorDecimalText
+    Alias                        ArduinoMajorDecimalText
+    AutoSize                     Yes
+    Caption                      .
+    Color                        WHITE
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    16
+    Font.Style                   [Bold]
+    Height                       33
+    Left                         258
+    Top                          126
+    Transparent                  Yes
+    Width                        6
+    WordWrap                     Yes
+end
+LedDigits
+    Name                         ScreenMinorlDigit
+    Alias                        ScreenMinorlDigit
+    Color                        0x845C44
+    Decimals                     0
+    Digits                       2
+    Height                       34
+    LeadingZero                  Yes
+    Left                         268
+    OutlineColor                 0x845C44
+    Palette.High                 WHITE
+    Palette.Low                  0x845C44
+    Top                          172
+    Width                        68
+    OnChanged                    ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+StaticText
+    Name                         ScreenMinorDecimalText
+    Alias                        ScreenMinorDecimalText
+    AutoSize                     Yes
+    Caption                      .
+    Color                        WHITE
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    16
+    Font.Style                   [Bold]
+    Height                       33
+    Left                         334
+    Top                          178
+    Transparent                  Yes
+    Width                        6
+    WordWrap                     Yes
+end
+LedDigits
+    Name                         ScreenPatchDigit
+    Alias                        ScreenPatchDigit
+    Color                        0x845C44
+    Decimals                     0
+    Digits                       2
+    Height                       34
+    LeadingZero                  Yes
+    Left                         342
+    OutlineColor                 0x845C44
+    Palette.High                 WHITE
+    Palette.Low                  0x845C44
+    Top                          172
+    Width                        68
+    OnChanged                    ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+StaticText
+    Name                         CellConnectionText
+    Alias                        CellConnectionText
+    AutoSize                     Yes
+    Caption                      'Connecting to Cell'
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    16
+    Font.Style                   [Bold]
+    Height                       35
+    Left                         192
+    Top                          72
+    Transparent                  Yes
+    Width                        228
+    WordWrap                     Yes
+end
+UserButton
+    Name                         next_btn_utilities
+    Alias                        next_btn_utilities
+    Height                       54
+    Images                       IdProbesBtn.png\nIdProbesPressedBtn.png
+    Left                         248
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          260
+    Width                        101
+    OnChanged                    ''
+end
+UserButton
+    Name                         LogButton
+    Alias                        LogButton
+    Height                       53
+    Images                       LogBtn.png\nLogPressedBtn.png
+    Left                         132
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          260
+    Width                        101
+    OnChanged                    ''
+end
+Form
+    Name                         Form22
+    Alias                        'Establishing Cell Connection'
+    Bgtype                       Image
+    Color                        BLACK
+    Image                        background.jpg
+    Source.Height                320
+    Source.Left                  0
+    Source.Top                   0
+    Source.Width                 480
+    OnActivate                   ''
+    OnCreate                     ''
+    OnRepeat                     ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+StaticText
+    Name                         ConnectionTitle
+    Alias                        ConnectionTitle
+    AutoSize                     Yes
+    Caption                      'Establishing Connection... '
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    20
+    Font.Style                   [Bold]
+    Height                       40
+    Left                         85
+    Top                          40
+    Transparent                  Yes
+    Width                        309
+    WordWrap                     Yes
+end
+StaticText
+    Name                         connectionBodyText
+    Alias                        connectionBodyText
+    AutoSize                     Yes
+    Caption                      'This may take SEVERAL minutes '
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    12
+    Font.Style                   [Bold]
+    Height                       39
+    Left                         123
+    Top                          92
+    Transparent                  Yes
+    Width                        233
+    WordWrap                     Yes
+end
+UserButton
+    Name                         ContWithoutCell_btn
+    Alias                        ContWithoutCell_btn
+    Height                       100
+    Images                       noCellBtn.png\nnoCellBtnPressed.png
+    Left                         124
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          204
+    Width                        228
+    OnChanged                    ''
+end
+StaticText
+    Name                         ProceedWithoutcellText
+    Alias                        ProceedWithoutcellText
+    AutoSize                     Yes
+    Caption                      'Would you like to proceed without cell service?'
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    12
+    Font.Style                   [Bold]
+    Height                       30
+    Left                         68
+    Top                          168
+    Transparent                  Yes
+    Width                        344
+    WordWrap                     Yes
+end
+Form
+    Name                         Form23
+    Alias                        UnableToConnectToNetwork
+    Bgtype                       Image
+    Color                        BLACK
+    Image                        background.jpg
+    Source.Height                320
+    Source.Left                  0
+    Source.Top                   0
+    Source.Width                 480
+    OnActivate                   ''
+    OnCreate                     ''
+    OnRepeat                     ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+StaticText
+    Name                         NetworkConnectionError_header
+    Alias                        NetworkConnectionError_header
+    AutoSize                     Yes
+    Caption                      'Network connection error'
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    24
+    Font.Style                   [Bold]
+    Height                       39
+    Left                         55
+    Top                          22
+    Transparent                  Yes
+    Width                        369
+    WordWrap                     Yes
+end
+StaticText
+    Name                         poorSignalText
+    Alias                        poorSignalText
+    AutoSize                     Yes
+    Caption                      'This location may have poor signal.'
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    12
+    Font.Style                   [Bold]
+    Height                       48
+    Left                         115
+    Top                          64
+    Transparent                  Yes
+    Width                        250
+    WordWrap                     Yes
+end
+StaticText
+    Name                         reconnectText
+    Alias                        reconnectText
+    AutoSize                     Yes
+    Caption                      'Would you like to try to conect to the network again?'
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    11
+    Font.Style                   [Bold]
+    Height                       22
+    Left                         60
+    Top                          160
+    Transparent                  Yes
+    Width                        360
+    WordWrap                     Yes
+end
+UserButton
+    Name                         noCellBtn_NetworkCommunicationError
+    Alias                        noCellBtn_NetworkCommunicationError
+    Height                       100
+    Images                       noCellBtn.png\nnoCellBtnPressed.png
+    Left                         244
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          196
+    Width                        228
+    OnChanged                    ''
+end
+UserButton
+    Name                         retryConnectionBtn
+    Alias                        retryConnectionBtn
+    Height                       100
+    Images                       RetyconnectionBtn.png\nRetyconnectionBtnPressed.png
+    Left                         8
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          196
+    Width                        228
+    OnChanged                    ''
+end
+Form
+    Name                         Form24
+    Alias                        IdentifyingProbes
+    Bgtype                       Image
+    Color                        BLACK
+    Image                        background.jpg
+    Source.Height                320
+    Source.Left                  0
+    Source.Top                   0
+    Source.Width                 480
+    OnActivate                   ''
+    OnCreate                     ''
+    OnRepeat                     ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+StaticText
+    Name                         ProbeErrorTitle
+    Alias                        ProbeErrorTitle
+    AutoSize                     Yes
+    Caption                      'Error Reading Probe Temperature '
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    18
+    Font.Style                   [Bold]
+    Height                       32
+    Left                         60
+    Top                          44
+    Transparent                  Yes
+    Width                        360
+    WordWrap                     Yes
+end
+StaticText
+    Name                         AirTempProbe_Text
+    Alias                        AirTempProbe_Text
+    AutoSize                     Yes
+    Caption                      'Please hold the  AIR TEMPATURE PROBE  in your hand. Then press  START  to begin identification. '
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    Lato
+    Font.Size                    12
+    Font.Style                   []
+    Height                       57
+    Left                         64
+    Top                          92
+    Transparent                  Yes
+    Width                        350
+    WordWrap                     Yes
+end
+UserButton
+    Name                         StartProbeIdent_btn
+    Alias                        StartProbeIdent_btn
+    Height                       126
+    Images                       startBtn_sm.png\nstartBtnPressed_sm.png
+    Left                         177
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          158
+    Width                        126
+    OnChanged                    ''
+end
+StaticText
+    Name                         Probe1_Text
+    Alias                        Probe1_Text
+    AutoSize                     Yes
+    Caption                      'Please hold the  PROBE ONE (1)  in your hand. Then press  START  to begin identification. '
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    Lato
+    Font.Size                    12
+    Font.Style                   []
+    Height                       57
+    Left                         64
+    Top                          92
+    Transparent                  Yes
+    Width                        350
+    WordWrap                     Yes
+end
+StaticText
+    Name                         Probe2_Text
+    Alias                        Probe2_Text
+    AutoSize                     Yes
+    Caption                      'Please hold the  PROBE TWO (2)  in your hand. Then press  START  to begin identification. '
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    Lato
+    Font.Size                    12
+    Font.Style                   []
+    Height                       57
+    Left                         64
+    Top                          92
+    Transparent                  Yes
+    Width                        350
+    WordWrap                     Yes
+end
+StaticText
+    Name                         Probe3_Text
+    Alias                        Probe3_Text
+    AutoSize                     Yes
+    Caption                      'Please hold the  PROBE THREE (3)  in your hand. Then press  START  to begin identification. '
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    Lato
+    Font.Size                    12
+    Font.Style                   []
+    Height                       57
+    Left                         64
+    Top                          92
+    Transparent                  Yes
+    Width                        350
+    WordWrap                     Yes
+end
+Form
+    Name                         Form25
+    Alias                        ProbeIdentificationComplete
+    Bgtype                       Image
+    Color                        BLACK
+    Image                        background.jpg
+    Source.Height                320
+    Source.Left                  0
+    Source.Top                   0
+    Source.Width                 480
+    OnActivate                   ''
+    OnCreate                     ''
+    OnRepeat                     ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+StaticText
+    Name                         ProbeIdentSuccessful_Text
+    Alias                        ProbeIdentSuccessful_Text
+    AutoSize                     Yes
+    Caption                      'Probe Identification Successful!'
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    18
+    Font.Style                   [Bold]
+    Height                       50
+    Left                         70
+    Top                          100
+    Transparent                  Yes
+    Width                        340
+    WordWrap                     Yes
+end
+StaticText
+    Name                         ProbeIdentUnsuccessful_TitleText
+    Alias                        ProbeIdentUnsuccessful_TitleText
+    AutoSize                     Yes
+    Caption                      'Unable to idenify probe successfully. Retry or reboot the control box. '
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Medium'
+    Font.Size                    18
+    Font.Style                   [Bold]
+    Height                       58
+    Left                         30
+    Top                          63
+    Transparent                  Yes
+    Width                        420
+    WordWrap                     Yes
+end
+StaticText
+    Name                         ProbeIdentUnsuccessful_Text
+    Alias                        ProbeIdentUnsuccessful_Text
+    AutoSize                     Yes
+    Caption                      'Probe was not heated or was was assigned to multiple IDs. Please make sure you are holding the correct probe. If error continues refer to the manual or contact customer service.'
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    Lato
+    Font.Size                    12
+    Font.Style                   []
+    Height                       57
+    Left                         30
+    Top                          136
+    Transparent                  Yes
+    Width                        420
+    WordWrap                     Yes
+end
+UserButton
+    Name                         retryProbeConnect_btn
+    Alias                        retryProbeConnect_btn
+    Height                       100
+    Images                       RetyconnectionBtn.png\nRetyconnectionBtnPressed.png
+    Left                         126
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          200
+    Width                        228
+    OnChanged                    ''
+end
+StaticText
+    Name                         ProbeInitiationComplete_text
+    Alias                        ProbeInitiationComplete_text
+    AutoSize                     Yes
+    Caption                      'All Probes were identified successfully! Please reboot the control box to start a treatment.'
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Medium'
+    Font.Size                    18
+    Font.Style                   [Bold]
+    Height                       87
+    Left                         31
+    Top                          75
+    Transparent                  Yes
+    Width                        420
+    WordWrap                     Yes
+end
+Form
+    Name                         Form26
+    Alias                        Re-IdenifyProbes
+    Bgtype                       Image
+    Color                        BLACK
+    Image                        background.jpg
+    Source.Height                320
+    Source.Left                  0
+    Source.Top                   0
+    Source.Width                 480
+    OnActivate                   ''
+    OnCreate                     ''
+    OnRepeat                     ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+StaticText
+    Name                         reidentifying_text
+    Alias                        reidentifying_text
+    AutoSize                     Yes
+    Caption                      'Would you like to re-identifing probes? Be sure to check your manual before selecting yes.'
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Semibold'
+    Font.Size                    14
+    Font.Style                   [Bold]
+    Height                       100
+    Left                         28
+    Top                          72
+    Transparent                  Yes
+    Width                        420
+    WordWrap                     Yes
+end
+UserButton
+    Name                         reidentifyProbesYes_btn
+    Alias                        reidentifyProbesYes_btn
+    Height                       100
+    Images                       yesBtn.png\nyesBtnPressed.png
+    Left                         8
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          148
+    Width                        228
+    OnChanged                    ''
+end
+UserButton
+    Name                         reidentifyProbesNo_btn
+    Alias                        reidentifyProbesNo_btn
+    Height                       100
+    Images                       noBtn.png\nnoBtnPressed.png
+    Left                         244
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          148
+    Width                        228
+    OnChanged                    ''
+end
+Form
+    Name                         Form27
+    Alias                        'Send Logs'
+    Bgtype                       Image
+    Color                        BLACK
+    Image                        background.jpg
+    Source.Height                320
+    Source.Left                  0
+    Source.Top                   0
+    Source.Width                 480
+    OnActivate                   ''
+    OnCreate                     ''
+    OnRepeat                     ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+StaticText
+    Name                         Log_Title
+    Alias                        Log_Title
+    AutoSize                     Yes
+    Caption                      'Would you like to send   log files to ZappBug?'
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Medium'
+    Font.Size                    18
+    Font.Style                   [Bold]
+    Height                       58
+    Left                         104
+    Top                          56
+    Transparent                  Yes
+    Width                        269
+    WordWrap                     Yes
+end
+UserButton
+    Name                         Log_Yes_Btn
+    Alias                        Log_Yes_Btn
+    Height                       100
+    Images                       yesBtn.png\nyesBtnPressed.png
+    Left                         8
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          148
+    Width                        228
+    OnChanged                    ''
+end
+UserButton
+    Name                         Log_No_btn
+    Alias                        Log_No_btn
+    Height                       100
+    Images                       noBtn.png\nnoBtnPressed.png
+    Left                         244
+    Matrix                       -1
+    Momentary                    Yes
+    Stretch                      No
+    Top                          148
+    Width                        228
+    OnChanged                    ''
+end
+Form
+    Name                         Form28
+    Alias                        Form28
+    Bgtype                       Image
+    Color                        BLACK
+    Image                        background.jpg
+    Source.Height                320
+    Source.Left                  0
+    Source.Top                   0
+    Source.Width                 480
+    OnActivate                   ''
+    OnCreate                     ''
+    OnRepeat                     ''
+    OnTouchMoving                ''
+    OnTouchPressed               ''
+    OnTouchReleased              ''
+end
+StaticText
+    Name                         NoCellTitle
+    Alias                        NoCellTitle
+    AutoSize                     Yes
+    Caption                      'Unable to send log files because there is no cell service. Please wait and try again.'
+    Color                        BLACK
+    Font.Color                   WHITE
+    Font.Effects                 []
+    Font.Name                    'Lato Medium'
+    Font.Size                    14
+    Font.Style                   [Bold]
+    Height                       230
+    Left                         40
+    Top                          96
+    Transparent                  Yes
+    Width                        409
+    WordWrap                     Yes
+end

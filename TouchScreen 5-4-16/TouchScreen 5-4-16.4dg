@@ -1,0 +1,3256 @@
+#platform "uLCD-35DT"
+
+#inherit "4DGL_16bitColours.fnc"
+
+#inherit "VisualConst.inc"
+
+#inherit "TouchScreen 5-4-16Const.inc"
+#inherit "LEDDIGITSDISPLAY.inc"
+#inherit "PrintDisk.inc"
+/*hello world==?
+*/
+
+/******** Functions list ********/
+
+
+
+///Serial Functions ///
+
+#constant MSG_ACK '!'  //message acknowledged character
+#constant PIN_LENGTH 6  //Length of the User Pin
+
+#constant SETUP_MESSAGE 'S'  //Length of the User Pin
+#constant SETUP_MESSAGE_LENGTH 9  //Length of setup message NOT INCLUDING CONTROL CHAR
+#constant CELL_STRENGTH_MESSAGE 'C'  //Length of the User Pin
+#constant CELL_STRENGTH_MESSAGE_LENGTH 1  //Length of cell strength message NOT INCLUDING CONTROL CHAR
+#constant CHECK_PIN_MESSAGE 'P'  //Length of the User Pin
+#constant CHECK_PIN_MESSAGE_LENGTH 1  //Length of the check message Response - NOT INCLUDING CONTROL CHAR
+#constant BEGIN_TREATMENT_MESSAGE 'X'  //Signals the arduino to begin treatment (followed by treatment data)
+#constant SERIAL_TIMEOUT 30000  //Length of time before tiemout in Serial comms. In miliseconds
+#constant SERIAL_TIMEOUT_ITERATOR 100  //Length of time in timeout loop before checking Serial again
+#constant MAX_8BIT_VALUE 255  //max value that can be held by one var sent from the arduino
+
+#constant CELL_STRENGTH_NONE 0 //Minimum value for cell strength
+#constant CELL_STRENGTH_UPPERBOUND 4 //Maximum value for cell strength
+
+#constant TRUE 1
+#constant FALSE 0
+
+#constant TREATMENT_UPDATE_MESSAGE 'U' //signals the screen that treatment values are being updated
+#constant TREATMENT_UPDATE_MESSAGE_LENGTH 9 //Length of update message NOT INCLUDING CONTROL CHAR
+
+#constant EMERGENCY_STOP_MESSAGE 'E' //Signals the Arduino to emergency stop without cool-down
+#constant NORMAL_STOP_MESSAGE 'T' //Signals the arduino to stop the treatment normally (with cool down)
+
+#constant ARDUINO_RESET_INIT 'R' //first of two characters that tell the arduino to reset
+#constant ARDUINO_RESET_CONFIRM 'Y' //second of two characters that tell the arduino to reset
+#constant SCREEN_STATUS_COMPLETE 'K' //Signal the screen that the treatment has ended and everything is okay
+#constant SCREEN_COOLDOWN 'D' //arduino send this to indicate that the system is cooling down.  Message should include time remaining in seconds.
+#constant SCREEN_COOLDOWN_MESSAGE_LENGTH 1  //Length of cell strength message NOT INCLUDING CONTROL CHAR
+
+#constant BOOT_ERROR_MSG 'B' //indicates a boot error.  Created to send a message indicating cell modem boot errors.
+
+#constant UPDATE_CELL_STRENGTH 'M' //collects updated cell stregth message
+
+#constant INITATE_PROBE 'I' //initates probe connection
+#constant REINITATE_PROBE_IDENTIFICATION 'W' //initates probe connection
+
+#constant SEND_LOG_FILES 'L' //sends log files to ZappBug
+
+#constant WAITING_TO_BEGIN 0  //indicates that all systems are nominal and waiting to begin treatment
+#constant STATUS_NOMINAL 1 //indicates that treatment is ongoing and all systems are nominal
+#constant STATUS_COMPLETE_OK 2 //indicates that the treatment was completed successfully
+#constant STATUS_POWER_LOSS 3 //indicates a power loss on one of the lines.  Use Treatment Error to identify the specific line.
+#constant STATUS_COMM_LOSS 4 //indicates communication loss with the ombitron server
+#constant STATUS_STOPPED_USER 5 //indicates that the treatment was terminated by the user
+#constant STATUS_UNABLE_TO_HEAT 6 // Device indicated that it is unable to reach the desired target temperature
+#constant STATUS_STOPPED_EMERGENCY 7 //User initiates emergency stop to stop treatment without cool-down
+#constant STATUS_POWER_LOSS_2 8 //indicates a power loss on one of the lines.  Use Treatment Error to identify the specific line.
+#constant STATUS_POWER_LOSS_3 9 //indicates a power loss on one of the lines.  Use Treatment Error to identify the specific line.
+#constant STATUS_POWER_LOSS_4 10 //indicates a power loss on one of the lines.  Use Treatment Error to identify the specific line.
+#constant STATUS_PROBE_ERROR 11 //indicates probe error.
+#constant STATUS_PROBE_COMM_LOSS 12
+#constant STATUS_PROBE_INITIATION 13 //Idicaties probe initiation error
+#constant TREATMENT_CLEAR 0 //Indicated the treatment status is okay and there are no power loss
+
+
+#constant CELL_BOOT_ERROR_COMM 2  //indicates that the cell modem is not communicating with the Arduino after CELL_BOOT_COMM_TIMEOUT time.
+#constant CELL_BOOT_ERROR_NETWORK 3 //indicates that the cell modem has not established a network connection after CELL_BOOT_NETWORK_TIMEOUT time.
+
+/////Version control////////////
+#constant VERSION_SCREEN_MAJOR 1
+#constant VERSION_SCREEN_MINOR 0
+#constant VERSION_SCREEN_PATCH 2 //small edits
+
+
+
+#constant CELL_VERSION_MESSAGE 'V' //Collections the Version of the Cell being used
+#constant ARDUINO_VERSION_MESSAGE 'A' //collects the Version of the Arduino
+
+#constant CHECK_VERSION_MESSAGE_LENGTH 3
+
+//Probe Identification numbers
+
+#constant PROBE_AIR_TEMP 0
+#constant PROBE_01 1
+#constant PROBE_02 2
+#constant PROBE_03 3
+#constant PROBE_SUCCESSFULLY_IDENTIFIED 4
+#constant PROBE_UNSUCCESSFULLY_IDENTIFIED 5
+#constant PROBE_INITIATION_COMPLETE 6
+
+
+
+////////form and switch case constants/////////
+#constant FORM_1_LOADING_SCREEN 1
+#constant FORM_2_WELCOME_SCREEN 2
+#constant FORM_3_CIRCUITS 3
+#constant FORM_4_BREAKERS 4
+#constant FORM_5_TEMP_SETTINGS 5
+#constant FORM_6_ENABLE_CELL 6
+#constant FORM_7_CURRENT_PIN 7
+#constant FORM_8_MODIFY_PIN 8
+#constant FORM_9_UNABLE_TO_CONNECT_MODEM 9
+#constant FORM_23_UNABLE_TO_CONNECT_NETWORK 23
+
+#constant FORM_10_START_TREATMENT 10
+#constant FORM_11_CURRENT_RESULTS 11
+#constant FORM_12_MENU 12
+#constant FORM_13_SELECTION_REMINDER 13
+#constant FORM_14_INVALID_PIN 14
+#constant FORM_15_STOP_TREATMENT 15
+#constant FORM_16_ERRORS 16
+#constant FORM_17_TREATMENT_SUCCESSFUL 17
+#constant FORM_18_TREATMENT_RESULTS 18
+#constant FORM_19_COUNTDOWN_TO_SHUT_OFF 19
+#constant FORM_20_EMERGENCY_SHUTDOWN 20
+#constant FORM_21_UTILITIES 21
+#constant FORM_22_ESTABLISHING_CONNECTION 22
+#constant FORM_24_IDENTIFYING_PROBES 24
+#constant FORM_25_PROBE_IDENTIFICATION_COMPLETE 25
+#constant FORM_26_REIDENTIFY_PROBES 26
+#constant FORM_27_SEND_LOG_FILES 27
+#constant FORM_28_NO_CELL_DURING_TREATMENT 28
+
+////////temp constants
+#constant MIN_mAirTemp 120
+#constant MAX_mAirTemp 160
+#constant MIN_tAtTarget 10
+#constant MAX_tAtTarget 255
+#constant MAX_tTemp 140
+#constant MIN_tTemp 120
+
+#constant CIRCUITS_2 2
+#constant CIRCUITS_3 3
+#constant BREAKERS_15 15
+#constant BREAKERS_20 20
+
+#constant CELL_TIMED_OUT 3 //this gives a third value to the validation of the pin so lets the user know it is different error than invalid or valid most likely modem connection error
+#constant PIN_VALIDATION_ERROR 4 //gives a fall back incase serial input is read wrong when validading the pin
+
+//global variables
+var serBuff[32];
+var serBuffTx[64];
+
+/////Global Vars////
+var state1 := 1;
+var state := 0;
+var currentForm := 0;
+var cellEnableForm :=0;
+var setForm;
+var backBtnSrc;
+var k :=0;
+var j :=0;
+var VERSION_CELL_MAJOR := 0;
+var VERSION_CELL_MINOR := 0;
+var VERSION_CELL_PATCH := 0;
+
+var VERSION_ARDUINO_MAJOR := 0;
+var VERSION_ARDUINO_MINOR := 0;
+var VERSION_ARDUINO_PATCH := 0;
+
+
+//////Serial Global
+var nCircuits:= FALSE;
+var cBreakers := FALSE;
+var tTemp := 120;   //f
+var mAirTemp := 160;  //
+var tAtTarget := 30;  //
+var cellOnBoard := 0;  //defaults to no cell modem in unit unless otherwise indicated by the arduino
+var cellEnabled := 0;  //indicates if cell is enabled for this treatment. Only if requested by user and pin is valid.
+var cellPin[PIN_LENGTH];
+var cellSignalStrength := 0; //default to no signal.  Arduino must send signal strength > 0 for cell to be used
+var TimeElapsedHrs := 0;
+var TimeElapsedMin := 0;
+var etaHrs := 0;
+var etaMin := 43;
+var TEMP_ARRAY[4] := [24,135,124,136];  //Format AirTemp,Probe1,Probe2,Probe3
+var backBtnArray[6]:=[FORM_1_LOADING_SCREEN, FORM_2_WELCOME_SCREEN, FORM_3_CIRCUITS, FORM_4_BREAKERS, FORM_5_TEMP_SETTINGS, FORM_6_ENABLE_CELL];
+
+var treatmentStatus;
+var runCurrentUpdate := 1;
+var cellMonitoring := 1;
+var previousLink := 2;
+var PrevFormErrorIdenification := FORM_2_WELCOME_SCREEN;
+var thisSignalStrength;
+var bootMessage := 0;
+var cellConnectionMsg := -1;
+var conectionHasHappened := 0;
+var establishingConnection_choice := -1;
+var probe_idenification_number := 6;
+var statusErrors := -1;
+
+
+func main()
+ var hstrings ; // Handle to access uSD strings, uncomment if required
+  var hFontn ;   // Handle to access uSD fonts, uncomment if required and change n to font number
+
+
+
+touch_Set(TOUCH_ENABLE);
+    gfx_Set(SCREEN_MODE,LANDSCAPE) ;
+    //snd_Volume(127);
+
+        while(!(file_Mount()))
+            pause(100);
+        wend
+   gfx_TransparentColour(0x0020);    // uncomment if transparency required
+   gfx_Transparency(ON);             // uncomment if transparency required
+
+    hFontn := file_LoadImageControl("TOUCHS~1.dan", "TOUCHS~1.gcn", 1); // Open handle to access uSD fonts, uncomment if required and change n to font number dropping a and c if > 9
+    hstrings := file_Open("TOUCHS~1.txf", 'r') ; // Open handle to access uSD strings, uncomment if required
+    hndl := file_LoadImageControl("TOUCHS~1.dat", "TOUCHS~1.gci", 1);
+
+
+ //Loading screen
+         img_Show(hndl,iLoadingBG) ;
+         img_Show(hndl,iLoadingText) ;
+
+
+    //Setup comms
+    setbaud(BAUD_57600);    //  9600 baud comms
+    // set up a comms circular buffer, use the entire buffer, no sync character
+    var combuf[24];    // 24 vars = 48 bytes
+    com_Init(serBuff, 64, 0);
+    com_TXbuffer(serBuffTx, 64, 0);
+
+
+    //Setup comms
+    COM1_RX_pin(PA0);//Pins used on the
+    COM1_TX_pin(PA1);
+    com_SetBaud(COM1, 57600);
+    com1_Init(serBuff, 64, 0);
+    com1_TXbuffer(serBuffTx, 64, 0);
+
+   //Boot Sequence/////////////////////////////
+
+    //Initialize Serial Communication with the Arduino
+    init_Serial_Comm();  //Waits for a ping and responds with a ping
+
+    repeat
+
+        touchEventHandler();
+
+        check_Incoming_Serial();
+    forever
+endfunc
+
+
+func touchEventHandler()
+    //check screen for a touch
+    var touchState;
+    var cellPinValid := FALSE;
+    touchState := touch_Get(TOUCH_STATUS);
+
+    //Screen is touched
+    if(touchState != NOTOUCH)
+
+        //check to see if a button was touched
+        var touchImgIndex;
+        touchImgIndex := getImgIndex();
+
+        //if a button has been pressed and released do action
+        if(touchState == TOUCH_RELEASED)
+
+            switch (currentForm)
+
+                  case FORM_2_WELCOME_SCREEN: //Welcome Form
+                    if(touchImgIndex == iyesBtn_welcome)
+                        btnPressAndRelease(iyesBtn_welcome);
+                        previousLink := FORM_3_CIRCUITS;
+                        currentForm := FORM_3_CIRCUITS;
+                        gotoCurrentForm(0);
+                    endif
+                break;
+
+                case FORM_3_CIRCUITS: //Circuit Form
+
+                     switch(touchImgIndex)
+                         case i2circuitsBtn:
+                            switchBtnPress(i2circuitsBtn, i3circuitsBtn);
+                            nCircuits := BtnNumber(touchImgIndex);
+                        break;
+
+                        case i3circuitsBtn:
+                            switchBtnPress(i3circuitsBtn, i2circuitsBtn);
+                            nCircuits := BtnNumber(touchImgIndex);
+                        break;
+              ///*********** MENU  ***************//
+                        case inextBtn_circuits:
+                            if (nCircuits == CIRCUITS_2 || nCircuits == CIRCUITS_3)
+                                btnPressAndRelease(inextBtn_circuits);
+                                 previousLink := FORM_3_CIRCUITS;
+                                currentForm := fwrdBtn(FORM_3_CIRCUITS);
+                                gotoCurrentForm(0);
+                            else
+                                btnPressAndRelease(inextBtn_circuits);
+                                selectBtn(icircuitsSelectText, 3); //takes you to the "please select 'option' form"
+                            endif
+                        break;
+
+                        case imenuBtn_circuits:
+                            btnPressAndRelease(imenuBtn_circuits);
+                            currentForm := FORM_21_UTILITIES;
+                            gotoCurrentForm(0);
+                        break;
+                    endswitch
+                break;
+
+
+                case FORM_4_BREAKERS: //Amp Form
+                    switch(touchImgIndex)
+                    case i15ampsBtn:
+                        switchBtnPress( i15ampsBtn, i20ampsBtn);
+                        cBreakers := BtnNumber(touchImgIndex);
+                    break;
+                   case i20ampsBtn:
+                        switchBtnPress( i20ampsBtn, i15ampsBtn );
+                        cBreakers :=  BtnNumber(touchImgIndex);
+                  break;
+               ///************* MENU  ****************//
+                    case inextBtn_amps:
+                        if (cBreakers == BREAKERS_15 || cBreakers == BREAKERS_20)
+                            btnPressAndRelease(inextBtn_amps);
+                            currentForm := fwrdBtn(FORM_4_BREAKERS);
+                            gotoCurrentForm(0);
+                        else
+                            btnPressAndRelease(inextBtn_amps);
+                            selectBtn(iampSelectText, 4); //takes you to the "please select 'option' form"
+                        endif
+                     break;
+
+                    case ibackBtn_amps:
+                        btnPressAndRelease(ibackBtn_amps);
+                        currentForm :=  backBtn(FORM_4_BREAKERS);
+                        gotoCurrentForm(0);
+                    break;
+
+                    case imenuBtn_amps:
+                        btnPressAndRelease(imenuBtn_amps);
+                        previousLink := FORM_4_BREAKERS;
+                        currentForm := FORM_21_UTILITIES;
+                       gotoCurrentForm(0);
+                    break;
+                    endswitch
+                break;
+
+                case FORM_5_TEMP_SETTINGS: //Temp Set form
+
+                    switch(touchImgIndex)
+                        case iminusBtn_targetTemp_tempSet: /////////115 <= targetTemp <= 135, increment by 5 //////////
+                            tempBtnHighlight(iminusBtn_targetTemp_tempSet);
+                            tTempMinusBuffer ();
+                        break;
+                    case iaddBtn_targetTemp_tempSet:
+                        tempBtnHighlight(iaddBtn_targetTemp_tempSet);
+                        tTempAddBuffer ();
+                     break;
+                   case iminusBtn_maxAirTemp_tempSet:
+                        tempBtnHighlight(iminusBtn_maxAirTemp_tempSet);
+                        if (mAirTemp > MIN_mAirTemp) mAirTemp -= 5;
+                            ledDigitsDisplay(mAirTemp, imaxAirTempDigits_tempSet+1, 59, 3, 1, 33, 0) ;
+                            tTempMinusBuffer_02 ();
+                     break;
+                    case iaddBtn_maxAirTemp_tempSet:
+                        tempBtnHighlight(iaddBtn_maxAirTemp_tempSet);
+                        if(mAirTemp < MAX_mAirTemp) mAirTemp += 5;
+                            ledDigitsDisplay(mAirTemp, imaxAirTempDigits_tempSet+1, 59, 3, 1, 33, 0) ;
+                     break;
+                    case iminusBtn_timeAtTarget_tempSet:
+                        tempBtnHighlight(iminusBtn_timeAtTarget_tempSet);
+                        if (tAtTarget > MIN_tAtTarget) tAtTarget -= 5;
+                            ledDigitsDisplay(tAtTarget, itimeAtTargetDigits_tempSet+1, 59, 3, 1, 33, 1) ;
+                      break;
+                    case iaddBtn_timeAtTarget_tempSet:
+                        tempBtnHighlight(iaddBtn_timeAtTarget_tempSet);
+                        if (tAtTarget < MAX_tAtTarget) tAtTarget += 5;
+                            ledDigitsDisplay(tAtTarget, itimeAtTargetDigits_tempSet+1, 59, 3, 1, 33, 1) ;
+                    break;
+            ///******** MENU  **************8//
+                    case ibackBtn__tempSet:
+                        btnPressAndRelease(ibackBtn__tempSet);
+                          currentForm :=  backBtn(FORM_5_TEMP_SETTINGS);
+                        gotoCurrentForm(0);
+                    break;
+                    case inextBtn__tempSet:
+                          btnPressAndRelease(inextBtn__tempSet);
+                          previousLink := FORM_5_TEMP_SETTINGS;
+                        if (cellOnBoard == TRUE)  //If there is ----NOT---- a cell connection skip to form #######
+                            if (conectionHasHappened == FALSE)
+                                conectionHasHappened := TRUE;
+                                setForm := FORM_22_ESTABLISHING_CONNECTION;
+                            else if (conectionHasHappened == TRUE && cellSignalStrength > 0)
+                                setForm := FORM_6_ENABLE_CELL;
+                            else
+                                setForm := FORM_23_UNABLE_TO_CONNECT_NETWORK;
+                            endif
+
+                           // searchForCellConnectionMsg();
+                            //If there IS a cell connection go to "enable cell?" question form 6
+                        else if (cellOnBoard == FALSE)
+                            setForm := FORM_10_START_TREATMENT ;
+                        endif
+                        currentForm := setForm;
+                        gotoCurrentForm(0);
+                    break;
+
+                    case imenuBtn__tempSet:
+                         btnPressAndRelease(imenuBtn__tempSet);
+                         previousLink := FORM_5_TEMP_SETTINGS;
+                        currentForm := FORM_21_UTILITIES;
+                       gotoCurrentForm(0);
+                    break;
+                endswitch
+                break;
+
+                 case FORM_22_ESTABLISHING_CONNECTION:
+                    switch(touchImgIndex)
+                    case iContWithoutCell_btn:
+                        btnPressAndRelease(iContWithoutCell_btn);
+                        cellMonitoring:=FALSE;
+                        establishingConnection_choice := FALSE;
+                            currentForm := FORM_10_START_TREATMENT;
+                            gotoCurrentForm(0);
+                    break;
+                    endswitch
+
+                 break;
+
+                case FORM_6_ENABLE_CELL: //Enable Cell Form
+
+                     //cellMonitoring:=TRUE;
+                    switch(touchImgIndex)
+                    case iyesBtn_enableCell:
+                        cellMonitoring:=TRUE;
+                        previousLink := FORM_6_ENABLE_CELL;
+                        switchBtnPress(iyesBtn_enableCell, inoBtn_enableCell);
+                       // thisSignalStrength := cellSignalStrength;
+                           // print(thisSignalStrength);
+                          //  pause(3000);
+                           if (establishingConnection_choice == FALSE)
+                         //  print("establishing connection Choice False");
+                             btnPressReset(iyesBtn_enableCell);
+                             currentForm := establishingConnectionReconnectEnabled();
+                              gotoCurrentForm(0);
+                           else if(cellSignalStrength > 0)
+                                 btnPressReset(iyesBtn_enableCell);
+                                currentForm := FORM_7_CURRENT_PIN;
+                                gotoCurrentForm(0);
+                            else
+                                currentForm := FORM_23_UNABLE_TO_CONNECT_NETWORK;
+                                btnPressReset(iyesBtn_enableCell);    //clears button press
+                                gotoCurrentForm(0);
+                                cellMonitoring:=FALSE;
+                            endif
+                        break;
+
+                    case inoBtn_enableCell:
+                         cellEnabled := FALSE;
+                        cellMonitoring:=FALSE;
+                       switchBtnPress(inoBtn_enableCell, iyesBtn_enableCell);
+                       previousLink := FORM_6_ENABLE_CELL;
+                            currentForm := FORM_10_START_TREATMENT;
+                            gotoCurrentForm(0);
+                            btnPressReset(inoBtn_enableCell);  //clears button press
+
+                        break ;
+
+            ///************* MENU  *****************//
+                    case ibackBtn_enableCell:
+                        btnPressAndRelease(ibackBtn_enableCell);
+                        cellMonitoring:=FALSE;
+                        currentForm :=  backBtn(FORM_6_ENABLE_CELL);
+                        gotoCurrentForm(0);
+                    break;
+
+
+                   case inextBtn_enableCell:
+
+
+                    break;
+
+                    case imenuBtn_enableCell:
+                        btnPressAndRelease(imenuBtn_enableCell);
+                        previousLink := FORM_6_ENABLE_CELL;
+                       currentForm := FORM_21_UTILITIES;
+                       gotoCurrentForm(0);
+                    break;
+                    endswitch
+                break;
+
+                case FORM_7_CURRENT_PIN:  //Use or Create Pin Form
+
+                    img_Show(hndl, icurrentPinDigits_00);  // show all digits at 0, only do this once
+                    ledDigitsDisplay(cellPin[0], icurrentPinDigits_00+1, 112, 1, 1, 50, 0) ;
+                    img_Show(hndl, icurrentPinDigits_01);  // show all digits at 0, only do this once
+                    ledDigitsDisplay(cellPin[1], icurrentPinDigits_01+1, 164, 1, 1, 50, 0) ;
+                    img_Show(hndl, icurrentPinDigits_02);  // show all digits at 0, only do this once
+                    ledDigitsDisplay(cellPin[2], icurrentPinDigits_02+1, 216, 1, 1, 50, 0) ;
+                    img_Show(hndl, icurrentPinDigits_03);  // show all digits at 0, only do this once
+                    ledDigitsDisplay(cellPin[3], icurrentPinDigits_03+1, 264, 1, 1, 50, 0) ;
+                    img_Show(hndl, icurrentPinDigits_04);  // show all digits at 0, only do this once
+                    ledDigitsDisplay(cellPin[4], icurrentPinDigits_04+1, 312, 1, 1, 50, 0) ;
+
+                    //  btnPressReset(iusePinBtn_currentPin);
+                    switch(touchImgIndex)
+                     case iusePinBtn_currentPin:
+                        switchBtnPress(iusePinBtn_currentPin, icreatePinBtn_currentPin);
+                        cellPinValid := checkCellPin();
+                        if (cellPinValid == TRUE)
+                            currentForm := FORM_10_START_TREATMENT;
+                            btnPressReset(iusePinBtn_currentPin);
+                            gotoCurrentForm(0);
+                         else if (cellPinValid == FALSE && cellSignalStrength == FALSE)
+                            currentForm :=  FORM_23_UNABLE_TO_CONNECT_NETWORK;
+                            btnPressReset(iusePinBtn_currentPin);
+                            gotoCurrentForm(0);
+                        else if (cellPinValid == FALSE && cellSignalStrength > 0)
+                            currentForm := FORM_14_INVALID_PIN;
+                            btnPressReset(iusePinBtn_currentPin);
+                            gotoCurrentForm(0);
+                        else if (cellPinValid == CELL_TIMED_OUT)
+                            currentForm :=  FORM_23_UNABLE_TO_CONNECT_NETWORK;
+                            btnPressReset(iusePinBtn_currentPin);
+                            gotoCurrentForm(0);
+                        else
+                            currentForm :=  FORM_23_UNABLE_TO_CONNECT_NETWORK;
+                            btnPressReset(iusePinBtn_currentPin);
+                            gotoCurrentForm(0);
+
+                        endif
+
+                    break;
+
+                case icreatePinBtn_currentPin:
+                        switchBtnPress(icreatePinBtn_currentPin, iusePinBtn_currentPin);
+
+                        if (cellSignalStrength >0)
+                              //  print(cellPin[PIN_LENGTH]);
+                             //   print("\nCell Strength " , cellSignalStrength);
+                            setForm := FORM_8_MODIFY_PIN;
+                            btnPressReset(icreatePinBtn_currentPin);
+                             //currentForm := 8;
+                            //gotoCurrentForm(0);
+                        else if(cellSignalStrength < 1)
+                               // print("\nCell Strength" , cellSignalStrength);
+                            setForm := FORM_23_UNABLE_TO_CONNECT_NETWORK; ///unable to get cell signal, Try again?
+                            btnPressReset(icreatePinBtn_currentPin);
+                        endif
+
+                    if(setForm == FORM_8_MODIFY_PIN)
+
+                        cellPin[PIN_LENGTH -1] := [0];
+                        clearPin();
+                    endif
+                    btnPressReset(iusePinBtn_currentPin);
+                    currentForm := setForm;
+                    gotoCurrentForm(0);
+                   break;
+
+                /////////// MENU  /////////
+                    case inextBtn_currentPin:
+                       /* if(setForm == FORM_8_MODIFY_PIN)
+                            cellPin[PIN_LENGTH -1] := [0];
+                            clearPin();
+                        endif
+                        currentForm := setForm;
+                        btnPressReset(iusePinBtn_currentPin);
+                        gotoCurrentForm(0);   */
+                   break;
+
+                    case imenuBtn_currentPin:
+                    break;
+
+                        case ibackBtn_currentPin:
+                           btnPressAndRelease(ibackBtn_currentPin);
+                           currentForm :=  backBtn(FORM_7_CURRENT_PIN);
+                            gotoCurrentForm(0);
+                       break;
+                   endswitch
+                break;
+
+                case FORM_8_MODIFY_PIN:  //Create Pin Form
+                    if(cellPin[PIN_LENGTH -1]<=4)
+                        if (touchImgIndex < 0 || BtnNumber(touchImgIndex) < 0)    //created to keep pin from adding blanks '0's when anything other than the pin buttons are pushed
+
+                        else if( touchImgIndex >= 0) //creates pin
+                            tempBtnHighlight(touchImgIndex);
+                            cellPin[cellPin[PIN_LENGTH -1]] := BtnNumber(touchImgIndex);
+                            cellPin[PIN_LENGTH -1]++;
+                        endif
+                            ledDigitsDisplay(cellPin[0], isetPinDigits_00+1, 98, 1, 1, 54, 0) ;
+                            ledDigitsDisplay(cellPin[1], isetPinDigits_01+1, 150, 1, 1, 54, 0) ;
+                            ledDigitsDisplay(cellPin[2], isetPinDigits_02+1, 202, 1, 1, 54, 0) ;
+                            ledDigitsDisplay(cellPin[3], isetPinDigits_03+1, 254, 1, 1, 54, 0) ;
+                            ledDigitsDisplay(cellPin[4], isetPinDigits_04+1, 306, 1, 1, 54, 0) ;
+                    endif
+                   /////clear pin///////
+                    switch(touchImgIndex)
+                    case iclearBtn:
+                       tempBtnHighlight(touchImgIndex);
+                       cellPin[PIN_LENGTH -1] := [0];
+                       clearPin();
+
+                        ledDigitsDisplay(cellPin[0], isetPinDigits_00+1, 98, 1, 1, 54, 0) ;
+                        ledDigitsDisplay(cellPin[1], isetPinDigits_01+1, 150, 1, 1, 54, 0) ;
+                        ledDigitsDisplay(cellPin[2], isetPinDigits_02+1, 202, 1, 1, 54, 0) ;
+                        ledDigitsDisplay(cellPin[3], isetPinDigits_03+1, 254, 1, 1, 54, 0) ;
+                        ledDigitsDisplay(cellPin[4], isetPinDigits_04+1, 306, 1, 1, 54, 0) ;
+                    break;
+                   /////////// MENU  /////////
+                    case inextBtn_settPin:
+                        btnPressAndRelease(inextBtn_settPin);
+                       btnPressReset(icreatePinBtn_currentPin);
+                       currentForm := FORM_7_CURRENT_PIN;
+                       gotoCurrentForm(0);
+                    break;
+
+                    case ibackBtn_settPin:
+                       btnPressAndRelease(ibackBtn_settPin);
+                       currentForm := FORM_7_CURRENT_PIN;
+                       gotoCurrentForm (0);
+                       btnPressReset(icreatePinBtn_currentPin);
+                    break;
+
+                   case imenuBtn_settPin:
+                    break;
+                    endswitch
+                break;
+
+                case FORM_9_UNABLE_TO_CONNECT_MODEM: //Unable to connect to Cell form
+                     switch(touchImgIndex)
+                     case inoCellBtn_ModemCommunicationError:
+                         cellMonitoring:=FALSE;
+                         currentForm := FORM_2_WELCOME_SCREEN;
+                         gotoCurrentForm(0);
+                     break;
+                     endswitch
+                break;
+
+                case FORM_23_UNABLE_TO_CONNECT_NETWORK: //Unable to connect to Cell form
+                     switch(touchImgIndex)
+                     case inoCellBtn_NetworkCommunicationError:
+                        btnPressAndRelease(inoCellBtn_NetworkCommunicationError);
+                         cellMonitoring:=FALSE;
+                         conectionHasHappened := FALSE;
+                         currentForm := FORM_10_START_TREATMENT;
+                         gotoCurrentForm(0);
+                    break;
+                      case iretryConnectionBtn:
+                            btnPressAndRelease(iretryConnectionBtn);
+                                img_Show(hndl,iLoadingBG) ;  //place holder image while attempting to get cell strength
+                                img_Show(hndl,iLoadingText) ;
+                            if(request_Cell_Strength_Exist() == TRUE)
+                              // print("cell request True");
+                              // pause(500);
+                                cellMonitoring:=FALSE;
+                                conectionHasHappened := TRUE;
+                                currentForm := FORM_6_ENABLE_CELL;
+                                gotoCurrentForm(0);
+                            else
+                              //  print("cell request FALSE");
+                              //  pause (500);
+                                cellMonitoring:=FALSE;
+                                conectionHasHappened := TRUE;
+                                currentForm := FORM_23_UNABLE_TO_CONNECT_NETWORK;
+                                gotoCurrentForm(0);
+                            endif
+                        break;
+                        endswitch
+                break;
+
+                case FORM_10_START_TREATMENT: //Start Treatment Form
+                 switch(touchImgIndex)
+                   case istartBtn_startTreatment:
+                    if(nCircuits == FALSE)
+                         selectBtn(icircuitsSelectText, 3);  //takes you to the "please select 'option' form"
+                    else if(cBreakers == FALSE)
+                           selectBtn(iampSelectText, 4); //takes you to the "please select 'option' form"
+                     else
+                        runCurrentUpdate := TRUE;
+                        btnPress(istartBtn_startTreatment);
+                        begin_Treatment();
+                        setForm := FORM_11_CURRENT_RESULTS;
+                        endif
+                    break;
+                /////////// MENU  /////////
+                    case inextBtn_startTreatment:
+
+                    break;
+
+                   case ibackBtn_startTreatment:
+                        btnPressAndRelease(ibackBtn_startTreatment);
+                        if (cellMonitoring == FALSE)
+                         if(cellOnBoard == TRUE)
+                            currentForm := FORM_6_ENABLE_CELL;
+                            gotoCurrentForm(0);
+                         else
+                            currentForm := FORM_5_TEMP_SETTINGS;
+                            gotoCurrentForm(0);
+                        endif
+                        else if(cellMonitoring == TRUE)
+                           if(cellOnBoard == TRUE)
+                            currentForm := FORM_7_CURRENT_PIN;
+                            gotoCurrentForm(0);
+                         else
+                            currentForm := FORM_5_TEMP_SETTINGS;
+                            gotoCurrentForm(0);
+                        endif
+                    endif
+                   break;
+
+                    case imenuBtn_startTreatment:
+
+                    break;
+                   endswitch
+                break;
+
+                case FORM_11_CURRENT_RESULTS:  //Current Results Form
+                    runCurrentUpdate := TRUE;
+                    displayCurrentTemp();
+
+                 /////////// MENU  /////////
+                    switch(touchImgIndex)
+                    case imenuBtn_currentResults:
+                        btnPressAndRelease(imenuBtn_currentResults);
+                       runCurrentUpdate := FALSE;
+                        previousLink := FORM_11_CURRENT_RESULTS;
+                       currentForm := FORM_21_UTILITIES;
+                        gotoCurrentForm(0);
+                      // updateUtilitesScreen();
+                    break;
+
+                     case istopBtn_currentResults:
+                      btnPressAndRelease(istopBtn_currentResults);
+                       runCurrentUpdate := FALSE;
+                       currentForm := FORM_15_STOP_TREATMENT;
+                       gotoCurrentForm(0);
+                    break;
+                    endswitch
+                break;
+
+                case FORM_13_SELECTION_REMINDER:
+                    img_Show(hndl,iForm13);
+                break;
+
+                case FORM_14_INVALID_PIN:
+                     cellMonitoring := TRUE;
+                     switch(touchImgIndex)
+                    case iyesBtn_InvalidPin:
+                       switchBtnPress(iyesBtn_InvalidPin, inoBtn_InvalidPin);
+                       currentForm := FORM_7_CURRENT_PIN;
+                        btnPressReset(iyesBtn_InvalidPin);
+                       gotoCurrentForm(0);
+                    break;
+                    case inoBtn_InvalidPin:
+                       switchBtnPress(inoBtn_InvalidPin, iyesBtn_InvalidPin);
+                        cellMonitoring := FALSE;
+                       currentForm := FORM_10_START_TREATMENT;
+                       btnPressReset(inoBtn_InvalidPin);
+                       gotoCurrentForm(0);
+                         //   print(setForm);
+                    break;
+                    endswitch
+                break;
+
+                case FORM_15_STOP_TREATMENT:  ///////////////// Shut Off Page
+                switch(touchImgIndex)
+                    case iyesBtn_stopTreatment:
+                        btnPressAndRelease(iyesBtn_stopTreatment);
+                        normalStop();
+                    break;
+                    case inoBtn_stopTreatment:
+                        btnPressAndRelease(inoBtn_stopTreatment);
+                        currentForm := FORM_11_CURRENT_RESULTS;
+                        gotoCurrentForm(0);
+                        displayCurrentTemp();
+                        runCurrentUpdate := TRUE;
+                    break;
+                    endswitch
+                break;
+
+                case FORM_17_TREATMENT_SUCCESSFUL:
+                    if (touchImgIndex == iviewResultsBtn)
+                        currentForm := FORM_18_TREATMENT_RESULTS;
+                        gotoCurrentForm(0);
+                    endif
+                break;
+                 case FORM_18_TREATMENT_RESULTS:
+                 break;
+
+                 case FORM_19_COUNTDOWN_TO_SHUT_OFF:
+                         if (touchImgIndex == iEmergencyShutOff_btn)
+                            emergencyStop();
+                         endif
+                 break;
+                       case FORM_21_UTILITIES:
+
+                    if (touchImgIndex == iback_btn_utilites)
+                        btnPressAndRelease(iback_btn_utilites);
+                        if(previousLink == FORM_11_CURRENT_RESULTS)
+                        currentForm := FORM_11_CURRENT_RESULTS;
+                        gotoCurrentForm(0);
+                        displayCurrentTemp();
+                        else
+                        currentForm := PrevFormErrorIdenification;
+                        gotoCurrentForm(0);
+                        endif
+                  else if(touchImgIndex == iLogButton)
+                        btnPressAndRelease(iLogButton);
+                        currentForm := FORM_27_SEND_LOG_FILES;
+                        gotoCurrentForm(0);
+                   else if(touchImgIndex == inext_btn_utilities)
+                        btnPressAndRelease(inext_btn_utilities);
+                        currentForm := FORM_26_REIDENTIFY_PROBES;
+                        gotoCurrentForm(0);
+                     endif
+
+                  break;
+
+                     case FORM_24_IDENTIFYING_PROBES:
+                     if (touchImgIndex == iStartProbeIdent_btn)
+                        btnPressAndRelease(iStartProbeIdent_btn);
+                        start_Probe_Intiation();
+                       endif
+                  break;
+                   case FORM_25_PROBE_IDENTIFICATION_COMPLETE:
+                       if (touchImgIndex == iretryProbeConnect_btn)
+                        btnPressAndRelease(iretryProbeConnect_btn);
+                        start_Probe_Intiation();
+                        endif
+                     break;
+                   case FORM_26_REIDENTIFY_PROBES:
+                       if (touchImgIndex == ireidentifyProbesYes_btn)
+                        btnPressAndRelease(ireidentifyProbesYes_btn);
+                        start_Probe_Reintiation();
+                        else if(touchImgIndex == ireidentifyProbesNo_btn)
+                        btnPressAndRelease(ireidentifyProbesNo_btn);
+                        currentForm := FORM_21_UTILITIES;
+                        gotoCurrentForm(0);
+                        endif
+                    break;
+                    case FORM_27_SEND_LOG_FILES:
+                         if (touchImgIndex == iLog_Yes_Btn)
+                        btnPressAndRelease(iLog_Yes_Btn);
+                        if(cellSignalStrength >0)
+                        send_log_files();
+                        else
+                          currentForm := FORM_28_NO_CELL_DURING_TREATMENT;
+                          gotoCurrentForm(0);
+                        endif
+                        else if(touchImgIndex == iLog_No_btn)
+                        btnPressAndRelease(iLog_No_btn);
+                        currentForm := FORM_21_UTILITIES;
+                        gotoCurrentForm(0);
+                        endif
+                    break;
+
+            endswitch
+        endif
+    endif
+endfunc
+
+
+
+
+////////////////////////////////////////////////////////////////// FUNCTIONS  /////////////////////////////////////////////////////////////////////////
+
+//********** Global Functions **************
+
+
+//**********Alows buttons and images to be clicked ******************
+
+func getImgIndex()
+/*  This function will figure out which image has been toughed, ignoring images that
+    are not buttons. Returns image index if touch detected or -1 of images not touched */
+    var index;
+
+    switch (currentForm)
+
+  //******* Form 2 "yes" button Welcome *********//
+        case FORM_2_WELCOME_SCREEN:
+            index := img_Touched(hndl, iyesBtn_welcome);
+            if (index > 0) return index;
+        break;
+  //******* Form 3 Circuits *********//
+        case FORM_3_CIRCUITS:
+            index := img_Touched(hndl, i3circuitsBtn);
+            if (index > 0) return index;
+            index := img_Touched(hndl, i2circuitsBtn);
+            if (index > 0) return index;
+            index := img_Touched(hndl, inextBtn_circuits);
+            if (index > 0) return index;
+            index := img_Touched(hndl, imenuBtn_circuits);
+            if (index > 0) return index;
+        break;
+  //******* Form 4 Amps *********//
+        case FORM_4_BREAKERS:
+            index := img_Touched(hndl, i15ampsBtn);
+            if (index > 0) return index;
+            index := img_Touched(hndl, i20ampsBtn);
+            if (index > 0) return index;
+            index := img_Touched(hndl, inextBtn_amps);
+            if (index > 0) return index;
+            index := img_Touched(hndl, ibackBtn_amps);
+            if (index > 0) return index;
+            index := img_Touched(hndl, imenuBtn_amps);
+            if (index > 0) return index;
+        break;
+  //******* Form 5 Temp Set *********//
+        case FORM_5_TEMP_SETTINGS:
+            index := img_Touched(hndl, iaddBtn_targetTemp_tempSet);
+            if (index > 0) return index;
+            index := img_Touched(hndl, iminusBtn_targetTemp_tempSet);
+            if (index > 0) return index;
+            index := img_Touched(hndl, iaddBtn_maxAirTemp_tempSet);
+            if (index > 0) return index;
+            index := img_Touched(hndl, iminusBtn_maxAirTemp_tempSet);
+            if (index > 0) return index;
+            index := img_Touched(hndl, iaddBtn_timeAtTarget_tempSet);
+            if (index > 0) return index;
+            index := img_Touched(hndl, iminusBtn_timeAtTarget_tempSet);
+            if (index > 0) return index;
+            index := img_Touched(hndl, ibackBtn__tempSet);
+            if (index > 0) return index;
+            index := img_Touched(hndl, inextBtn__tempSet);
+            if (index > 0) return index;
+            index := img_Touched(hndl, imenuBtn__tempSet);
+            if (index > 0) return index;
+
+        break;
+//******* Form 6 Enable Cell *********//
+        case FORM_6_ENABLE_CELL:
+            index := img_Touched(hndl, iyesBtn_enableCell);
+            if (index > 0) return index;
+            index := img_Touched(hndl, inoBtn_enableCell);
+            if (index > 0) return index;
+            index := img_Touched(hndl, inextBtn_enableCell);
+            if (index > 0) return index;
+            index := img_Touched(hndl, imenuBtn_enableCell);
+            if (index > 0) return index;
+            index := img_Touched(hndl, ibackBtn_enableCell);
+            if (index > 0) return index;
+        break;
+//******* Form 7 Current Pin *********//
+        case FORM_7_CURRENT_PIN:
+            index := img_Touched(hndl, icreatePinBtn_currentPin);
+            if (index > 0) return index;
+            index := img_Touched(hndl, iusePinBtn_currentPin);
+            if (index > 0) return index;
+            index := img_Touched(hndl, ibackBtn_currentPin);
+            if (index > 0) return index;
+            index := img_Touched(hndl, imenuBtn_currentPin);
+            if (index > 0) return index;
+            index := img_Touched(hndl, inextBtn_currentPin);
+            if (index > 0) return index;
+        break;
+//******* Form 8 Set Pin *********//
+        case FORM_8_MODIFY_PIN:
+            index := img_Touched(hndl, ipinBtn_0);
+            if (index > 0) return index;
+            index := img_Touched(hndl, ipinBtn_1);
+            if (index > 0) return index;
+            index := img_Touched(hndl, ipinBtn_2);
+            if (index > 0) return index;
+            index := img_Touched(hndl, ipinBtn_3);
+            if (index > 0) return index;
+            index := img_Touched(hndl, ipinBtn_4);
+            if (index > 0) return index;
+            index := img_Touched(hndl, ipinBtn_5);
+            if (index > 0) return index;
+            index := img_Touched(hndl, ipinBtn_6);
+            if (index > 0) return index;
+            index := img_Touched(hndl, ipinBtn_7);
+            if (index > 0) return index;
+            index := img_Touched(hndl, ipinBtn_8);
+            if (index > 0) return index;
+            index := img_Touched(hndl, ipinBtn_9);
+            if (index > 0) return index;
+            index := img_Touched(hndl, iclearBtn);
+            if (index > 0) return index;
+            index := img_Touched(hndl, ibackBtn_settPin);
+            if (index > 0) return index;
+            index := img_Touched(hndl, inextBtn_settPin);
+            if (index > 0) return index;
+            index := img_Touched(hndl, imenuBtn_settPin);
+            if (index > 0) return index;
+            index := img_Touched(hndl, isetPinDigits_00);
+            if (index > 0) return index;
+            index := img_Touched(hndl, isetPinDigits_01);
+            if (index > 0) return index;
+            index := img_Touched(hndl, isetPinDigits_02);
+            if (index > 0) return index;
+            index := img_Touched(hndl, isetPinDigits_03);
+            if (index > 0) return index;
+            index := img_Touched(hndl, isetPinDigits_04);
+            if (index > 0) return index;
+          break;
+//******* Form 9 unable to connect *********//
+         case FORM_9_UNABLE_TO_CONNECT_MODEM:
+            index := img_Touched(hndl, inoCellBtn_ModemCommunicationError);
+            if (index > 0) return index;
+         break;
+         case FORM_23_UNABLE_TO_CONNECT_NETWORK:
+             index := img_Touched(hndl, iretryConnectionBtn);
+            if (index > 0) return index;
+            index := img_Touched(hndl, inoCellBtn_NetworkCommunicationError);
+            if (index > 0) return index;
+         break;
+
+
+
+//******* Form 10 Start Treatment *********//
+         case FORM_10_START_TREATMENT:
+            index := img_Touched(hndl, istartBtn_startTreatment);
+            if (index > 0) return index;
+            index := img_Touched(hndl, inextBtn_startTreatment);
+            if (index > 0) return index;
+            index := img_Touched(hndl, imenuBtn_startTreatment);
+            if (index > 0) return index;
+            index := img_Touched(hndl, ibackBtn_startTreatment);
+            if (index > 0) return index;
+         break;
+//******* Form 11 Current Resaults *********//
+         case FORM_11_CURRENT_RESULTS:
+            index := img_Touched(hndl, istopBtn_currentResults);
+            if (index > 0) return index;
+            index := img_Touched(hndl, inextBtn_currentResults);
+            if (index > 0) return index;
+            index := img_Touched(hndl, imenuBtn_currentResults);
+            if (index > 0) return index;
+            index := img_Touched(hndl, ibackBtn_currentResults);
+            if (index > 0) return index;
+        break;
+ //******* Form 12 Menu *********//
+        case FORM_12_MENU:
+            index := img_Touched(hndl, itempMenuBtn);
+            if (index > 0) return index;
+            index := img_Touched(hndl, ibreakerMenuBtn);
+            if (index > 0) return index;
+            index := img_Touched(hndl, icircuitMenuBtn);
+            if (index > 0) return index;
+            index := img_Touched(hndl, iutilitiesMenuBtn);
+            if (index > 0) return index;
+        break;
+//******* Form 14 Invalid pin *********//
+        case FORM_14_INVALID_PIN:
+            index := img_Touched(hndl, iyesBtn_InvalidPin);
+            if (index > 0) return index;
+            index := img_Touched(hndl, inoBtn_InvalidPin);
+            if (index > 0) return index;
+         break;
+//******* Form 15 stop treatment *********//
+        case FORM_15_STOP_TREATMENT:
+            index := img_Touched(hndl, iyesBtn_stopTreatment);
+            if (index > 0) return index;
+            index := img_Touched(hndl, inoBtn_stopTreatment);
+            if (index > 0) return index;
+        break;
+//******* Form 17 Treatment Successful *********//
+        case FORM_17_TREATMENT_SUCCESSFUL:
+           index := img_Touched(hndl, iviewResultsBtn);
+            if (index > 0) return index;
+        break;
+
+        case FORM_19_COUNTDOWN_TO_SHUT_OFF:
+           index := img_Touched(hndl, iEmergencyShutOff_btn);
+            if (index > 0) return index;
+        break;
+        case FORM_21_UTILITIES:
+         index := img_Touched(hndl, iback_btn_utilites);
+            if (index > 0) return index;
+            index := img_Touched(hndl, inext_btn_utilities);
+            if (index > 0) return index;
+            index := img_Touched(hndl, iLogButton);
+            if (index > 0) return index;
+             break;
+        case FORM_22_ESTABLISHING_CONNECTION:
+                index := img_Touched(hndl, iContWithoutCell_btn);
+            if (index > 0) return index;
+             break;
+
+       case FORM_24_IDENTIFYING_PROBES:
+             index := img_Touched(hndl, iStartProbeIdent_btn);
+            if (index > 0) return index;
+        break;
+        case FORM_25_PROBE_IDENTIFICATION_COMPLETE:
+            index := img_Touched(hndl, iretryProbeConnect_btn);
+            if (index > 0) return index;
+
+        break;
+        case FORM_26_REIDENTIFY_PROBES:
+            index := img_Touched(hndl, ireidentifyProbesNo_btn);
+            if (index > 0) return index;
+            index := img_Touched(hndl, ireidentifyProbesYes_btn);
+            if (index > 0) return index;
+        break;
+        case FORM_27_SEND_LOG_FILES:
+            index := img_Touched(hndl,iLog_Yes_Btn);
+            if (index > 0) return index;
+            index := img_Touched(hndl,iLog_No_btn);
+            if (index > 0) return index;
+        break;
+
+
+    endswitch
+
+    return -1;
+
+endfunc
+///////////////////////////////////////////////////////////////// Shows elements on each form when called///////////////////////////////////////
+func gotoCurrentForm(var option)
+ /* This function handles form changes. When it is called, it clears the screen and loads the selected form.*/
+  //  if(option)
+  // endif
+  switch(currentForm)
+        case FORM_2_WELCOME_SCREEN:   //******* Form 2 welcome screen *********//
+            PrevFormErrorIdenification := FORM_2_WELCOME_SCREEN;
+            img_Show(hndl,iForm2) ;
+            //text
+            img_Show(hndl,iwelcome_header) ;
+            img_Show(hndl,iwelcome_subHead) ;
+            //yes button
+            img_ClearAttributes(hndl, iyesBtn_welcome, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+            img_Show(hndl, iyesBtn_welcome);  // show button, only do this once
+            img_SetWord(hndl, iyesBtn_welcome, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+        break;
+
+        case FORM_3_CIRCUITS:   //******* Form 3 Circuits *********//
+            PrevFormErrorIdenification := FORM_3_CIRCUITS;
+            img_Show(hndl,iForm3) ;
+
+            gfx_OutlineColour(WHITE) ;
+            gfx_LinePattern(LPFINE) ;
+            gfx_RectangleFilled(0, 0, 479, 23, 0xD6BB) ;
+            gfx_OutlineColour(BLACK) ;
+            gfx_LinePattern(LPSOLID) ;
+
+            img_Show(hndl,ititleCircuits) ;
+            img_Show(hndl,icircuitsTexts) ;
+
+         ///////bottom main menu
+
+            img_ClearAttributes(hndl, iblank01, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+            img_Show(hndl, iblank01);  // show button, only do this once
+            img_SetWord(hndl, iblank01, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+
+
+            // menuBtn_circuits 1.0 generated 11/8/2016 2:55:36 PM
+            img_ClearAttributes(hndl, imenuBtn_circuits, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+            img_Show(hndl, imenuBtn_circuits);  // show button, only do this once
+            img_SetWord(hndl, imenuBtn_circuits, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+            img_Show(hndl,imenuBtn_circuits) ;
+
+            img_ClearAttributes(hndl, iblank02, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+            img_Show(hndl, iblank02);  // show button, only do this once
+            img_SetWord(hndl, iblank02, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+
+            img_ClearAttributes(hndl, inextBtn_circuits, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+            img_Show(hndl, inextBtn_circuits);  // show button, only do this once
+            img_SetWord(hndl, inextBtn_circuits, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+
+         ///// 2 Circuit button
+            img_ClearAttributes(hndl, i2circuitsBtn, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+            img_Show(hndl, i2circuitsBtn);  // show button, only do this once
+
+         ////// 3 Circuit button
+            img_ClearAttributes(hndl, i3circuitsBtn, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+            img_Show(hndl, i3circuitsBtn);  // show button, only do this once
+        break;
+
+        case FORM_4_BREAKERS:   //******* Form 4 amps *********//
+             PrevFormErrorIdenification := FORM_4_BREAKERS;
+            img_Show(hndl,iForm4) ;
+
+            gfx_OutlineColour(WHITE) ;
+            gfx_LinePattern(LPFINE) ;
+            gfx_RectangleFilled(0, 3, 479, 26, 0xD6BB) ;
+            gfx_OutlineColour(BLACK) ;
+            gfx_LinePattern(LPSOLID) ;
+
+            img_Show(hndl,ititleBreakers) ;
+        ///////text
+           img_Show(hndl,iAmpsTexts) ;
+
+        ////// Bottom Main menu
+           img_ClearAttributes(hndl, ibackBtn_amps, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+           img_Show(hndl, ibackBtn_amps);  // show button, only do this once
+           img_SetWord(hndl, ibackBtn_amps, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+
+            // menuBtn_amps 1.0 generated 11/8/2016 6:25:12 PM
+            img_ClearAttributes(hndl, imenuBtn_amps, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+            img_Show(hndl, imenuBtn_amps);  // show button, only do this once
+            img_SetWord(hndl, imenuBtn_amps, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+
+
+           img_ClearAttributes(hndl, iblank03, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+           img_Show(hndl, iblank03);  // show button, only do this once
+           img_SetWord(hndl, iblank03, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+
+           img_ClearAttributes(hndl, inextBtn_amps, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+           img_Show(hndl, inextBtn_amps);  // show button, only do this once
+           img_SetWord(hndl, inextBtn_amps, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+
+        ///////15 Amp Button ////
+           img_ClearAttributes(hndl, i15ampsBtn, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+           img_Show(hndl, i15ampsBtn);  // show button, only do this once
+        //////20 Amp Button/////
+           img_ClearAttributes(hndl, i20ampsBtn, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+           img_Show(hndl, i20ampsBtn);  // show button, only do this once
+       break;
+
+       case FORM_5_TEMP_SETTINGS:  //******* Form 5 set temps *********//
+            PrevFormErrorIdenification := FORM_5_TEMP_SETTINGS;
+            img_Show(hndl,iForm5) ;
+
+            img_Show(hndl,itimeAtTargerText_tempSet) ;
+            img_Show(hndl,imaxAirTempF_text_tempSet) ;
+            img_Show(hndl,iTargetTempF_text_tempSet) ;
+
+            gfx_RectangleFilled(0, 0, 479, 23, 0xD6BB) ;
+            img_Show(hndl,itemperatureTitle) ;
+
+    ////////Target Temp///////////////
+
+            ///Text///
+            img_Show(hndl,itargetTempText_tempSet) ;
+        /////Target Air Temp  **Digits** //
+            img_Show(hndl, itargetTempDigits_tempSet);  // show all digits at 0, only do this once
+            ledDigitsDisplay(tTemp, itargetTempDigits_tempSet+1, 59, 3, 1, 33, 0) ;
+        //////Target Temp --Minus Button-- //
+            img_ClearAttributes(hndl, iminusBtn_targetTemp_tempSet, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+            img_Show(hndl, iminusBtn_targetTemp_tempSet);  // show button, only do this once
+            img_SetWord(hndl, iminusBtn_targetTemp_tempSet, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+        ////Target Temp ++Add Button++ //
+            img_ClearAttributes(hndl, iaddBtn_timeAtTarget_tempSet, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+            img_Show(hndl, iaddBtn_timeAtTarget_tempSet);  // show button, only do this once
+            img_SetWord(hndl, iaddBtn_timeAtTarget_tempSet, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+
+     ////////Max Air Temp///////////////
+            ///Text///
+            img_Show(hndl,imaxAirTempText_tempSet) ;
+        /////Max Air Temp  **Digits** ///
+            img_Show(hndl, imaxAirTempDigits_tempSet);  // show all digits at 0, only do this once
+            ledDigitsDisplay(mAirTemp, imaxAirTempDigits_tempSet+1, 59, 3, 1, 33, 0) ;
+        /////Max Air Temp --Minus Button-- //
+            img_ClearAttributes(hndl, iminusBtn_maxAirTemp_tempSet, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+            img_Show(hndl, iminusBtn_maxAirTemp_tempSet);  // show button, only do this once
+            img_SetWord(hndl, iminusBtn_maxAirTemp_tempSet, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+        /////Max Air Temp ++Add Button++ //
+            img_ClearAttributes(hndl, iaddBtn_targetTemp_tempSet, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+            img_Show(hndl, iaddBtn_targetTemp_tempSet);  // show button, only do this once
+            img_SetWord(hndl, iaddBtn_targetTemp_tempSet, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+
+    ////////Time at Target///////////////
+            ///Text///
+            img_Show(hndl,itimeAtTargetText_tempSet) ;
+
+            img_Show(hndl, itimeAtTargetDigits_tempSet);  // show all digits at 0, only do this once
+            ledDigitsDisplay(tAtTarget, itimeAtTargetDigits_tempSet+1, 59, 3, 1, 33, 1) ;
+
+        /////Time at Target --Minus Button-- //
+            img_ClearAttributes(hndl, iminusBtn_timeAtTarget_tempSet, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+            img_Show(hndl, iminusBtn_timeAtTarget_tempSet);  // show button, only do this once
+            img_SetWord(hndl, iminusBtn_timeAtTarget_tempSet, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+
+        /////Time at Target ++Add Button++ //
+            img_ClearAttributes(hndl, iaddBtn_maxAirTemp_tempSet, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+            img_Show(hndl, iaddBtn_maxAirTemp_tempSet);  // show button, only do this once
+            img_SetWord(hndl, iaddBtn_maxAirTemp_tempSet, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+
+     //////// Main Bottom Menu ///////////////
+            img_ClearAttributes(hndl, ibackBtn__tempSet, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+            img_Show(hndl, ibackBtn__tempSet);  // show button, only do this once
+            img_SetWord(hndl, ibackBtn__tempSet, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+
+
+            // menuBtn__tempSet 1.0 generated 11/8/2016 6:26:36 PM
+            img_ClearAttributes(hndl, imenuBtn__tempSet, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+            img_Show(hndl, imenuBtn__tempSet);  // show button, only do this once
+            img_SetWord(hndl, imenuBtn__tempSet, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+
+
+
+            img_ClearAttributes(hndl, iblank04, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+            img_Show(hndl, iblank04);  // show button, only do this once
+            img_SetWord(hndl, iblank04, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+
+            img_ClearAttributes(hndl, inextBtn__tempSet, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+            img_Show(hndl, inextBtn__tempSet);  // show button, only do this once
+            img_SetWord(hndl, inextBtn__tempSet, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+        break;
+
+        case FORM_6_ENABLE_CELL: //******* Form 6 enable cell *********//
+            PrevFormErrorIdenification := FORM_6_ENABLE_CELL;
+            img_Show(hndl,iForm6) ;
+            img_Show(hndl,ienableCellText) ;
+      /////// Enable Cell "YES" button ///////
+              img_ClearAttributes(hndl, iyesBtn_enableCell, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+              img_Show(hndl, iyesBtn_enableCell);  // show button, only do this once
+
+      /////// Enable Cell "NO" button ////////
+              img_ClearAttributes(hndl, inoBtn_enableCell, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+              img_Show(hndl, inoBtn_enableCell);  // show button, only do this once
+
+      //////// Main Bottom Menu ///////////////
+
+
+                // backBtn_enableCell 1.0 generated 6/13/2016 10:10:03 AM
+                img_ClearAttributes(hndl, ibackBtn_enableCell, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+                img_Show(hndl, ibackBtn_enableCell);  // show button, only do this once
+                img_SetWord(hndl, ibackBtn_enableCell, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+                img_Show(hndl,ibackBtn_enableCell) ;
+
+              img_ClearAttributes(hndl, imenuBtn_enableCell, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+              img_Show(hndl, imenuBtn_enableCell);  // show button, only do this once
+              img_SetWord(hndl, imenuBtn_enableCell, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+
+              img_ClearAttributes(hndl, iblank05, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+              img_Show(hndl, iblank05);  // show button, only do this once
+              img_SetWord(hndl, iblank05, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+
+              img_ClearAttributes(hndl, inextBtn_enableCell, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+              img_Show(hndl, inextBtn_enableCell);  // show button, only do this once
+              img_SetWord(hndl, inextBtn_enableCell, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+        break;
+
+        case FORM_7_CURRENT_PIN:
+             PrevFormErrorIdenification := FORM_7_CURRENT_PIN;
+              img_Show(hndl,iForm7) ;
+      ///////Modify Pin Button/////////
+              img_ClearAttributes(hndl, icreatePinBtn_currentPin, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+              img_Show(hndl, icreatePinBtn_currentPin);  // show button, only do this once
+      ////// Use Pin Button /////////
+              img_ClearAttributes(hndl, iusePinBtn_currentPin, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+              img_Show(hndl, iusePinBtn_currentPin);  // show button, only do this once
+      //////// Main Bottom Menu ///////////////
+              img_ClearAttributes(hndl, ibackBtn_currentPin, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+              img_Show(hndl, ibackBtn_currentPin);  // show button, only do this once
+              img_SetWord(hndl, ibackBtn_currentPin, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+
+              img_ClearAttributes(hndl, imenuBtn_currentPin, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+              img_Show(hndl, imenuBtn_currentPin);  // show button, only do this once
+              img_SetWord(hndl, imenuBtn_currentPin, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+
+              img_ClearAttributes(hndl, iblank_06, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+              img_Show(hndl, iblank_06);  // show button, only do this once
+              img_SetWord(hndl, iblank_06, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+
+              img_ClearAttributes(hndl, inextBtn_currentPin, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+              img_Show(hndl, inextBtn_currentPin);  // show button, only do this once
+              img_SetWord(hndl, inextBtn_currentPin, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+      //////// Cell Pin numbers ///////////////
+              img_Show(hndl, icurrentPinDigits_00);  // show all digits at 0, only do this once
+              ledDigitsDisplay(cellPin[0], icurrentPinDigits_00+1, 113, 1, 1, 50, 0) ;
+
+              img_Show(hndl, icurrentPinDigits_01);  // show all digits at 0, only do this once
+              ledDigitsDisplay(cellPin[1], icurrentPinDigits_01+1, 165, 1, 1, 50, 0) ;
+
+              img_Show(hndl, icurrentPinDigits_02);  // show all digits at 0, only do this once
+              ledDigitsDisplay(cellPin[2], icurrentPinDigits_02+1, 217, 1, 1, 50, 0) ;
+
+              img_Show(hndl, icurrentPinDigits_03);  // show all digits at 0, only do this once
+              ledDigitsDisplay(cellPin[3], icurrentPinDigits_03+1, 265, 1, 1, 50, 0) ;
+
+              img_Show(hndl, icurrentPinDigits_04);  // show all digits at 0, only do this once
+              ledDigitsDisplay(cellPin[4], icurrentPinDigits_04+1, 313, 1, 1, 50, 0) ;
+
+           break;
+
+           case FORM_8_MODIFY_PIN://******* Form 8 set pin *********//
+                PrevFormErrorIdenification := FORM_8_MODIFY_PIN;
+                img_Show(hndl,iForm8) ;
+       //////// pin buttons ///////////////
+                img_ClearAttributes(hndl, ipinBtn_1, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+                img_Show(hndl, ipinBtn_1);  // show button, only do this once
+                img_SetWord(hndl, ipinBtn_1, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+
+                img_ClearAttributes(hndl, ipinBtn_2, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+                img_Show(hndl, ipinBtn_2);  // show button, only do this once
+                img_SetWord(hndl, ipinBtn_2, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+
+                img_ClearAttributes(hndl, ipinBtn_3, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+                img_Show(hndl, ipinBtn_3);  // show button, only do this once
+                img_SetWord(hndl, ipinBtn_3, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+
+                img_ClearAttributes(hndl, ipinBtn_4, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+                img_Show(hndl, ipinBtn_4);  // show button, only do this once
+                img_SetWord(hndl, ipinBtn_4, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+
+                img_ClearAttributes(hndl, ipinBtn_5, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+                img_Show(hndl, ipinBtn_5);  // show button, only do this once
+                img_SetWord(hndl, ipinBtn_5, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+
+                img_ClearAttributes(hndl, ipinBtn_6, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+                img_Show(hndl, ipinBtn_6);  // show button, only do this once
+                img_SetWord(hndl, ipinBtn_6, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+
+                img_ClearAttributes(hndl, ipinBtn_7, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+                img_Show(hndl, ipinBtn_7);  // show button, only do this once
+                img_SetWord(hndl, ipinBtn_7, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+
+                img_ClearAttributes(hndl, ipinBtn_8, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+                img_Show(hndl, ipinBtn_8);  // show button, only do this once
+                img_SetWord(hndl, ipinBtn_8, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+
+                img_ClearAttributes(hndl, ipinBtn_9, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+                img_Show(hndl, ipinBtn_9);  // show button, only do this once
+                img_SetWord(hndl, ipinBtn_9, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+
+                img_ClearAttributes(hndl, ipinBtn_0, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+                img_Show(hndl, ipinBtn_0);  // show button, only do this once
+                img_SetWord(hndl, ipinBtn_0, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+        //////// Clear button ///////////////
+                img_ClearAttributes(hndl, iclearBtn, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+                img_Show(hndl, iclearBtn);  // show button, only do this once
+                img_SetWord(hndl, iclearBtn, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+        //////// Menu ///////////////
+                img_ClearAttributes(hndl, ibackBtn_settPin, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+                img_Show(hndl, ibackBtn_settPin);  // show button, only do this once
+                img_SetWord(hndl, ibackBtn_settPin, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+
+                img_ClearAttributes(hndl, iblank_07, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+                img_Show(hndl, iblank_07);  // show button, only do this once
+                img_SetWord(hndl, iblank_07, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+
+                img_ClearAttributes(hndl, imenuBtn_settPin, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+                img_Show(hndl, imenuBtn_settPin);  // show button, only do this once
+                img_SetWord(hndl, imenuBtn_settPin, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+
+                img_ClearAttributes(hndl, inextBtn_settPin, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+                img_Show(hndl, inextBtn_settPin);  // show button, only do this once
+                img_SetWord(hndl, inextBtn_settPin, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+         //////// Display Pin ///////////////
+                img_Show(hndl, isetPinDigits_00);  // show all digits at 0, only do this once
+                ledDigitsDisplay(cellPin[0], isetPinDigits_00+1, 98, 1, 1, 54, 0) ;
+
+                img_Show(hndl, isetPinDigits_01);  // show all digits at 0, only do this once
+                ledDigitsDisplay(cellPin[1], isetPinDigits_01+1, 150, 1, 1, 54, 0) ;
+
+                img_Show(hndl, isetPinDigits_02);  // show all digits at 0, only do this once
+                ledDigitsDisplay(cellPin[2], isetPinDigits_02+1, 202, 1, 1, 54, 0) ;
+
+                img_Show(hndl, isetPinDigits_03);  // show all digits at 0, only do this once
+                ledDigitsDisplay(cellPin[3], isetPinDigits_03+1, 254, 1, 1, 54, 0) ;
+
+                img_Show(hndl, isetPinDigits_04);  // show all digits at 0, only do this once
+                ledDigitsDisplay(cellPin[4], isetPinDigits_04+1, 306, 1, 1, 54, 0) ;
+            break;
+
+            case FORM_9_UNABLE_TO_CONNECT_MODEM://******* Form 9 unable to connect *********//
+                 PrevFormErrorIdenification := FORM_9_UNABLE_TO_CONNECT_MODEM;
+                // Form9 1.1 generated 6/10/2016 1:32:49 PM
+                img_Show(hndl,iForm9) ;
+
+                // noCellBtn_ModemCommunicationError 1.0 generated 6/10/2016 1:32:50 PM
+                img_ClearAttributes(hndl, inoCellBtn_ModemCommunicationError, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+                img_Show(hndl, inoCellBtn_ModemCommunicationError);  // show button, only do this once
+                img_SetWord(hndl, inoCellBtn_ModemCommunicationError, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+                img_Show(hndl,inoCellBtn_ModemCommunicationError) ;
+
+                // HeaderText_ModemCommincationError 1.0 generated 6/10/2016 1:32:50 PM
+                img_Show(hndl,iHeaderText_ModemCommincationError) ;
+
+                // PleaseCyclePowerText 1.0 generated 6/10/2016 1:32:50 PM
+                img_Show(hndl,iPleaseCyclePowerText) ;
+
+
+                // contactZBText 1.0 generated 6/10/2016 1:32:50 PM
+                img_Show(hndl,icontactZBText) ;
+
+                // modemContWithoutCellText 1.0 generated 6/10/2016 1:32:50 PM
+                img_Show(hndl,imodemContWithoutCellText) ;
+
+            break;
+            case FORM_23_UNABLE_TO_CONNECT_NETWORK:
+                 PrevFormErrorIdenification := FORM_23_UNABLE_TO_CONNECT_NETWORK;
+                // Form23 1.1 generated 6/10/2016 2:04:25 PM
+                img_Show(hndl,iForm23) ;
+
+                // NetworkConnectionError_header 1.0 generated 6/10/2016 2:04:25 PM
+                img_Show(hndl,iNetworkConnectionError_header) ;
+
+                // poorSignalText 1.0 generated 6/10/2016 2:04:25 PM
+                img_Show(hndl,ipoorSignalText) ;
+
+                // reconnectText 1.0 generated 6/10/2016 2:04:26 PM
+                img_Show(hndl,ireconnectText) ;
+
+
+                // noCellBtn_NetworkCommunicationError 1.0 generated 6/13/2016 9:17:51 AM
+                img_ClearAttributes(hndl, inoCellBtn_NetworkCommunicationError, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+                img_Show(hndl, inoCellBtn_NetworkCommunicationError);  // show button, only do this once
+                img_SetWord(hndl, inoCellBtn_NetworkCommunicationError, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+                img_Show(hndl,inoCellBtn_NetworkCommunicationError) ;
+
+
+                // retryConnectionBtn 1.0 generated 6/13/2016 9:17:32 AM
+                img_ClearAttributes(hndl, iretryConnectionBtn, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+                img_Show(hndl, iretryConnectionBtn);  // show button, only do this once
+                img_SetWord(hndl, iretryConnectionBtn, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+                img_Show(hndl,iretryConnectionBtn) ;
+
+
+            break;
+             case FORM_10_START_TREATMENT://******* Form 10 start treatment *********//
+                PrevFormErrorIdenification := FORM_10_START_TREATMENT;
+                img_Show(hndl,iForm10) ;
+         ///////Start Treatment button////////
+                img_ClearAttributes(hndl, istartBtn_startTreatment, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+                img_Show(hndl, istartBtn_startTreatment);  // show button, only do this once
+                img_SetWord(hndl, istartBtn_startTreatment, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+
+                img_Show(hndl,iStatictext1) ;
+        //////// Menu ///////////////
+                img_ClearAttributes(hndl, ibackBtn_startTreatment, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+                img_Show(hndl, ibackBtn_startTreatment);  // show button, only do this once
+                img_SetWord(hndl, ibackBtn_startTreatment, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+
+                img_ClearAttributes(hndl, iblank12, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+                img_Show(hndl, iblank12);  // show button, only do this once
+                img_SetWord(hndl, iblank12, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+
+                img_ClearAttributes(hndl, imenuBtn_startTreatment, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+                img_Show(hndl, imenuBtn_startTreatment);  // show button, only do this once
+                img_SetWord(hndl, imenuBtn_startTreatment, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+
+                img_ClearAttributes(hndl, inextBtn_startTreatment, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+                img_Show(hndl, inextBtn_startTreatment);  // show button, only do this once
+                img_SetWord(hndl, inextBtn_startTreatment, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+            break;
+
+            case FORM_11_CURRENT_RESULTS: //******* Form 11 current results *********//
+
+                gfx_Cls() ;
+                img_Show(hndl,iForm11) ;
+
+                gfx_OutlineColour(WHITE) ;
+                gfx_LinePattern(LPFINE) ;
+                gfx_RectangleFilled(0, 0, 479, 23, 0xD6BB) ;
+                gfx_OutlineColour(BLACK) ;
+                gfx_LinePattern(LPSOLID) ;
+
+                img_Show(hndl,icurrentResultsTitle) ;
+     //////// "Probe" text ///////////////
+                img_Show(hndl,iprobe1Text_currentResults) ;
+                img_Show(hndl,iprobe2Text_currentResults) ;
+                img_Show(hndl,iprobe3Text_currentResults) ;
+
+      //////// "F" degrees text ///////////////
+                img_Show(hndl,iprobe1F_text) ;
+                img_Show(hndl,iprobe2F_text) ;
+                img_Show(hndl,iprobe3F_text) ;
+                img_Show(hndl,iMaxAirTempF_text) ;
+      //////// Elapse Time "hr" text ///////////////
+                img_Show(hndl,ielapseTime_hr_text) ;
+      //////// Elapse Time "min" text ///////////////
+                img_Show(hndl,ielapseTime_min_text) ;
+      //////// Temp text ///////////////
+                img_Show(hndl,imaxAirTempText_currentResutls) ;
+                img_Show(hndl,ielapseTimeText_currentResutls) ;
+                img_Show(hndl,iestTimeRemaining_currentResults) ;
+       //////// Menu ///////////////
+                img_ClearAttributes(hndl, ibackBtn_currentResults, I_TOUCH_DISABLE);
+                img_Show(hndl, ibackBtn_currentResults);
+                img_SetWord(hndl, ibackBtn_currentResults, IMAGE_INDEX, state);
+
+                img_ClearAttributes(hndl, imenuBtn_currentResults, I_TOUCH_DISABLE);
+                img_Show(hndl, imenuBtn_currentResults);
+                img_SetWord(hndl, imenuBtn_currentResults, IMAGE_INDEX, state);
+
+                img_ClearAttributes(hndl, istopBtn_currentResults, I_TOUCH_DISABLE);
+                img_Show(hndl, istopBtn_currentResults);
+                img_SetWord(hndl, istopBtn_currentResults, IMAGE_INDEX, state);
+                img_ClearAttributes(hndl, inextBtn_currentResults, I_TOUCH_DISABLE);
+
+                img_Show(hndl, inextBtn_currentResults);
+                img_SetWord(hndl, inextBtn_currentResults, IMAGE_INDEX, state);
+      //////// Digits  ///////////////
+                img_Show(hndl, iprobe1_digits_currentResults);
+                img_Show(hndl, iprobe2_digits_currentResults);
+                img_Show(hndl, iprobe3_digits_currentResults);
+                img_Show(hndl, imaxAirTemp_digits_currentResults);
+                img_Show(hndl, ielapseTime_hours_digits_currentResults);
+                img_Show(hndl, ielapseTime_mins_digits_currentResults);
+            break;
+
+        case FORM_12_MENU://******* Form 12 Menu *********//
+            PrevFormErrorIdenification := FORM_12_MENU;
+            img_Show(hndl,iForm12) ;
+
+            // utilitiesMenuBtn 1.0 generated 5/9/2016 1:45:35 PM
+            img_ClearAttributes(hndl, iutilitiesMenuBtn, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+            img_Show(hndl, iutilitiesMenuBtn);  // show button, only do this once
+            img_SetWord(hndl, iutilitiesMenuBtn, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+            img_Show(hndl,iutilitiesMenuBtn) ;
+
+            // tempMenuBtn 1.0 generated 5/9/2016 1:45:35 PM
+            img_ClearAttributes(hndl, itempMenuBtn, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+            img_Show(hndl, itempMenuBtn);  // show button, only do this once
+            img_SetWord(hndl, itempMenuBtn, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+            img_Show(hndl,itempMenuBtn) ;
+
+            // breakerMenuBtn 1.0 generated 5/9/2016 1:45:35 PM
+            img_ClearAttributes(hndl, ibreakerMenuBtn, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+            img_Show(hndl, ibreakerMenuBtn);  // show button, only do this once
+            img_SetWord(hndl, ibreakerMenuBtn, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+            img_Show(hndl,ibreakerMenuBtn) ;
+
+            // circuitMenuBtn 1.0 generated 5/9/2016 1:45:35 PM
+            img_ClearAttributes(hndl, icircuitMenuBtn, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+            img_Show(hndl, icircuitMenuBtn);  // show button, only do this once
+            img_SetWord(hndl, icircuitMenuBtn, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+            img_Show(hndl,icircuitMenuBtn) ;
+
+
+        break;
+
+        case FORM_13_SELECTION_REMINDER:  //******* Form 13 error page for amps and circuits *********//
+
+            img_Show(hndl,iForm13) ;
+
+        break;
+
+        case FORM_14_INVALID_PIN: //******* Form 14 invaid pin *********//
+           PrevFormErrorIdenification := FORM_14_INVALID_PIN;
+          img_Show(hndl,iForm14) ;
+
+          img_Show(hndl,iinvalidPinText_Header) ;
+
+          img_Show(hndl,iinvalidPinText_body) ;
+          img_ClearAttributes(hndl, iyesBtn_InvalidPin, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+          img_Show(hndl, iyesBtn_InvalidPin);  // show button, only do this once
+          img_SetWord(hndl, iyesBtn_InvalidPin, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+          img_Show(hndl,iyesBtn_InvalidPin) ;
+
+          img_ClearAttributes(hndl, inoBtn_InvalidPin, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+          img_Show(hndl, inoBtn_InvalidPin);  // show button, only do this once
+          img_SetWord(hndl, inoBtn_InvalidPin, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+          img_Show(hndl,inoBtn_InvalidPin) ;
+
+      break;
+
+      case FORM_15_STOP_TREATMENT: //******* Form 15 stop treatment *********//
+
+            img_Show(hndl,iForm15) ;
+
+            img_Show(hndl,istopTreatmentHeader) ;
+
+            img_ClearAttributes(hndl, iyesBtn_stopTreatment, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+            img_Show(hndl, iyesBtn_stopTreatment);  // show button, only do this once
+            img_SetWord(hndl, iyesBtn_stopTreatment, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+            img_Show(hndl,iyesBtn_stopTreatment) ;
+
+            img_ClearAttributes(hndl, inoBtn_stopTreatment, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+            img_Show(hndl, inoBtn_stopTreatment);  // show button, only do this once
+            img_SetWord(hndl, inoBtn_stopTreatment, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+            img_Show(hndl,inoBtn_stopTreatment) ;
+      break;
+
+     case FORM_16_ERRORS: //******* Form 16 errors *********//
+
+        img_Show(hndl,iForm16) ;
+
+     break;
+
+     case FORM_17_TREATMENT_SUCCESSFUL: //******* Form 17 treatment successful *********//
+
+         img_Show(hndl,iForm17) ;
+
+         img_ClearAttributes(hndl, iUserbutton5, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+         img_Show(hndl, iUserbutton5);  // show button, only do this once
+         img_SetWord(hndl, iUserbutton5, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+         img_Show(hndl,iUserbutton5) ;
+
+         img_ClearAttributes(hndl, iviewResultsBtn, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+         img_Show(hndl, iviewResultsBtn);  // show button, only do this once
+         img_SetWord(hndl, iviewResultsBtn, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+         img_Show(hndl,iviewResultsBtn) ;
+
+        img_Show(hndl,itreatmentSuccessfulHeader) ;
+
+     break;
+
+      case FORM_18_TREATMENT_RESULTS:  //******* Form 18 Treatment Result *********//
+          img_Show(hndl,iForm18) ;
+
+          gfx_OutlineColour(WHITE) ;
+          gfx_LinePattern(LPFINE) ;
+          gfx_RectangleFilled(0, 0, 479, 23, 0xD6BB) ;
+          gfx_OutlineColour(BLACK) ;
+          gfx_LinePattern(LPSOLID) ;
+
+          img_Show(hndl,itreamtmentResultsTitle) ;
+      //////// "probe" text ///////////////
+          img_Show(hndl,iprobe1Text_currentResults) ;
+          img_Show(hndl,iprobe2Text_currentResults) ;
+          img_Show(hndl,iprobe3Text_currentResults) ;
+    //////// "F" degrees text ///////////////
+          img_Show(hndl,iprobe1F_text) ;
+          img_Show(hndl,iprobe2F_text) ;
+          img_Show(hndl,iprobe3F_text) ;
+          img_Show(hndl,iMaxAirTempF_text) ;
+       //////// hr and min text ///////////////
+          img_Show(hndl,ielapseTime_hr_text) ;
+          img_Show(hndl,ielapseTime_min_text) ;
+
+
+         img_Show(hndl,imaxAirTempText_currentResutls) ;
+         img_Show(hndl,ielapseTimeText_currentResutls) ;
+
+
+
+     //////// Digits  ///////////////
+
+        img_Show(hndl, iprobe1_digits_currentResults);  // show all digits at 0, only do this once
+        ledDigitsDisplay(TEMP_ARRAY[1], iprobe1_digits_currentResults+1, 13, 3, 1, 35, 0) ;
+
+        img_Show(hndl, iprobe2_digits_currentResults);  // show all digits at 0, only do this once
+        ledDigitsDisplay(TEMP_ARRAY[2], iprobe2_digits_currentResults+1, 173, 3, 1, 35, 0) ;
+
+        img_Show(hndl, iprobe3_digits_currentResults);  // show all digits at 0, only do this once
+        ledDigitsDisplay(TEMP_ARRAY[3], iprobe3_digits_currentResults+1, 321, 3, 1, 35, 0) ;
+
+        img_Show(hndl, imaxAirTemp_digits_currentResults);  // show all digits at 0, only do this once
+        ledDigitsDisplay(TEMP_ARRAY[0], imaxAirTemp_digits_currentResults+1, 13, 3, 1, 35, 0) ;
+
+
+
+       // elapseTime_hours_digits_currentResults 1.0 generated 2/8/2017 2:43:34 PM
+       img_Show(hndl, ielapseTime_hours_digits_currentResults);  // show all digits at 0, only do this once
+       ledDigitsDisplay(TimeElapsedHrs, ielapseTime_hours_digits_currentResults+1, 170, 1, 1, 35, 0) ;
+
+
+        // elapseTime_mins_digits_currentResults 1.0 generated 2/8/2017 2:46:14 PM
+        img_Show(hndl, ielapseTime_mins_digits_currentResults);  // show all digits at 0, only do this once
+        ledDigitsDisplay(TimeElapsedMin, ielapseTime_mins_digits_currentResults+1, 220, 2, 1, 35, 0) ;
+
+     break;
+
+
+      case FORM_19_COUNTDOWN_TO_SHUT_OFF:
+
+      // Form19 1.1 generated 4/28/2016 8:53:24 AM
+      img_Show(hndl,iForm19) ;
+
+      /////// Rectangle
+      gfx_OutlineColour(WHITE) ;
+      gfx_LinePattern(LPFINE) ;
+      gfx_RectangleFilled(0, 0, 479, 23, 0xD6BB) ;
+      gfx_OutlineColour(BLACK) ;
+      gfx_LinePattern(LPSOLID) ;
+
+      ///////EmergencyShutOff button
+      img_ClearAttributes(hndl, iEmergencyShutOff_btn, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+      img_Show(hndl, iEmergencyShutOff_btn);  // show button, only do this once
+      img_SetWord(hndl, iEmergencyShutOff_btn, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+      img_Show(hndl,iEmergencyShutOff_btn) ;
+
+      img_Show(hndl,iCoolDownText) ;
+
+      // ShuttingDownText
+      img_Show(hndl,iShuttingDownText) ;
+
+      // SecsText
+      img_Show(hndl,iSecsText) ;
+
+       //CountDown Digits
+       img_Show(hndl, iCountDown_Digits);  // show all digits at 0, only do this once
+        ledDigitsDisplay(000, iCountDown_Digits+1, 118, 3, 1, 81, 0) ;
+
+      break;
+
+      case FORM_20_EMERGENCY_SHUTDOWN:
+
+      img_Show(hndl,iForm20) ;
+
+      // EmergencyText
+      img_Show(hndl,iEmergencyText) ;
+
+
+
+      break;
+
+        case FORM_21_UTILITIES:
+             PrevFormErrorIdenification := previousLink;
+             img_Show(hndl,iForm21) ;
+
+
+
+
+
+
+              if(VERSION_CELL_MAJOR == 0)
+             //   print("version Cell Major is zero");
+                img_Show(hndl,iCellConnectionText) ;
+             else if (VERSION_CELL_MAJOR >0 || request_Cell_Strength()!= cellSignalStrength)
+
+              if (previousLink == FORM_11_CURRENT_RESULTS)
+                    img_Show(hndl,iLoadingBG) ;  //place holder image while attempting to get cell strength
+                    img_Show(hndl,iLoadingText) ;
+                    request_Cell_Strength();
+                    while (cellSignalStrength > 5)
+                    request_Cell_Strength();
+                    wend
+                  //  print(cellSignalStrength);
+                    if (cellSignalStrength < 0)
+                    cellSignalStrength := 0;
+                    endif
+                   // pause(5000);
+                    utilitiesFormReset();
+             else
+                  img_Show(hndl,iLoadingBG) ;  //place holder image while attempting to get cell strength
+                  img_Show(hndl,iLoadingText) ;
+                    request_Cell_Strength_Exist();
+
+                  //  print(cellSignalStrength);
+                  // pause(5000);
+                    utilitiesFormReset();
+            endif
+
+            endif
+
+    // cellStrengthText 1.0 generated 10/31/2016 12:53:55 PM
+    img_Show(hndl,icellStrengthText) ;
+
+    // back_btn_utilites 1.0 generated 10/31/2016 12:53:55 PM
+    img_ClearAttributes(hndl, iback_btn_utilites, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+    img_Show(hndl, iback_btn_utilites);  // show button, only do this once
+    img_SetWord(hndl, iback_btn_utilites, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+    img_Show(hndl,iback_btn_utilites) ;
+
+    // cellVersionText 1.0 generated 10/31/2016 12:53:55 PM
+    img_Show(hndl,icellVersionText) ;
+
+    // ArduinoVersionText 1.0 generated 10/31/2016 12:53:55 PM
+    img_Show(hndl,iArduinoVersionText) ;
+
+    // ScreenVersionText 1.0 generated 10/31/2016 12:53:55 PM
+    img_Show(hndl,iScreenVersionText) ;
+
+    // CellStrengthDigit 1.0 generated 10/31/2016 12:53:55 PM
+    img_Show(hndl, iCellStrengthDigit);  // show all digits at 0, only do this once
+    ledDigitsDisplay(cellSignalStrength, iCellStrengthDigit+1, 192, 1, 1, 34, 1) ;
+
+
+    // ArduinoVersionMajorDigit 1.0 generated 10/31/2016 12:53:55 PM
+    img_Show(hndl, iArduinoVersionMajorDigit);  // show all digits at 0, only do this once
+    ledDigitsDisplay(VERSION_ARDUINO_MAJOR, iArduinoVersionMajorDigit+1, 192, 2, 1, 34, 0) ;
+
+    // ArduinoMinorlDigit 1.0 generated 10/31/2016 12:53:55 PM
+    img_Show(hndl, iArduinoMinorlDigit);  // show all digits at 0, only do this once
+    ledDigitsDisplay(VERSION_ARDUINO_MINOR, iArduinoMinorlDigit+1, 268, 2, 1, 34, 0) ;
+
+    // ArduinoMinorDecimalText 1.0 generated 10/31/2016 12:53:55 PM
+    img_Show(hndl,iArduinoMinorDecimalText) ;
+
+    // ArduinoPatchDigit 1.0 generated 10/31/2016 12:53:56 PM
+    img_Show(hndl, iArduinoPatchDigit);  // show all digits at 0, only do this once
+    ledDigitsDisplay(VERSION_ARDUINO_PATCH, iArduinoPatchDigit+1, 342, 2, 1, 34, 0) ;
+
+    // ScreenVersionMajorDigit 1.0 generated 10/31/2016 12:53:56 PM
+    img_Show(hndl, iScreenVersionMajorDigit);  // show all digits at 0, only do this once
+    ledDigitsDisplay(VERSION_SCREEN_MAJOR, iScreenVersionMajorDigit+1, 192, 2, 1, 34, 0) ;
+
+    // ScreenMajorDecimalText 1.0 generated 10/31/2016 12:53:56 PM
+    img_Show(hndl,iScreenMajorDecimalText) ;
+
+    // ArduinoMajorDecimalText 1.0 generated 10/31/2016 12:53:56 PM
+    img_Show(hndl,iArduinoMajorDecimalText) ;
+
+    // ScreenMinorlDigit 1.0 generated 10/31/2016 12:53:56 PM
+    img_Show(hndl, iScreenMinorlDigit);  // show all digits at 0, only do this once
+    ledDigitsDisplay(VERSION_SCREEN_MINOR, iScreenMinorlDigit+1, 268, 2, 1, 34, 0) ;
+
+    // ScreenMinorDecimalText 1.0 generated 10/31/2016 12:53:56 PM
+    img_Show(hndl,iScreenMinorDecimalText) ;
+
+    // ScreenPatchDigit 1.0 generated 10/31/2016 12:53:56 PM
+    img_Show(hndl, iScreenPatchDigit);  // show all digits at 0, only do this once
+    ledDigitsDisplay(VERSION_SCREEN_PATCH, iScreenPatchDigit+1, 342, 2, 1, 34, 0) ;
+
+    // LogButton 1.0 generated 3/14/2017 11:01:17 AM
+             img_ClearAttributes(hndl, iLogButton, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+             img_Show(hndl, iLogButton);  // show button, only do this once
+             img_SetWord(hndl, iLogButton, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+             img_Show(hndl,iLogButton) ;
+
+      if(previousLink != FORM_11_CURRENT_RESULTS)
+           // next_btn_utilities 1.0 generated 3/1/2017 3:22:51 PM
+           img_ClearAttributes(hndl, inext_btn_utilities, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+           img_Show(hndl, inext_btn_utilities);  // show button, only do this once
+           img_SetWord(hndl, inext_btn_utilities, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+           img_Show(hndl,inext_btn_utilities) ;
+        endif
+
+      break;
+
+      case FORM_22_ESTABLISHING_CONNECTION:
+
+          img_Show(hndl,iForm22) ;
+          img_Show(hndl,iConnectionTitle) ;
+          img_Show(hndl,iconnectionBodyText) ;
+
+          img_ClearAttributes(hndl, iContWithoutCell_btn, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+          img_Show(hndl, iContWithoutCell_btn);  // show button, only do this once
+          img_SetWord(hndl, iContWithoutCell_btn, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+          img_Show(hndl,iContWithoutCell_btn) ;
+
+          img_Show(hndl,iProceedWithoutcellText) ;
+
+      break;
+
+         case FORM_24_IDENTIFYING_PROBES:
+
+         // Form24 1.1 generated 2/28/2017 11:47:48 AM
+         img_Show(hndl,iForm24) ;
+
+         // ProbeErrorTitle 1.0 generated 2/28/2017 11:47:50 AM
+         img_Show(hndl,iProbeErrorTitle) ;
+
+         // StartProbeIdent_btn 1.0 generated 2/28/2017 11:47:50 AM
+         img_ClearAttributes(hndl, iStartProbeIdent_btn, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+         img_Show(hndl, iStartProbeIdent_btn);  // show button, only do this once
+         img_SetWord(hndl, iStartProbeIdent_btn, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+         img_Show(hndl,iStartProbeIdent_btn) ;
+
+         switch(probe_idenification_number)
+
+            case PROBE_AIR_TEMP:
+                // AirTempProbe_Text 1.0 generated 2/28/2017 11:47:50 AM
+                img_Show(hndl,iAirTempProbe_Text) ;
+            break;
+
+            case PROBE_01:
+                // Probe1_text 1.0 generated 2/28/2017 11:55:56 AM
+                img_Show(hndl,iProbe1_Text) ;
+            break;
+
+            case PROBE_02:
+                // Probe1_Text 1.0 generated 2/28/2017 11:58:42 AM
+                img_Show(hndl,iProbe2_Text);
+            break;
+
+            case PROBE_03:
+                // Probe3_Text 1.0 generated 2/28/2017 12:00:43 PM
+                img_Show(hndl,iProbe3_Text) ;
+            break;
+
+            default:
+
+
+            break;
+
+
+          endswitch
+
+
+         break;
+          case FORM_25_PROBE_IDENTIFICATION_COMPLETE:
+
+          // Form25 1.1 generated 2/28/2017 1:05:42 PM
+          img_Show(hndl,iForm25) ;
+            switch(probe_idenification_number)
+
+            case PROBE_SUCCESSFULLY_IDENTIFIED:
+          // ProbeIdentSuccessful_Text 1.0 generated 2/28/2017 1:05:42 PM
+          img_Show(hndl,iProbeIdentSuccessful_Text) ;
+              pause(2500);
+               break;
+
+            case PROBE_UNSUCCESSFULLY_IDENTIFIED:
+                img_Show(hndl,iProbeIdentUnsuccessful_TitleText) ;
+                img_Show(hndl,iProbeIdentUnsuccessful_Text) ;
+
+                img_ClearAttributes(hndl, iretryProbeConnect_btn, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+                img_Show(hndl, iretryProbeConnect_btn);  // show button, only do this once
+                img_SetWord(hndl, iretryProbeConnect_btn, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+                img_Show(hndl,iretryProbeConnect_btn) ;
+
+            break;
+
+            case PROBE_INITIATION_COMPLETE:
+
+                img_Show(hndl,iProbeInitiationComplete_text) ;
+
+            endswitch
+            break;
+
+            case FORM_26_REIDENTIFY_PROBES:
+
+            // Form26 1.1 generated 3/1/2017 3:16:49 PM
+            img_Show(hndl,iForm26) ;
+
+            // reidentifying_text 1.0 generated 3/1/2017 3:16:52 PM
+            img_Show(hndl,ireidentifying_text) ;
+
+            // reidentifyPronesYes_btn 1.0 generated 3/1/2017 3:16:52 PM
+            img_ClearAttributes(hndl, ireidentifyProbesYes_btn, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+            img_Show(hndl, ireidentifyProbesYes_btn);  // show button, only do this once
+            img_SetWord(hndl, ireidentifyProbesYes_btn, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+            img_Show(hndl,ireidentifyProbesYes_btn) ;
+
+            // reidentifyPronesNo_btn 1.0 generated 3/1/2017 3:16:52 PM
+            img_ClearAttributes(hndl, ireidentifyProbesNo_btn, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+            img_Show(hndl, ireidentifyProbesNo_btn);  // show button, only do this once
+            img_SetWord(hndl, ireidentifyProbesNo_btn, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+            img_Show(hndl,ireidentifyProbesNo_btn) ;
+
+            break;
+
+            case FORM_27_SEND_LOG_FILES:
+
+            // Form27 1.1 generated 3/14/2017 10:32:35 AM
+            img_Show(hndl,iForm27) ;
+
+            // Log_Title 1.0 generated 3/14/2017 10:32:36 AM
+            img_Show(hndl,iLog_Title) ;
+
+            // Log_Yes_Btn 1.0 generated 3/14/2017 10:32:36 AM
+            img_ClearAttributes(hndl, iLog_Yes_Btn, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+            img_Show(hndl, iLog_Yes_Btn);  // show button, only do this once
+            img_SetWord(hndl, iLog_Yes_Btn, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+            img_Show(hndl,iLog_Yes_Btn) ;
+
+            // Log_No_btn 1.0 generated 3/14/2017 10:32:36 AM
+            img_ClearAttributes(hndl, iLog_No_btn, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+            img_Show(hndl, iLog_No_btn);  // show button, only do this once
+            img_SetWord(hndl, iLog_No_btn, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+            img_Show(hndl,iLog_No_btn) ;
+
+            break;
+
+            case FORM_28_NO_CELL_DURING_TREATMENT:
+
+            // Form28 1.1 generated 3/14/2017 10:51:06 AM
+            img_Show(hndl,iForm28) ;
+
+            // NoCellTitle 1.0 generated 3/14/2017 10:51:07 AM
+            img_Show(hndl,iNoCellTitle) ;
+            pause(5000);
+                 currentForm := FORM_27_SEND_LOG_FILES;
+                gotoCurrentForm(0);
+            break;
+
+        endswitch
+
+endfunc
+/////////////////////////////// Clear Pin ///////////////////////////////////////////
+func clearPin ()
+    var i;
+        for(i := 0; i< 5 ; i ++)
+            cellPin[i] := 0;//
+        next
+endfunc
+
+//////////////////////////////// Button Pressed And Release Combo /////////////////////////////////
+func btnPressAndRelease(var _btnPress)
+    btnPress( _btnPress);
+    pause(200);
+    btnPressReset(_btnPress);
+endfunc
+
+
+
+//////////////////////////////// Button Pressed /////////////////////////////////
+func btnPress (var _btnPress)
+    img_SetWord(hndl, _btnPress, IMAGE_INDEX, state1);
+    img_Show(hndl, _btnPress);
+endfunc
+//////////////////////////////// press and realease switch between two buttons /////////////////////////////////
+func switchBtnPress ( var _btnPressOff, var _btnPressOn)
+    img_SetWord(hndl, _btnPressOn, IMAGE_INDEX, state);
+    img_Show(hndl, _btnPressOn);
+    img_SetWord(hndl, _btnPressOff, IMAGE_INDEX, state1);
+    img_Show(hndl, _btnPressOff);
+endfunc
+//////////////////////////////// Brings button back to urpressed state /////////////////////////////////
+func btnPressReset(var _btnPress)
+    img_SetWord(hndl,  _btnPress, IMAGE_INDEX, state);
+   // img_Show(hndl, _btnPress) ;
+endfunc
+
+//////////////////////////////// quickly presses and releases button/////////////////////////////////
+func tempBtnHighlight(var _btnPress)
+    img_SetWord(hndl,  _btnPress, IMAGE_INDEX, state1);
+    img_Show(hndl, _btnPress) ;
+    pause(150);
+    img_SetWord(hndl,  _btnPress, IMAGE_INDEX, state);
+    img_Show(hndl, _btnPress) ;
+endfunc
+
+///////////////////////changes the state of the button to the opposite//////////////////////
+ func btnState(var state)
+    if( state == 1)
+        state --;
+    else if(state == 0)
+        state ++;
+    endif
+endfunc
+
+////////////////////////takes you to the "please select 'option' form"///////////////////
+func selectBtn(var _textDisplay, var returnToForm)
+    currentForm := FORM_13_SELECTION_REMINDER;
+    gotoCurrentForm(0);
+    gfx_Cls() ;
+    img_Show(hndl,iForm13) ;
+    img_Show(hndl,_textDisplay) ;
+    pause(2000);
+    currentForm := returnToForm;
+    gotoCurrentForm(0);
+endfunc
+
+
+func backBtn(var i)
+  //  print(i);
+    i:= i-2;
+ //   print("the value of i");
+   // print(i);
+   // print(backBtnArray[i]);
+    return backBtnArray[i];
+
+endfunc
+
+
+func fwrdBtn(var i)
+  //  print(i);
+    i:= i++;
+    //print("the value of i");
+    //print(i);
+    //print(backBtnArray[i]);
+    return backBtnArray[i];
+
+endfunc
+
+
+///////////////////////Cool Down Function //////////////////////
+
+func treatment_Stopped_Arduino()//this function is called when the arduino sends a treatment complete message to the screen after a normal treatment completion
+
+endfunc
+
+
+func displayCoolDown()
+    var coolDownTime;
+
+    if (time_iterator_for_serin(SCREEN_COOLDOWN_MESSAGE_LENGTH) == TRUE)
+
+        if(currentForm != FORM_19_COUNTDOWN_TO_SHUT_OFF && currentForm != FORM_20_EMERGENCY_SHUTDOWN && currentForm != FORM_18_TREATMENT_RESULTS)
+            currentForm := FORM_19_COUNTDOWN_TO_SHUT_OFF;
+            gotoCurrentForm(0);
+        endif
+
+        coolDownTime := serin();
+
+        if (coolDownTime >0 && coolDownTime <= MAX_8BIT_VALUE && currentForm != FORM_20_EMERGENCY_SHUTDOWN && currentForm != FORM_18_TREATMENT_RESULTS)
+
+            ledDigitsDisplay(coolDownTime, iCountDown_Digits+1, 118, 3, 1, 81, 0) ;
+
+        else  if (coolDownTime == 0 && currentForm != FORM_18_TREATMENT_RESULTS)
+            currentForm := FORM_18_TREATMENT_RESULTS;
+            gotoCurrentForm(0);
+        endif
+     endif
+endfunc
+
+
+///////////////////////Displays current temps //////////////////////
+func displayCurrentTemp()
+    if(etaHrs==0 && etaMin == 0)
+        img_Show(hndl,ina_estTime) ;
+        if (k==1)
+            formReset();
+            img_Show(hndl,ina_estTime) ;
+             k--;
+        endif
+
+    else if (etaHrs >0 || etaMin > 0)
+        if(k< 1)
+            formReset();
+            k++;
+        endif
+
+       // img_Show(hndl, iestTimeRemaining_hrs_digits_currentResults);  // show all digits at 0, only do this once
+        ledDigitsDisplay(etaHrs, iestTimeRemaining_hrs_digits_currentResults+1, 334, 1, 1, 35, 0) ;
+
+      //  img_Show(hndl, iestTimeRemaining_min_digits_currentResults);  // show all digits at 0, only do this once
+        ledDigitsDisplay(etaMin, iestTimeRemaining_min_digits_currentResults+1, 383, 2, 1, 35, 0) ;
+
+        img_Show(hndl,iestTimeRemaining_mins_text) ;
+        img_Show(hndl,iestTimeRemaining_hrs_text) ;
+    endif
+   //********* Probe Digits *********//
+         ledDigitsDisplay(TEMP_ARRAY[3], iprobe3_digits_currentResults+1, 321, 3, 1, 35, 0) ;
+         ledDigitsDisplay(TEMP_ARRAY[1], iprobe1_digits_currentResults+1, 13, 3, 1, 35, 0) ;
+         ledDigitsDisplay(TEMP_ARRAY[2], iprobe2_digits_currentResults+1, 173, 3, 1, 35, 0) ;
+
+    //********* Max air temp digits *********///
+           ledDigitsDisplay(TEMP_ARRAY[0], imaxAirTemp_digits_currentResults+1, 13, 3, 1, 35, 0) ;
+
+
+    //********* Elapse Time digits *********//
+        ledDigitsDisplay(TimeElapsedHrs, ielapseTime_hours_digits_currentResults+1, 170, 1, 1, 35, 0) ;
+
+
+        // elapseTime_mins_digits_currentResults 1.0 generated 2/8/2017 2:46:45 PM
+          ledDigitsDisplay(TimeElapsedMin, ielapseTime_mins_digits_currentResults+1, 220, 2, 1, 35, 0) ;
+
+     //********* Elapse Time hours and mins *********//
+        img_Show(hndl,ielapseTime_hr_text) ;
+        img_Show(hndl,ielapseTime_min_text) ;
+
+endfunc
+
+
+
+//////////////////Displays current results form again when called//////////////
+func formReset()
+    gfx_Cls() ;
+    img_Show(hndl,iForm11) ;
+
+    ///*********Title*********///
+    gfx_OutlineColour(WHITE) ;
+    gfx_LinePattern(LPFINE) ;
+    gfx_RectangleFilled(0, 0, 479, 23, 0xD6BB) ;
+    gfx_OutlineColour(BLACK) ;
+    gfx_LinePattern(LPSOLID) ;
+
+    img_Show(hndl,icurrentResultsTitle) ;
+   //********* Digits*********//
+
+    img_Show(hndl, iprobe1_digits_currentResults);  // show all digits at 0, only do this once
+    ledDigitsDisplay(TEMP_ARRAY[0], iprobe1_digits_currentResults+1, 13, 3, 1, 35, 0) ;
+
+    img_Show(hndl, iprobe2_digits_currentResults);  // show all digits at 0, only do this once
+    ledDigitsDisplay(TEMP_ARRAY[2], iprobe2_digits_currentResults+1, 173, 3, 1, 35, 0) ;
+
+    img_Show(hndl, iprobe3_digits_currentResults);  // show all digits at 0, only do this once
+    ledDigitsDisplay(TEMP_ARRAY[3], iprobe3_digits_currentResults+1, 321, 3, 1, 35, 0) ;
+
+    img_Show(hndl, imaxAirTemp_digits_currentResults);  // show all digits at 0, only do this once
+    ledDigitsDisplay(TEMP_ARRAY[0], imaxAirTemp_digits_currentResults+1, 13, 3, 1, 35, 0) ;
+
+
+    //********* Probe text *********//
+    img_Show(hndl,iprobe1Text_currentResults) ;
+    img_Show(hndl,iprobe2Text_currentResults) ;
+    img_Show(hndl,iprobe3Text_currentResults) ;
+
+    img_Show(hndl,imaxAirTempText_currentResutls) ;
+    img_Show(hndl,ielapseTimeText_currentResutls) ;
+    img_Show(hndl,iestTimeRemaining_currentResults) ;
+
+    //////// "F" degrees text ///////////////
+    img_Show(hndl,iprobe1F_text) ;
+    img_Show(hndl,iprobe2F_text) ;
+    img_Show(hndl,iprobe3F_text) ;
+    img_Show(hndl,iMaxAirTempF_text) ;
+    //////// Elapse Time "hr" text ///////////////
+    img_Show(hndl,ielapseTime_hr_text) ;
+    //////// Elapse Time "min" text ///////////////
+    img_Show(hndl,ielapseTime_min_text) ;
+
+    //********* Menu *********//
+    img_ClearAttributes(hndl, ibackBtn_currentResults, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+    img_Show(hndl, ibackBtn_currentResults);  // show button, only do this once
+    img_SetWord(hndl, ibackBtn_currentResults, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+
+    img_ClearAttributes(hndl, imenuBtn_currentResults, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+    img_Show(hndl, imenuBtn_currentResults);  // show button, only do this once
+    img_SetWord(hndl, imenuBtn_currentResults, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+
+    img_ClearAttributes(hndl, istopBtn_currentResults, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+    img_Show(hndl, istopBtn_currentResults);  // show button, only do this once
+    img_SetWord(hndl, istopBtn_currentResults, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+
+    img_ClearAttributes(hndl, inextBtn_currentResults, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+    img_Show(hndl, inextBtn_currentResults);  // show button, only do this once
+    img_SetWord(hndl, inextBtn_currentResults, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total state
+
+endfunc
+
+func utilitiesFormReset()
+    gfx_Cls() ;
+    img_Show(hndl,iForm21) ;
+
+    // cellStrengthText 1.0 generated 10/31/2016 12:53:55 PM
+    img_Show(hndl,icellStrengthText) ;
+
+    // back_btn_utilites 1.0 generated 10/31/2016 12:53:55 PM
+    img_ClearAttributes(hndl, iback_btn_utilites, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+    img_Show(hndl, iback_btn_utilites);  // show button, only do this once
+    img_SetWord(hndl, iback_btn_utilites, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+    img_Show(hndl,iback_btn_utilites) ;
+
+    // cellVersionText 1.0 generated 10/31/2016 12:53:55 PM
+    img_Show(hndl,icellVersionText) ;
+
+    // ArduinoVersionText 1.0 generated 10/31/2016 12:53:55 PM
+    img_Show(hndl,iArduinoVersionText) ;
+
+    // ScreenVersionText 1.0 generated 10/31/2016 12:53:55 PM
+    img_Show(hndl,iScreenVersionText) ;
+
+    // CellStrengthDigit 1.0 generated 10/31/2016 12:53:55 PM
+    img_Show(hndl, iCellStrengthDigit);  // show all digits at 0, only do this once
+    ledDigitsDisplay(cellSignalStrength, iCellStrengthDigit+1, 192, 1, 1, 34, 1) ;
+
+    // CellVersionMajorDigit 1.0 generated 10/31/2016 12:53:55 PM
+    img_Show(hndl, iCellVersionMajorDigit);  // show all digits at 0, only do this once
+    ledDigitsDisplay(VERSION_CELL_MAJOR, iCellVersionMajorDigit+1, 192, 2, 1, 34, 0) ;
+
+    // CellMajorDecimalText 1.0 generated 10/31/2016 12:53:55 PM
+    img_Show(hndl,iCellMajorDecimalText) ;
+
+    // CellMinorlDigit 1.0 generated 10/31/2016 12:53:55 PM
+    img_Show(hndl, iCellMinorlDigit);  // show all digits at 0, only do this once
+    ledDigitsDisplay(VERSION_CELL_MINOR, iCellMinorlDigit+1, 268, 2, 1, 34, 0) ;
+
+    // CellMinorDecimalText 1.0 generated 10/31/2016 12:53:55 PM
+    img_Show(hndl,iCellMinorDecimalText) ;
+
+    // CellPatchDigit 1.0 generated 10/31/2016 12:53:55 PM
+    img_Show(hndl, iCellPatchDigit);  // show all digits at 0, only do this once
+    ledDigitsDisplay(VERSION_CELL_PATCH, iCellPatchDigit+1, 342, 2, 1, 34, 0) ;
+
+    // ArduinoVersionMajorDigit 1.0 generated 10/31/2016 12:53:55 PM
+    img_Show(hndl, iArduinoVersionMajorDigit);  // show all digits at 0, only do this once
+    ledDigitsDisplay(VERSION_ARDUINO_MAJOR, iArduinoVersionMajorDigit+1, 192, 2, 1, 34, 0) ;
+
+    // ArduinoMinorlDigit 1.0 generated 10/31/2016 12:53:55 PM
+    img_Show(hndl, iArduinoMinorlDigit);  // show all digits at 0, only do this once
+    ledDigitsDisplay(VERSION_ARDUINO_MINOR, iArduinoMinorlDigit+1, 268, 2, 1, 34, 0) ;
+
+    // ArduinoMinorDecimalText 1.0 generated 10/31/2016 12:53:55 PM
+    img_Show(hndl,iArduinoMinorDecimalText) ;
+
+    // ArduinoPatchDigit 1.0 generated 10/31/2016 12:53:56 PM
+    img_Show(hndl, iArduinoPatchDigit);  // show all digits at 0, only do this once
+    ledDigitsDisplay(VERSION_ARDUINO_PATCH, iArduinoPatchDigit+1, 342, 2, 1, 34, 0) ;
+
+    // ScreenVersionMajorDigit 1.0 generated 10/31/2016 12:53:56 PM
+    img_Show(hndl, iScreenVersionMajorDigit);  // show all digits at 0, only do this once
+    ledDigitsDisplay(VERSION_SCREEN_MAJOR, iScreenVersionMajorDigit+1, 192, 2, 1, 34, 0) ;
+
+    // ScreenMajorDecimalText 1.0 generated 10/31/2016 12:53:56 PM
+    img_Show(hndl,iScreenMajorDecimalText) ;
+
+    // ArduinoMajorDecimalText 1.0 generated 10/31/2016 12:53:56 PM
+    img_Show(hndl,iArduinoMajorDecimalText) ;
+
+    // ScreenMinorlDigit 1.0 generated 10/31/2016 12:53:56 PM
+    img_Show(hndl, iScreenMinorlDigit);  // show all digits at 0, only do this once
+    ledDigitsDisplay(VERSION_SCREEN_MINOR, iScreenMinorlDigit+1, 268, 2, 1, 34, 0) ;
+
+    // ScreenMinorDecimalText 1.0 generated 10/31/2016 12:53:56 PM
+    img_Show(hndl,iScreenMinorDecimalText) ;
+
+    // ScreenPatchDigit 1.0 generated 10/31/2016 12:53:56 PM
+    img_Show(hndl, iScreenPatchDigit);  // show all digits at 0, only do this once
+    ledDigitsDisplay(VERSION_SCREEN_PATCH, iScreenPatchDigit+1, 342, 2, 1, 34, 0) ;
+
+
+    // LogButton 1.0 generated 3/14/2017 11:01:52 AM
+    img_ClearAttributes(hndl, iLogButton, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+    img_Show(hndl, iLogButton);  // show button, only do this once
+    img_SetWord(hndl, iLogButton, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+    img_Show(hndl,iLogButton) ;
+
+
+     if(previousLink != FORM_11_CURRENT_RESULTS)
+
+       // next_btn_utilities 1.0 generated 3/1/2017 3:22:51 PM
+       img_ClearAttributes(hndl, inext_btn_utilities, I_TOUCH_DISABLE); // set to enable touch, only need to do this once
+       img_Show(hndl, inext_btn_utilities);  // show button, only do this once
+       img_SetWord(hndl, inext_btn_utilities, IMAGE_INDEX, state); // where state is 0 for up and 1 for down, or 2 total states
+        img_Show(hndl,inext_btn_utilities) ;
+      endif
+
+endfunc
+
+////////////////// Assigns number vaulues to pressed buttons //////////////
+func BtnNumber(var _touchImgIndex)
+    var btnValue;
+
+    switch(_touchImgIndex)
+
+    //********* Circuit Values *********//  Form 3
+        case (i2circuitsBtn):
+            btnValue:= 2;
+        break;
+
+        case (i3circuitsBtn):
+            btnValue:= 3;
+        break;
+
+    //********* Amp Values *********// Form 4
+        case (i15ampsBtn):
+            btnValue:= 15;
+        break;
+
+        case (i20ampsBtn):
+            btnValue:= 20;
+        break;
+
+    //********* Enable Cell *********// Form 6
+        case (iyesBtn_enableCell):
+            btnValue:= 1;
+        break;
+
+        case (inoBtn_enableCell):
+            btnValue:= 0;
+        break;
+
+//********* Set Pin *********// Form 8
+        case (ipinBtn_0):
+            btnValue:= 0;
+        break;
+
+        case (ipinBtn_1):
+            btnValue:= 1;
+        break;
+
+        case (ipinBtn_2):
+            btnValue:= 2;
+        break;
+
+        case (ipinBtn_3):
+            btnValue:= 3;
+        break;
+
+        case (ipinBtn_4):
+            btnValue:= 4;
+        break;
+
+        case (ipinBtn_5):
+            btnValue:= 5;
+        break;
+
+        case (ipinBtn_6):
+            btnValue:= 6;
+        break;
+
+        case (ipinBtn_7):
+            btnValue:= 7;
+        break;
+
+        case (ipinBtn_8):
+            btnValue:= 8;
+        break;
+
+        case (ipinBtn_9):
+            btnValue:= 9;
+        break;
+     //****** sets the pin digits to negative numbers if you press them ********//
+        case (isetPinDigits_00):
+            btnValue := -1;
+        break;
+
+        case (isetPinDigits_01):
+            btnValue := -1;
+        break;
+
+        case (isetPinDigits_02):
+            btnValue := -1;
+        break;
+
+        case (isetPinDigits_03):
+            btnValue := -1;
+        break;
+
+        case (isetPinDigits_04):
+            btnValue := -1;
+        break;
+
+    endswitch
+
+    return btnValue;
+
+endfunc
+
+
+////////////////// Set Temp form 5 - Target Temp minus //////////////
+func  tTempMinusBuffer ()
+    if (tTemp > MIN_tTemp)
+        tTemp -= 5;
+        ledDigitsDisplay(tTemp, itargetTempDigits_tempSet+1, 59, 3, 1, 33, 0) ;
+    endif
+endfunc
+
+////////////////// Set Temp form 5 - Max Air Temp minus with Target Temp buffer of 10 //////////////
+func  tTempMinusBuffer_02 ()
+
+  if (tTemp > MIN_tTemp && (tTemp == (mAirTemp - 5)))
+        tTemp -= 5;
+       // print(tTemp);
+        ledDigitsDisplay(tTemp, itargetTempDigits_tempSet+1, 59, 3, 1, 33, 0) ;
+    endif
+endfunc
+
+////////////////// Set Temp form 5 - Target Temp add button with a buffer of 10 from Max Air Temp //////////////
+func  tTempAddBuffer ()
+    if (tTemp < MAX_tTemp && (tTemp <= (mAirTemp - 15)))
+        tTemp += 5;
+        ledDigitsDisplay(tTemp, itargetTempDigits_tempSet+1, 59, 3, 1, 33, 0) ;
+    else if (tTemp <  MAX_tTemp && tTemp == (mAirTemp - 10))
+        tTemp += 5;
+        mAirTemp +=5;
+        ledDigitsDisplay(tTemp, itargetTempDigits_tempSet+1, 59, 3, 1, 33, 0) ;
+        ledDigitsDisplay(mAirTemp, imaxAirTempDigits_tempSet+1, 59, 3, 1, 33, 0) ;
+    else if (tTemp <  MAX_tTemp && (tTemp == MIN_tTemp && (mAirTemp == MIN_mAirTemp || mAirTemp == 125)))
+        mAirTemp +=5;
+        ledDigitsDisplay(mAirTemp, imaxAirTempDigits_tempSet+1, 59, 3, 1, 33, 0) ;
+    endif
+endfunc
+
+
+func statusErrorDisplay(var statusError)
+     runCurrentUpdate := FALSE;
+     currentForm := FORM_16_ERRORS;
+     gotoCurrentForm(0);
+     img_Show(hndl,ierror_01) ;
+
+    switch (statusError)
+       case STATUS_POWER_LOSS_2:
+            img_Show(hndl,iPowerError_cord2_text) ;
+       break;
+       case STATUS_POWER_LOSS_3:
+            img_Show(hndl,iPowerError_cord3_text) ;
+         break;
+       case STATUS_POWER_LOSS_4:
+            img_Show(hndl,iPowerError_cord4_text) ;
+         break;
+       case STATUS_COMM_LOSS:
+            img_Show(hndl,iStatusError_ComLoss_text) ;
+        break;
+       case STATUS_PROBE_ERROR:
+            img_Show(hndl,iProbeError_text) ;
+       break;
+       case STATUS_UNABLE_TO_HEAT:
+            img_Show(hndl,iStatusError_UnableToHeat_text) ;
+        break;
+        case STATUS_PROBE_INITIATION:
+            img_Show(hndl,iProbeInitializationError_text);
+            pause(5000);
+        break;
+    endswitch
+endfunc
+
+func treatmentErrors(var x_treatmentStatus)
+         statusErrors := x_treatmentStatus;
+   switch(x_treatmentStatus)
+       case STATUS_POWER_LOSS_2:
+                runCurrentUpdate := FALSE;
+                statusErrorDisplay(STATUS_POWER_LOSS_2);
+        break;
+       case STATUS_POWER_LOSS_3:
+                runCurrentUpdate := FALSE;
+                statusErrorDisplay(STATUS_POWER_LOSS_3);
+        break;
+        case STATUS_POWER_LOSS_4:
+                runCurrentUpdate := FALSE;
+                statusErrorDisplay(STATUS_POWER_LOSS_4);
+        break;
+        case STATUS_COMM_LOSS:
+                runCurrentUpdate := FALSE;
+                statusErrorDisplay(STATUS_COMM_LOSS);
+        break;
+        case STATUS_UNABLE_TO_HEAT:
+                runCurrentUpdate := FALSE;
+                statusErrorDisplay(STATUS_UNABLE_TO_HEAT);
+        break;
+        case STATUS_PROBE_ERROR:
+            runCurrentUpdate := FALSE;
+            statusErrorDisplay(STATUS_PROBE_ERROR);
+        break;
+        case STATUS_PROBE_INITIATION:
+            runCurrentUpdate := FALSE;
+            statusErrorDisplay(STATUS_PROBE_INITIATION);
+        break;
+        case STATUS_NOMINAL:
+                if (currentForm == FORM_21_UTILITIES || currentForm == FORM_12_MENU || currentForm == FORM_15_STOP_TREATMENT || currentForm == FORM_18_TREATMENT_RESULTS || currentForm == FORM_19_COUNTDOWN_TO_SHUT_OFF || currentForm == FORM_20_EMERGENCY_SHUTDOWN || currentForm == FORM_2_WELCOME_SCREEN || currentForm == FORM_28_NO_CELL_DURING_TREATMENT || currentForm == FORM_27_SEND_LOG_FILES)
+                 runCurrentUpdate := FALSE;
+                else if (currentForm != FORM_11_CURRENT_RESULTS)
+                runCurrentUpdate := TRUE;
+                currentForm := FORM_11_CURRENT_RESULTS;
+                gotoCurrentForm(0);
+                displayCurrentTemp();
+                else if (currentForm == FORM_11_CURRENT_RESULTS)
+                runCurrentUpdate := TRUE;
+
+                endif
+        break;
+        case TREATMENT_CLEAR:
+            runCurrentUpdate := FALSE;
+            if(PrevFormErrorIdenification != FORM_2_WELCOME_SCREEN)
+                currentForm := PrevFormErrorIdenification;
+                gotoCurrentForm(0);
+              else if(currentForm == FORM_18_TREATMENT_RESULTS)
+                //Do nothing
+
+            else
+                 currentForm := FORM_2_WELCOME_SCREEN;
+                 gotoCurrentForm(0);
+                endif
+              break;
+     endswitch
+
+endfunc
+
+
+//////////////////////////////////////////////////////////////////Serial Functions //////////////////////////////////////////////////////////////
+
+func init_Serial_Comm()
+    //receive communication from Arduino and respond with acknowledgement
+   while(serin()!= MSG_ACK)
+   wend
+  // print("message recieved, responding...","\n");
+   send_msg_rsvd();
+
+//Goto Welcome Screen
+  //  currentForm := FORM_2_WELCOME_SCREEN;
+  //  gotoCurrentForm(0);
+
+
+endfunc
+
+//Sends the message recieved character out on Serial1
+func send_msg_rsvd()
+
+    serout(MSG_ACK);
+
+endfunc
+
+
+//clear Serial1 RX Buffer
+func clear_RX_Buffer()
+
+    while(com_Count() > 0)
+        serin();
+    wend
+
+endfunc
+
+//Check for message from Arduino
+func check_Incoming_Serial()
+    var signalChar;
+
+    if(com_Count() > 0)
+
+        signalChar := serin();
+
+           //  print("geeting this signal");
+           // print(signalChar);
+           //  pause(1000);
+        if (currentForm != FORM_18_TREATMENT_RESULTS)
+
+
+
+        switch (signalChar)
+
+
+
+            case SETUP_MESSAGE: //Setup message is used to send semi-permanent information from before the last power-down
+                read_Setup_Message();
+            break;
+
+            case CELL_STRENGTH_MESSAGE: //Setup message is used to send semi-permanent information from before the last power-down
+                read_cell_establishment();
+            break;
+
+
+            case CELL_VERSION_MESSAGE:
+               recieve_Cell_Version_Message();
+            break;
+
+            case ARDUINO_VERSION_MESSAGE:
+               recieve_Arduino_Version_Message();
+            break;
+
+
+            case BOOT_ERROR_MSG: //Getting boot Error message if it exisits
+                read_Cell_Boot_Message();
+            break;
+
+            case MSG_ACK: //Arduino is requesting message acknowledged. Reply with '!'
+            send_msg_rsvd();
+            break;
+
+            /////Added to func check_Incoming_Serial()
+
+            case TREATMENT_UPDATE_MESSAGE: //Arduino is requesting message acknowledged. Reply with '!'
+            read_Treatment_Update_Message();
+            break;
+
+
+            case SCREEN_STATUS_COMPLETE: //Arduino is requesting message acknowledged. Reply with '!'
+            treatment_Stopped_Arduino();
+            break;
+
+            case SCREEN_COOLDOWN: //Arduino is requesting message acknowledged. Reply with '!'
+            displayCoolDown();
+            break;
+
+            case UPDATE_CELL_STRENGTH:
+               read_Cell_Message_Strength();
+            break;
+
+            case INITATE_PROBE:
+                iniate_Probe_Connection();
+            break;
+
+
+        default:
+            //If serial in isn't recgonized
+        break;
+        endswitch
+
+        endif
+    endif
+endfunc
+
+func time_iterator_for_serin(var message_length)
+       var timeIterator := 0;
+
+        while  ((com_Count() < message_length) && ((timeIterator*SERIAL_TIMEOUT_ITERATOR)<SERIAL_TIMEOUT))
+             timeIterator++;
+             pause(SERIAL_TIMEOUT_ITERATOR);
+        wend
+
+        if (com_Count() < message_length)
+          return FALSE;
+        else
+         return TRUE;
+        endif
+endfunc
+
+func init_Setup_Parameters()   //Wait for arduino to send setupinformation and then reads the information
+
+    pause(3000);
+    check_Incoming_Serial();
+
+endfunc
+
+//receive treatment setup information from Arduino
+func read_Setup_Message()
+
+/*  Incoming Data sent in Order shown. Note each are 1 byte with max value of 256
+
+  uint8_t EEPROM_cellOnBoard;  //Binary 0-No 1-Yes
+  uint8_t EEPROM_tTemp;        //Target temperature
+  uint8_t EEPROM_mAirTemp;     //maximum air temperature
+  uint8_t EEPROM_tAtTarget;    //time to hold at the target temperature
+  uint8_t EEPROM_cellPin[PIN_LENGTH];  //5 individual numbers representing the pin
+
+*/
+
+       if (time_iterator_for_serin(SETUP_MESSAGE_LENGTH) == TRUE)
+
+            cellOnBoard := serin();
+            tTemp := serin();
+            mAirTemp := serin();
+            tAtTarget := serin();
+            cellPin[0] := serin();
+            cellPin[1] := serin();
+            cellPin[2] := serin();
+            cellPin[3] := serin();
+            cellPin[4] := serin();
+
+            send_msg_rsvd();
+           // print_Setup_Message();
+
+        endif
+
+endfunc
+
+func establishingConnectionReconnectEnabled()
+
+     establishingConnection_choice := TRUE;
+   if(cellSignalStrength == FALSE)
+        return FORM_22_ESTABLISHING_CONNECTION;
+    else if (cellSignalStrength > 0)
+         return FORM_7_CURRENT_PIN;
+    endif
+
+endfunc
+
+func iniate_Probe_Connection()
+
+   var iniate_probe_message_length := 1;
+   if(time_iterator_for_serin(iniate_probe_message_length) == TRUE)
+
+       probe_idenification_number := serin();
+
+           switch(probe_idenification_number)
+
+            case PROBE_AIR_TEMP:
+                 currentForm := FORM_24_IDENTIFYING_PROBES;
+                 gotoCurrentForm(0);
+            break;
+            case PROBE_01:
+                 currentForm := FORM_24_IDENTIFYING_PROBES;
+                 gotoCurrentForm(0);
+            break;
+
+            case PROBE_02:
+                 currentForm := FORM_24_IDENTIFYING_PROBES;
+                 gotoCurrentForm(0);
+            break;
+
+            case PROBE_03:
+                 currentForm := FORM_24_IDENTIFYING_PROBES;
+                 gotoCurrentForm(0);
+            break;
+
+            case PROBE_SUCCESSFULLY_IDENTIFIED:
+                 currentForm := FORM_25_PROBE_IDENTIFICATION_COMPLETE;
+                 gotoCurrentForm(0);
+
+            break;
+            case PROBE_UNSUCCESSFULLY_IDENTIFIED:
+                 currentForm := FORM_25_PROBE_IDENTIFICATION_COMPLETE;
+                 gotoCurrentForm(0);
+            break;
+            case PROBE_INITIATION_COMPLETE:
+                currentForm := FORM_25_PROBE_IDENTIFICATION_COMPLETE;
+                 gotoCurrentForm(0);
+            break;
+                default:
+                   //recieved incomplete data information
+            break;
+
+        endswitch
+    endif
+endfunc
+
+func start_Probe_Intiation()
+     serout(INITATE_PROBE);
+     img_Show(hndl,iLoadingBG) ;  //place holder image while attempting to get cell strength
+     img_Show(hndl,iLoadingText) ;
+endfunc
+
+func start_Probe_Reintiation()
+     serout(REINITATE_PROBE_IDENTIFICATION);
+     img_Show(hndl,iLoadingBG) ;  //place holder image while attempting to get cell strength
+     img_Show(hndl,iLoadingText) ;
+endfunc
+
+func send_log_files()
+     serout(SEND_LOG_FILES);
+     img_Show(hndl,iLoadingBG) ;  //place holder image while attempting to get cell strength
+     img_Show(hndl,iLoadingText) ;
+     currentForm := FORM_21_UTILITIES;
+     gotoCurrentForm(0);
+
+endfunc
+
+func read_Cell_Message_Strength()
+   if(time_iterator_for_serin(CELL_STRENGTH_MESSAGE_LENGTH)== FALSE)
+         return FALSE;
+    else if (time_iterator_for_serin(CELL_STRENGTH_MESSAGE_LENGTH)== TRUE)
+            while (serin()== TREATMENT_UPDATE_MESSAGE)
+             serout(UPDATE_CELL_STRENGTH);
+            //    print("sending cell update Message");
+            wend
+
+            cellSignalStrength := serin();
+
+            if (cellSignalStrength == UPDATE_CELL_STRENGTH)
+                cellSignalStrength := serin();
+            endif
+            if (cellSignalStrength > 0 && cellSignalStrength < 5)
+                return cellSignalStrength;
+            else
+                return FALSE;
+            endif
+        return FALSE;
+    endif
+
+endfunc
+
+func read_Cell_Strength_Message()
+
+
+        if(time_iterator_for_serin(CELL_STRENGTH_MESSAGE_LENGTH) == FALSE)
+             return FALSE;
+
+        else if(time_iterator_for_serin(CELL_STRENGTH_MESSAGE_LENGTH) == TRUE)
+
+            cellSignalStrength := serin();
+            if (cellSignalStrength == CELL_STRENGTH_MESSAGE)
+            cellSignalStrength := serin();
+            endif
+
+           // pause(1000);
+            if (cellSignalStrength > 0 && cellSignalStrength < 5)
+                return TRUE;
+            else
+                return FALSE;
+        endif
+
+    endif
+endfunc
+
+func read_cell_establishment()
+          //  print(cellSignalStrength);
+          //  print("\n");
+          //  print(currentForm);
+
+     read_Cell_Strength_Message();
+            if (cellSignalStrength > 0)
+              if (currentForm == FORM_2_WELCOME_SCREEN || currentForm == FORM_3_CIRCUITS || currentForm == FORM_4_BREAKERS || currentForm == FORM_5_TEMP_SETTINGS || currentForm == FORM_6_ENABLE_CELL || currentForm == FORM_21_UTILITIES || currentForm == FORM_26_REIDENTIFY_PROBES)
+                    pause(500);
+                    conectionHasHappened := TRUE;
+                else if (currentForm == FORM_11_CURRENT_RESULTS)
+                       pause(500);
+                       conectionHasHappened := TRUE;
+                else if (currentForm == FORM_22_ESTABLISHING_CONNECTION && cellMonitoring != FALSE)
+                   // print("if statement 2");
+                    currentForm := FORM_6_ENABLE_CELL;
+                    gotoCurrentForm(0);
+               else if (currentForm == FORM_23_UNABLE_TO_CONNECT_NETWORK && cellMonitoring != FALSE && cellSignalStrength >0 )
+                   // print("if statement 3");
+                    pause(500);
+                     currentForm := FORM_6_ENABLE_CELL;
+                    gotoCurrentForm(0);
+                else if (currentForm == FORM_23_UNABLE_TO_CONNECT_NETWORK && cellMonitoring != FALSE && cellSignalStrength == 0)
+                   //   print("if statement 4");
+                      pause(500);
+                      currentForm := FORM_23_UNABLE_TO_CONNECT_NETWORK;
+                      gotoCurrentForm(0);
+               // else
+                  //  print("else  statement");
+                  //  pause(500);
+                  //  currentForm := FORM_6_ENABLE_CELL;
+                  //  gotoCurrentForm(0);
+                endif
+            else if (cellSignalStrength <= 0 && currentForm == FORM_21_UTILITIES)
+                 if (cellSignalStrength < 0)
+                    cellSignalStrength := 0;
+                endif
+
+        endif
+    //  print("end of if statement");
+endfunc
+
+
+
+func read_Cell_Boot_Message()
+
+      var Boot_Message_Length := 1;
+
+       if(time_iterator_for_serin(Boot_Message_Length) == TRUE)
+            bootMessage := serin();
+        //  print(bootMessage);
+        if (bootMessage == CELL_BOOT_ERROR_COMM && cellMonitoring != FALSE)
+         //   print("cell_boot_error_com");
+                cellConnectionMsg := CELL_BOOT_ERROR_COMM;
+                currentForm := FORM_9_UNABLE_TO_CONNECT_MODEM;
+                gotoCurrentForm(0);
+        else if(bootMessage == CELL_BOOT_ERROR_NETWORK && cellMonitoring != FALSE)
+         //    print("cell_boot_error_network");
+                cellConnectionMsg :=  CELL_BOOT_ERROR_NETWORK;
+                currentForm := FORM_23_UNABLE_TO_CONNECT_NETWORK;
+                gotoCurrentForm(0);
+        endif
+      endif
+endfunc
+
+
+
+func print_Setup_Message()
+
+     print("cellOnBoard:",cellOnBoard,"\n");
+     print("tTemp:",tTemp,"\n");
+     print("mAirTemp:",mAirTemp,"\n");
+     print("tAtTarget:",tAtTarget,"\n");
+     print("Cell Pin:",cellPin[0],cellPin[1],cellPin[2],cellPin[3],cellPin[4],"\n");
+
+
+endfunc
+
+func request_Cell_Strength()
+   com_TXbufferHold(ON);  //assembles the packet in the buffer before sending
+    serout(UPDATE_CELL_STRENGTH);
+    com_TXbufferHold(OFF);   //changed from off to on
+    return read_Cell_Message_Strength();//reads the response (if any) from the arduino
+    //com_TXbufferHold(OFF);  //added to function
+endfunc
+
+
+
+func request_Cell_Strength_Exist()
+  //  print("request_Cell_Strength_exist");
+   // print (read_Cell_Strength_Message());
+    //request an updated cell strength
+  //  img_Show(hndl,iLoadingBG) ;  //place holder image while attempting to get cell strength
+    //img_Show(hndl,icellSearchText) ;
+
+    com_TXbufferHold(ON);  //assembles the packet in the buffer before sending
+    serout(CELL_STRENGTH_MESSAGE);
+    com_TXbufferHold(OFF);
+    return read_Cell_Strength_Message();  //reads the response (if any) from the arduino
+
+endfunc
+
+func begin_Treatment()
+
+/*
+//Treatment parameter global variables
+var tTemp;      //The target temperature of the heat treatment
+var mAirTemp;   //Maximum Air Temperature
+var tAtTarget;  //Time at target temperature  (Max limited to 255 because serial communication sends bytes (uint8)
+var cellOnBoard; //Is there a cell modem in the unit. 1=yes 0=no
+var cellPin[PIN_LENGTH];     //5 digit pin that holds cell number
+var cellSignalStrength := 0; //Strength of the cell signal. 0 = no signal, 1-4 is signal strength when signal present
+var nCircuits :=3;  //The number of electrical circuits that will be used for the treatment
+var cBreakers :=15;  //The current rating of the circuit breakers being used for the treatment
+var cellEnabled := 0;  //indicates if cell is enabled for this treatment. Only if requested by user and pin is valid.
+*/
+
+   // print("Beginning Treatment... \n");
+    com_TXbufferHold(ON);  //assembles the packet in the buffer before sending
+    serout(BEGIN_TREATMENT_MESSAGE);
+    serout(tTemp);
+    serout(mAirTemp);
+    serout(tAtTarget);
+    serout(cellPin[0]);serout(cellPin[1]);serout(cellPin[2]);serout(cellPin[3]);serout(cellPin[4]); //Cell Pin Here
+    serout(nCircuits);
+    serout(cBreakers);
+    serout(cellEnabled);
+    com_TXbufferHold(OFF);
+     currentForm := 11;
+    gotoCurrentForm(0);
+endfunc
+
+///////////Cell Functions//////////////////////////////
+
+func read_Cell_Version()
+    com_TXbufferHold(ON);  //assembles the packet in the buffer before sending
+    serout(CELL_VERSION_MESSAGE);
+    com_TXbufferHold(OFF);   //changed from off to on
+    recieve_Cell_Version_Message();//reads the response (if any) from the arduino
+    //com_TXbufferHold(OFF);  //added to function
+endfunc
+
+func recieve_Cell_Version_Message()
+
+   if (time_iterator_for_serin(CHECK_VERSION_MESSAGE_LENGTH) == TRUE)
+        VERSION_CELL_MAJOR := serin();
+        VERSION_CELL_MINOR := serin();
+        VERSION_CELL_PATCH := serin();
+        if (currentForm == FORM_21_UTILITIES)
+             utilitiesFormReset();
+        endif
+
+    else if (time_iterator_for_serin(CHECK_VERSION_MESSAGE_LENGTH) == FALSE)
+         VERSION_CELL_MAJOR := 0;
+         VERSION_CELL_MINOR := 0;
+         VERSION_CELL_PATCH := 0;
+        if (currentForm == FORM_21_UTILITIES)
+             utilitiesFormReset();
+        endif
+    endif
+endfunc
+
+func read_Arduino_Version()
+    com_TXbufferHold(ON);  //assembles the packet in the buffer before sending
+    serout(ARDUINO_VERSION_MESSAGE);
+    com_TXbufferHold(OFF);   //changed from off to on
+    recieve_Arduino_Version_Message();//reads the response (if any) from the arduino
+    //com_TXbufferHold(OFF);  //added to function
+endfunc
+
+func recieve_Arduino_Version_Message()
+
+      var arduino_version_message_length := 3;
+     if(time_iterator_for_serin(arduino_version_message_length) == TRUE)
+
+    //    print("Arduino version in is: ");
+        VERSION_ARDUINO_MAJOR := serin();
+        VERSION_ARDUINO_MAJOR := VERSION_ARDUINO_MAJOR - '0';   ////reads to screen in ascii and needs to be changed to an int
+     //   print(VERSION_ARDUINO_MAJOR);
+        VERSION_ARDUINO_MINOR := serin();
+        VERSION_ARDUINO_MINOR := VERSION_ARDUINO_MINOR - '0';   ////reads to screen in ascii and needs to be changed to an int
+      //  print(VERSION_ARDUINO_MINOR);
+        VERSION_ARDUINO_PATCH := serin();
+        VERSION_ARDUINO_PATCH := VERSION_ARDUINO_PATCH - '0';   ////reads to screen in ascii and needs to be changed to an int
+     //   print(VERSION_ARDUINO_PATCH);
+    if (currentForm == FORM_21_UTILITIES)
+         utilitiesFormReset();
+    endif
+
+      else if(time_iterator_for_serin(arduino_version_message_length) == FALSE)
+        VERSION_ARDUINO_MAJOR := 0;
+        VERSION_ARDUINO_MINOR := 0;
+        VERSION_ARDUINO_PATCH := 0;
+    if (currentForm == FORM_21_UTILITIES)
+         utilitiesFormReset();
+    endif
+  endif
+
+
+endfunc
+
+
+
+func checkCellPin()
+     var getSerinCellInput := -2;
+  //  print("Sending Pin \n");
+    var timeIterator := 0;
+
+    clear_RX_Buffer();
+   com_TXbufferHold(ON); //assembles the packet in the buffer before sending
+   serout(CHECK_PIN_MESSAGE);
+   serout(cellPin[0]);
+   serout(cellPin[1]);
+   serout(cellPin[2]);
+   serout(cellPin[3]);
+   serout(cellPin[4]);
+   com_TXbufferHold(OFF);
+
+       img_Show(hndl,iLoadingBG) ;
+       img_Show(hndl,ivalidatePinText) ;
+
+    while  ((com_Count() < CHECK_PIN_MESSAGE_LENGTH)&& ((timeIterator*SERIAL_TIMEOUT_ITERATOR)<SERIAL_TIMEOUT)) //
+         timeIterator++;
+         pause(SERIAL_TIMEOUT_ITERATOR);
+    wend
+
+    if (serin() == CHECK_PIN_MESSAGE)
+     //   print("serin in is: ");
+
+        getSerinCellInput := serin();
+
+      //  print(getSerinCellInput);
+        pause(5000);
+        if(getSerinCellInput == TRUE)
+        //    print("pin valid");
+            cellEnabled := TRUE;  //if the pin is valid, then the cell minitoring is enabled
+            return TRUE;
+        else if(getSerinCellInput == CELL_TIMED_OUT)
+         //   print("lost connection");
+            cellEnabled := CELL_TIMED_OUT;  //if the pin is valid, then the cell minitoring is enabled
+            return CELL_TIMED_OUT;
+        else if(getSerinCellInput == FALSE)
+          //  print("pin Invalid");
+            cellEnabled := FALSE;  //if the pin is not valid, then the cell monitoring is disabled unless a valid pin is given in the future
+            return FALSE;
+        else
+          //  print("wrong input error");
+            cellEnabled := PIN_VALIDATION_ERROR;  //if the pin is not valid, then the cell monitoring is disabled unless a valid pin is given in the future
+            pause(3000);
+            return -1;
+        endif
+    endif
+    return PIN_VALIDATION_ERROR;
+
+endfunc
+
+func flush_Serial1()
+       while (1 > 0)
+       wend
+endfunc
+
+
+
+func emergencyStop()
+
+    //sends emergency stop message twice to arduino
+   // print("Sending Emergency Stop \n");
+    while (serin()!=MSG_ACK)
+       serout(EMERGENCY_STOP_MESSAGE);
+       pause(500);
+    wend
+        currentForm := FORM_20_EMERGENCY_SHUTDOWN;
+        gotoCurrentForm(0);
+        pause(4000);
+       currentForm := FORM_18_TREATMENT_RESULTS;
+       gotoCurrentForm(0);
+endfunc
+
+func normalStop()
+
+    //sends emergency stop message twice to arduino
+   // print("Sending Normal Stop \n");
+    while (serin()!=MSG_ACK)
+       serout(NORMAL_STOP_MESSAGE);
+       pause(500);
+    wend
+
+endfunc
+///////////
+
+
+
+///////////
+
+func read_Treatment_Update_Message()
+
+        if (time_iterator_for_serin(TREATMENT_UPDATE_MESSAGE_LENGTH) == TRUE)
+
+          // print("getting treatment update")
+            TEMP_ARRAY[0] := serin();
+            TEMP_ARRAY[1] := serin();
+            TEMP_ARRAY[2] := serin();
+            TEMP_ARRAY[3] := serin();
+            TimeElapsedHrs := serin();
+            TimeElapsedMin := serin();
+            etaHrs := serin();
+            etaMin := serin();
+            treatmentStatus := serin();
+
+             if(treatmentStatus != statusErrors)
+               treatmentErrors(treatmentStatus);
+              endif
+                send_msg_rsvd();
+
+            if(runCurrentUpdate == TRUE)
+                displayCurrentTemp();
+            endif
+
+            else if (time_iterator_for_serin(TREATMENT_UPDATE_MESSAGE_LENGTH) == FALSE)
+           //does nothing because it isnt getting currect update information
+
+        endif
+
+endfunc
+
+
+
+/*func reset_Treatment()
+
+
+   print("new treatment reset");
+    clear_RX_Buffer();
+   com_TXbufferHold(ON); //assembles the packet in the buffer before sending
+   serout(ARDUINO_RESET_INIT);
+   serout(ARDUINO_RESET_CONFIRM);
+    com_TXbufferHold(OFF);
+   // currentForm := FORM_2_WELCOME_SCREEN;
+  //  gotoCurrentForm(0);
+  pause(5000);
+        SystemReset();
+endfunc
+*/
+
